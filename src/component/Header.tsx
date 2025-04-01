@@ -1,7 +1,5 @@
 import { Link } from "react-router-dom";
-import { FaUser, FaShoppingCart, FaHome } from "react-icons/fa";
 import logo from "../assets/logo.png";
-import "./Header.css";
 
 const commitments = [
   {
@@ -33,59 +31,99 @@ const commitments = [
 const Header = () => {
   return (
     <div>
-      <div className="header">
-        <div className="logo">
+      <div className="flex items-center justify-between p-4 bg-white sticky top-0 z-50 ">
+        <div className="ml-7">
           <Link to="/">
-            <img src={logo} alt="Logo" />
+            <img src={logo} alt="Logo" className="h-[90px] w-[110px]" />
           </Link>
         </div>
-        <div className="search-container">
-          <div className="search-box">
+        <div className="flex-1 flex flex-col justify-center items-start ml-10">
+          <div className="flex items-center w-full max-w-[900px] border border-gray-300 rounded-lg bg-white p-2">
             <img
-              className="icon-search"
+              className="w-5 h-5 ml-2.5"
               src="https://salt.tikicdn.com/ts/upload/33/d0/37/6fef2e788f00a16dc7d5a1dfc5d0e97a.png"
               alt="icon-search"
             />
             <input
               type="text"
-              className="search-input"
-              placeholder="100% hàng thật"
+              className="flex-1 border-none outline-none text-sm p-2"
+              placeholder="Nhập từ khóa..."
             />
-            <button className="search-button">Tìm kiếm</button>
+            <button className="text-gray-800 text-sm px-4 py-1 border-l border-gray-300 rounded-r-lg">
+              Tìm kiếm
+            </button>
           </div>
-          <div className="keywords">
-            <span>điện gia dụng</span>
-            <span>xe cộ</span>
-            <span>mẹ & bé</span>
-            <span>khỏe đẹp</span>
-            <span>nhà cửa</span>
-            <span>sách</span>
-            <span>thể thao</span>
-            <span>harry potter</span>
-            <span>lịch treo tường 2024</span>
-            <span>nguyễn nhật ánh</span>
+          <div className="flex gap-3 mt-2 text-gray-700 text-sm cursor-pointer">
+            {[
+              "Điện gia dụng",
+              "Xe cộ",
+              "Mẹ & bé",
+              "Khỏe đẹp",
+              "Nhà cửa",
+              "Sách",
+              "Thể thao",
+              "Harry Potter",
+              "Lịch 2024",
+              "Nguyễn Nhật Ánh",
+            ].map((keyword, index) => (
+              <span key={index} className="hover:underline">
+                {keyword}
+              </span>
+            ))}
           </div>
         </div>
-        <div className="nav-buttons">
-          <Link to="/">
-            <FaHome className="icon" /> Trang chủ
+        <div className="flex items-center space-x-6 mb-10">
+          <Link
+            to="/"
+            className="flex items-center text-black gap-2 hover:text-blue-600"
+          >
+            <img
+              src="https://salt.tikicdn.com/ts/upload/b4/90/74/6baaecfa664314469ab50758e5ee46ca.png" // Thay đổi đường dẫn ảnh của icon Home
+              alt="Trang chủ"
+              className="w-6 h-6"
+            />
+            Trang chủ
           </Link>
-          <div className="profile-link">
-            <Link to="/profile">
-              <FaUser className="icon" /> Tài khoản
+
+          <div className="relative pr-6">
+            <Link
+              to="/profile"
+              className="flex items-center text-black gap-2 hover:text-blue-600"
+            >
+              <img
+                src="https://salt.tikicdn.com/ts/upload/07/d5/94/d7b6a3bd7d57d37ef6e437aa0de4821b.png" // Thay đổi đường dẫn ảnh của icon User
+                alt="Tài khoản"
+                className="w-6 h-6"
+              />
+              Tài khoản
             </Link>
+            <span className="absolute right-0 top-1/2 transform -translate-y-1/2 h-5 w-px bg-gray-300"></span>
           </div>
-          <Link to="/cart">
-            <FaShoppingCart className="icon" />
+          <Link to="/cart" className="hover:text-blue-600">
+            <img
+              src="https://salt.tikicdn.com/ts/upload/51/e2/92/8ca7e2cc5ede8c09e34d1beb50267f4f.png"
+              alt="cart"
+              className="w-6 h-6"
+            />
+            <span className="absolute top-[10px] right-0 inline-block text-center font-semibold text-xs leading-[150%] py-[0.5px] px-[4px] bg-[#FF424F] text-white rounded-[8px]">
+              0
+            </span>
           </Link>
         </div>
       </div>
-      <div className="commitment-container">
-        <span className="commitment-title">Cam kết:</span>
-        <div className="commitment-list">
+      <div className="flex items-center text-blue-900 gap-3 p-4 border-t border-b border-gray-300">
+        <span className="text-lg font-semibold ml-10">Cam kết:</span>
+        <div className="flex gap-4 items-center">
           {commitments.map((item, index) => (
-            <div className="commitment-item" key={index}>
-              <img src={item.img} alt={`icon-${index}`} width="20" height="20" />
+            <div
+              className={`flex gap-2 px-3 items-center text-sm font-medium text-gray-800 ${
+                index !== commitments.length - 1
+                  ? "border-r border-gray-300"
+                  : ""
+              }`}
+              key={index}
+            >
+              <img src={item.img} alt={`icon-${index}`} className="w-5 h-5" />
               <span>{item.text}</span>
             </div>
           ))}
