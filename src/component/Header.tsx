@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
+import Login from "../CustomerPage/Login";
+import { useState } from "react";
 
 const commitments = [
   {
@@ -29,9 +31,10 @@ const commitments = [
 ];
 
 const Header = () => {
+  const [isLoginOpen, setLoginOpen] = useState(false);
   return (
     <div>
-      <div className="flex items-center justify-between p-4 bg-white sticky top-0 z-50 ">
+      <div className="flex items-center justify-between p-4 bg-white sticky top-0  ">
         <div className="ml-7">
           <Link to="/">
             <img src={logo} alt="Logo" className="h-[90px] w-[110px]" />
@@ -86,19 +89,20 @@ const Header = () => {
           </Link>
 
           <div className="relative pr-6">
-            <Link
-              to="/profile"
+            <button
               className="flex items-center text-black gap-2 hover:text-blue-600"
+              onClick={() => setLoginOpen(true)}
             >
               <img
-                src="https://salt.tikicdn.com/ts/upload/07/d5/94/d7b6a3bd7d57d37ef6e437aa0de4821b.png" // Thay đổi đường dẫn ảnh của icon User
+                src="https://salt.tikicdn.com/ts/upload/07/d5/94/d7b6a3bd7d57d37ef6e437aa0de4821b.png"
                 alt="Tài khoản"
                 className="w-6 h-6"
               />
               Tài khoản
-            </Link>
-            <span className="absolute right-0 top-1/2 transform -translate-y-1/2 h-5 w-px bg-gray-300"></span>
+              <span className="absolute right-0 top-1/2 transform -translate-y-1/2 h-5 w-px bg-gray-300"></span>
+            </button>
           </div>
+
           <Link to="/cart" className="hover:text-blue-600">
             <img
               src="https://salt.tikicdn.com/ts/upload/51/e2/92/8ca7e2cc5ede8c09e34d1beb50267f4f.png"
@@ -129,6 +133,7 @@ const Header = () => {
           ))}
         </div>
       </div>
+      <Login isOpen={isLoginOpen} onClose={() => setLoginOpen(false)} />
     </div>
   );
 };
