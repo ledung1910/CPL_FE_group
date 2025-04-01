@@ -1,0 +1,172 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  margin-right: 30px;
+  margin-left: 30px;
+}
+
+.logo img {
+  height: 75px;
+  width: 110px;
+}
+
+.search-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-right: 0px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 900px;
+  position: relative;
+  border: 1px solid rgb(221, 221, 227);
+  border-radius: 8px;
+  background-color: #fff;
+  padding: 5px;
+}
+
+.icon-search {
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  padding: 8px;
+  width: 100%;
+}
+
+.search-button {
+  background-color: #fff;
+  border: none;
+  color: #333;
+  font-size: 14px;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-left: 1px solid rgb(221, 221, 227);
+}
+
+.search-button:hover {
+  background-color: #f0f0f0;
+}
+
+.keywords {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.keywords span {
+  color: #333;
+  cursor: pointer;
+}
+
+.nav-buttons {
+  display: flex;
+  align-items: flex-start;
+  margin-left: 0px;
+  transform: translateY(-14px);
+}
+
+.nav-buttons a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: black;
+  gap: 8px;
+}
+
+.nav-buttons a:not(:last-child) {
+  margin-right: 20px;
+}
+
+.nav-buttons .home-link {
+  display: flex;
+  align-items: center;
+}
+
+.nav-buttons .profile-link {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-right: 20px;
+}
+
+.nav-buttons .profile-link::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 60%;
+  width: 1px;
+  background-color: #ddd;
+}
+
+.nav-buttons .icon {
+  font-size: 20px;
+}
+
+.commitment-container {
+  display: flex;
+  flex-direction: row; 
+  align-items: center; 
+  color: #003ea1;
+  text-decoration: none;
+  gap: 10px; 
+  margin-left: 60px;
+}
+
+.commitment-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.commitment-list {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.commitment-item {
+  display: flex;
+  gap: 4px;
+  padding-inline: 6px;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: #27272a;
+  white-space: nowrap;
+}
+
+.commitment-item img {
+  width: 20px;
+  height: 20px;
+}
+
+.commitment-list div:not(:last-child)::after {
+  content: "";
+  width: 1px;
+  height: 20px;
+  background: #ebebf0;
+  display: inline-block;
+}
