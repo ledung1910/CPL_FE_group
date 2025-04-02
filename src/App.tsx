@@ -4,6 +4,7 @@ import CustomerLayout from "./shared/layouts/CustomerLayout";
 import AdminLayout from "./shared/layouts/AdminLayout";
 import AdminPage from "./pages/AdminPage/adminPage"
 import ProductAdminPage from "./pages/AdminPage/Product/ProductList"
+import BookDetail from "./pages/CustomerPage/BookDetail"
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={<CustomerLayout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/detail" element={<BookDetail />} />
         </Route>
         <Route path='/' element={<AdminLayout />}>
           <Route path="/adminPage" element={<AdminPage />} />
