@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Header from "../component/Header";
-import Banner from "../component/Banner";
-import Footer from "../component/Footer";
 import ChevronUpIcon from "@heroicons/react/16/solid/ChevronUpIcon";
 import ChevronDownIcon from "@heroicons/react/16/solid/ChevronDownIcon";
 
@@ -51,7 +48,7 @@ const CategorySidebar = () => {
   };
 
   return (
-    <aside className="w-1/5 bg-white p-4 rounded-md ml-9">
+    <aside className="w-1/5 bg-white p-4 rounded-md ml-9 self-start">
       <h2 className="text-lg font-bold mb-3">Khám phá theo danh mục</h2>
       <ul>
         {categories.map((category, index) => (
@@ -102,16 +99,14 @@ const HomePage = () => {
 
   return (
     <>
-      <Banner />
-      <Header />
       <div className="bg-gray-100 pt-5">
         {/* Breadcrumb */}
-        <div className="pointer flex items-center space-x-1 text-gray-500 text-sm ml-13">
+        <div className="pointer flex items-center space-x-1 text-gray-500 text-sm ml-13 mb-4">
           <span>Trang chủ</span>
           <span>{">"}</span>
           <span className="text-black font-medium">Nhà Sách Tiki</span>
         </div>
-        <div className="flex container">
+        <div className="flex items-start">
           {/* Sidebar */}
           <CategorySidebar />
           <div className="w-3/4 p-4">
@@ -132,7 +127,6 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };
