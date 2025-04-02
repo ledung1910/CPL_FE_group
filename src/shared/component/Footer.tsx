@@ -1,5 +1,3 @@
-import { FaFacebook, FaYoutube, FaTiktok } from "react-icons/fa";
-
 const Footer = () => {
   return (
     <footer className="py-5 bg-white text-gray-700">
@@ -27,6 +25,7 @@ const Footer = () => {
           <h4 className="text-lg font-bold mb-2">Về Tiki</h4>
           <ul className="space-y-1 text-xs">
             <li>Giới thiệu Tiki</li>
+            <li>Tiki Blog</li>
             <li>Tuyển dụng</li>
             <li>Chính sách bảo mật thanh toán</li>
             <li>Chính sách bảo mật thông tin cá nhân</li>
@@ -78,9 +77,9 @@ const Footer = () => {
         <div className="w-full md:w-1/5 px-1 mb-6 md:mb-0">
           <h4 className="text-xl font-bold mb-2">Kết nối với chúng tôi</h4>
           <div className="flex space-x-4 text-2xl">
-            <FaFacebook className="cursor-pointer" />
-            <FaYoutube className="cursor-pointer" />
-            <FaTiktok className="cursor-pointer" />
+            <img src="/src/images/fb.png" alt="Facebook" className="cursor-pointer w-1/6" />
+            <img src="/src/images/yt.png" alt="Youtube" className="cursor-pointer w-1/6" />
+            <img src="/src/images/zalo.png" alt="Zalo" className="cursor-pointer w-1/6" />
           </div>
 
           <div className="space-y-4 col-span-2">

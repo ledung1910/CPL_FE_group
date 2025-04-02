@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import logo from "../assets/logo.png";
-import Login from "../CustomerPage/Login";
+import logo from "../../assets/logo.png";
+import Login from "../../pages/CustomerPage/Login";
 import { useState } from "react";
 
 const commitments = [
@@ -75,13 +75,13 @@ const Header = () => {
             ))}
           </div>
         </div>
-        <div className="flex items-center space-x-6 mb-10">
+        <div className="flex items-center space-x-6 mb-10 pr-10">
           <Link
             to="/"
             className="flex items-center text-black gap-2 hover:text-blue-600"
           >
             <img
-              src="https://salt.tikicdn.com/ts/upload/b4/90/74/6baaecfa664314469ab50758e5ee46ca.png" // Thay đổi đường dẫn ảnh của icon Home
+              src="https://salt.tikicdn.com/ts/upload/b4/90/74/6baaecfa664314469ab50758e5ee46ca.png"
               alt="Trang chủ"
               className="w-6 h-6"
             />
@@ -103,15 +103,17 @@ const Header = () => {
             </button>
           </div>
 
-          <Link to="/cart" className="hover:text-blue-600">
-            <img
-              src="https://salt.tikicdn.com/ts/upload/51/e2/92/8ca7e2cc5ede8c09e34d1beb50267f4f.png"
-              alt="cart"
-              className="w-6 h-6"
-            />
-            <span className="absolute top-[10px] right-0 inline-block text-center font-semibold text-xs leading-[150%] py-[0.5px] px-[4px] bg-[#FF424F] text-white rounded-[8px]">
-              0
-            </span>
+          <Link to="/cart" className="hover:text-blue-600 relative">
+            <div className="relative">
+              <img
+                src="https://salt.tikicdn.com/ts/upload/51/e2/92/8ca7e2cc5ede8c09e34d1beb50267f4f.png"
+                alt="cart"
+                className="w-8 h-8"
+              />
+              <span className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-[#FF424F] text-white text-xs font-semibold min-w-[16px] h-[16px] flex items-center justify-center rounded-full">
+                0
+              </span>
+            </div>
           </Link>
         </div>
       </div>
@@ -120,11 +122,10 @@ const Header = () => {
         <div className="flex gap-4 items-center">
           {commitments.map((item, index) => (
             <div
-              className={`flex gap-2 px-3 items-center text-sm font-medium text-gray-800 ${
-                index !== commitments.length - 1
-                  ? "border-r border-gray-300"
-                  : ""
-              }`}
+              className={`flex gap-2 px-3 items-center text-sm font-medium text-gray-800 ${index !== commitments.length - 1
+                ? "border-r border-gray-300"
+                : ""
+                }`}
               key={index}
             >
               <img src={item.img} alt={`icon-${index}`} className="w-5 h-5" />
