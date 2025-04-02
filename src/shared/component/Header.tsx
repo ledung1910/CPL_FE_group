@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import logo from "../assets/logo.png";
-import Login from "../CustomerPage/Login";
+import logo from "../../assets/logo.png";
+import Login from "../../pages/CustomerPage/Login";
 import { useState } from "react";
 
 const commitments = [

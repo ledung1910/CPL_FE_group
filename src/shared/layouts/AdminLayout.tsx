@@ -1,5 +1,5 @@
 import { ReactNode, useContext, useEffect } from "react";
-import Sidebar from "../component/Sidebar";
+import Sidebar from "../component/Sidebar"
 import { Outlet, useNavigate } from 'react-router-dom';
 
 
