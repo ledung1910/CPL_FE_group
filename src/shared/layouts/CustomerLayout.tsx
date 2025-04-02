@@ -8,7 +8,7 @@ const CustomerLayout = () => {
         <div className="h-screen flex flex-col">
             <Banner />
             <Header />
-            <main className="flex-grow">
+            <main className="flex-grow bg-gray-100 pt-5">
                 <Outlet />
             </main>
             <Footer />
