@@ -5,7 +5,9 @@ const Sidebar = () => {
     const [isExpanded, setIsExpanded] = useState<boolean>(true);
     const [menuItems, setMenuItems] = useState([
         { id: 1, name: 'Product Management', link: '/admin/product' },
-        { id: 2, name: 'User Management', link: '/user' },
+        { id: 2, name: 'User Management', link: '/admin/user' },
+        { id: 3, name: 'Categories Management', link: '/admin/categories' },
+        { id: 4, name: 'Bill Management', link: '/admin/bills' },
     ]);
 
     const toggleSidebar = () => {
@@ -36,7 +38,7 @@ const Sidebar = () => {
     return (
         <aside className={`flex flex-col bg-white border-t-1 border-r-1 border-[#c2c2c2] h-[calc(100vh-64px)] ${isExpanded ? "w-64" : "w-12"}`}>
             <div className="sidebar-top">
-                <Link to={"/admin"} className="border-b border-slate-100 flex items-center">
+                <Link to={"/"} className="border-b border-slate-100 flex items-center">
                     <span className={`${isExpanded ? "block" : "hidden"}`}>Menu</span>
                 </Link>
             </div>

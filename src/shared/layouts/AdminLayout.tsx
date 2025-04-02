@@ -14,6 +14,7 @@ const AdminLayout = () => {
           <Outlet />
         </div>
       </main>
+      
   )
 }
 
