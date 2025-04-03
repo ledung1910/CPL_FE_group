@@ -30,13 +30,13 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
 
 
     return (
-        <div className="fixed inset-0 flex items-start justify-center bg-black/30 pt-20">
+        <div className="fixed inset-0 flex items-start justify-center bg-black/30 pt-20 z-1000">
             <button
                 className="relative top-[-15px] right-[-788px] bg-white rounded-full p-4 w-12 h-12 shadow-lg z-10 flex items-center justify-center"
                 onClick={onClose}
                 title="Đóng"
             >
-                <i className="fa fa-times text-gray-500 text-3xl"></i>  {/* Tăng kích thước icon */}
+                <i className="fa fa-times text-gray-500 text-3xl"></i>  
             </button>
 
             <div className={`bg-white w-[780px] rounded-2xl shadow-lg relative overflow-hidden transition-all duration-300
@@ -56,7 +56,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                                 />
 
                                 <div className="flex flex-col items-center">
-                                    <button className="w-[450px] ml-[-1] mt-8 p-3 bg-red-500 text-white text-xl rounded-lg hover:bg-red-600">
+                                    <button className="w-[450px] ml-[-1] mt-8 p-2.5 bg-red-500 text-white text-xl rounded-sm hover:bg-red-600">
                                         Tiếp Tục
                                     </button>
 
@@ -73,15 +73,14 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                                     </a>
                                 </div>
 
-                                <div className="flex items-center w-[450px] mt-25 mb-0 ml-3">
+                                <div className="flex items-center w-[450px] mt-18 mb-0 ml-3">
                                     <div className="flex-grow border-t border-gray-300"></div>
                                     <span className="mx-3 text-gray-500">Hoặc tiếp tục bằng</span>
                                     <div className="flex-grow border-t border-gray-300"></div>
                                 </div>
 
                                 {/* Social Login */}
-                                <div className="flex justify-center gap-4">
-                                    {/* Nút Facebook */}
+                                <div className="flex justify-center gap-4 mt-3">
                                     <button
                                         className="p-3 bg-[#1877F2] text-white rounded-full hover:bg-[#165DCC] flex items-center justify-center"
                                         title="Đăng nhập bằng Facebook"
@@ -89,8 +88,6 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                                     >
                                         <FaFacebookF size={24} />
                                     </button>
-
-                                    {/* Nút Google */}
                                     <button
                                         className="p-3 bg-white border border-gray-300 rounded-full hover:bg-gray-100 flex items-center justify-center"
                                         title="Đăng nhập bằng Google"
@@ -150,7 +147,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                                 {/* Nút Đăng nhập */}
                                 <button
                                     type="submit"
-                                    className="w-full mt-9 p-3 bg-red-500 text-white text-xl rounded-lg hover:bg-red-600"
+                                    className="w-full mt-9 p-2.5 bg-red-500 text-white text-xl rounded-sm hover:bg-red-600"
                                 >
                                     Đăng nhập
                                 </button>
@@ -162,29 +159,29 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                                             e.preventDefault();
                                             setIsForgotPassword(true);
                                             setIsEmailLogin(false);
-                                            setIsRegister(false); // Đảm bảo không chuyển nhầm sang tạo tài khoản
+                                            setIsRegister(false);
                                         }}>
                                             Quên mật khẩu?
                                         </a>
                                     </div>
-                                    <p className="mt-1 text-gray-500">Chưa có tài khoản?
-                                        <a href="#" className="text-blue-800" onClick={(e) => {
+                                    <div className="flex">
+                                        <p className="mt-1 text-gray-500 mr-3">Chưa có tài khoản? </p>
+                                        <a href="#" className="text-blue-800 mt-1 " onClick={(e) => {
                                             e.preventDefault();
                                             setIsRegister(true);
                                             setIsEmailLogin(false);
-                                            setIsForgotPassword(false); // Đảm bảo không bị nhảy về đăng nhập
+                                            setIsForgotPassword(false);
                                         }}>
                                             Tạo tài khoản
                                         </a>
-
-                                    </p>
+                                    </div>
                                 </div>
                             </div>
                         ) : isRegister ? (
                             <div className="w-full max-w-md mx-auto p-[-1]">
                                 <button type="button" onClick={() => {
                                     setIsRegister(false);
-                                    setIsEmailLogin(true);  // Quay lại pop-up Đăng nhập bằng Email
+                                    setIsEmailLogin(true);
                                     setIsForgotPassword(false);
                                 }} className="text-gray-500 mb-4">
                                     <ArrowLeft size={24} />
@@ -192,8 +189,8 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
 
                                 <h2 className="text-2xl font-semibold">Tạo tài khoản</h2>
                                 <p className="text-gray-500">Nhập số điện thoại để đăng ký</p>
-                                <input type="tel" placeholder="Số điện thoại" className="w-full mt-4 p-2 border-b border-[#BDBCBC] text-l text-gray-500 placeholder-gray-400" />
-                                <button className="w-full mt-9 p-3 bg-red-500 text-white text-xl rounded-lg hover:bg-red-600">Tiếp tục</button>
+                                <input type="tel" placeholder="Số điện thoại" className="w-full text-2xl mt-4 p-2 border-b border-[#BDBCBC] text-l text-gray-500 placeholder-gray-400" />
+                                <button className="w-full mt-9 p-3 bg-red-500 text-white text-2xl rounded-sm hover:bg-red-600">Tiếp tục</button>
 
                                 <div className="flex items-center mt-20 mb-0 ml-3">
                                     <div className="flex-grow border-t border-gray-300"></div>
@@ -203,7 +200,6 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
 
                                 {/* Social Login */}
                                 <div className="flex justify-center gap-4">
-                                    {/* Nút Facebook */}
                                     <button
                                         className="p-3 bg-[#1877F2] text-white rounded-full hover:bg-[#165DCC] flex items-center justify-center"
                                         title="Đăng nhập bằng Facebook"
@@ -211,8 +207,6 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                                     >
                                         <FaFacebookF size={24} />
                                     </button>
-
-                                    {/* Nút Google */}
                                     <button
                                         className="p-3 bg-white border border-gray-300 rounded-full hover:bg-gray-100 flex items-center justify-center"
                                         title="Đăng nhập bằng Google"
@@ -221,7 +215,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                                         <FcGoogle size={24} />
                                     </button>
                                 </div>
-                                
+
                                 <p className="text-sm text-gray-500 mt-4 text-left ml-4">
                                     Bằng việc tiếp tục, bạn đã đọc và đồng ý với
                                     <a href="#" className="text-gray-500 underline"> điều khoản sử dụng</a> và
@@ -257,14 +251,14 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
 
                                 {/* Nút Đăng nhập */}
                                 <div className="flex flex-col items-center">
-                                    <button className="w-[450px] ml-5 mt-6 p-3 bg-red-500 text-white text-xl rounded-lg hover:bg-red-600">
+                                    <button className="w-[450px] ml-5 mt-6 p-2.5 bg-red-500 text-white text-xl rounded-sm hover:bg-red-600">
                                         Đăng Nhập
                                     </button>
 
                                     <a href="#" className="text-blue-800 ml-5 self-start mt-5 " onClick={(e) => {
                                         e.preventDefault();
-                                        setIsForgotPassword(true);  // Hiển thị pop-up "Quên mật khẩu"
-                                        setIsPasswordPopup(false);  // Ẩn pop-up "Nhập mật khẩu"
+                                        setIsForgotPassword(true);
+                                        setIsPasswordPopup(false);
                                     }}>
                                         Quên mật khẩu?
                                     </a>
@@ -275,7 +269,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                             <div className="w-full max-w-md mx-auto p-6">
                                 <button type="button" onClick={() => {
                                     setIsForgotPassword(false);
-                                    setIsPasswordPopup(true); // Quay lại pop-up "Nhập mật khẩu"
+                                    setIsPasswordPopup(true);
                                 }} className="text-gray-500 mb-4">
                                     <ArrowLeft size={24} />
                                 </button>
@@ -283,7 +277,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                                 <h2 className="text-2xl font-semibold">Quên mật khẩu ?</h2>
                                 <p className="text-black mt-4 ">Vui lòng nhập thông tin tài khoản để lấy lại mật khẩu</p>
                                 <input type="email" placeholder="Số điện thoại/Email" className="w-full mt-4 p-2 text-2xl border-b text-[#BDBCBC] focus:outline-none focus:border-[#BDBCBC]" />
-                                <button className="w-full mt-15 p-3 bg-red-500 text-white text-xl rounded-lg hover:bg-red-600">Lấy lại mật khẩu</button>
+                                <button className="w-full mt-15 p-2.5 bg-red-500 text-white text-xl rounded-ssm hover:bg-red-600">Lấy lại mật khẩu</button>
                                 <p className="mt-4 text-blue-800 text-sm">
                                     Đổi số điện thoại? Liên hệ Hotline 1900-6035
                                 </p>
