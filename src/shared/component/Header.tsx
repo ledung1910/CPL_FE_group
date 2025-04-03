@@ -34,8 +34,8 @@ const Header = () => {
   const [isLoginOpen, setLoginOpen] = useState(false);
   return (
     <div>
-      <div className="flex items-center justify-between p-4 bg-white sticky top-0  ">
-        <div className="ml-7">
+      <div className="flex items-center justify-between p-4 bg-white sticky top-0 ">
+        <div className="ml-6">
           <Link to="/">
             <img src={logo} alt="Logo" className="h-[90px] w-[110px]" />
           </Link>
@@ -118,7 +118,7 @@ const Header = () => {
         </div>
       </div>
       <div className="flex items-center text-blue-900 gap-3 p-4 border-t border-b border-gray-300">
-        <span className="text-lg font-semibold ml-10">Cam kết:</span>
+        <div className="text-lg font-semibold ml-7">Cam kết:</div>
         <div className="flex gap-4 items-center">
           {commitments.map((item, index) => (
             <div

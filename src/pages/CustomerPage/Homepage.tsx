@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ChevronUpIcon from "@heroicons/react/16/solid/ChevronUpIcon";
 import ChevronDownIcon from "@heroicons/react/16/solid/ChevronDownIcon";
+import { FaStar } from "react-icons/fa";
+import BookShow from "../../shared/component/Bookshow";
 
 const categories = [
   {
@@ -28,7 +30,48 @@ const categories = [
   { name: "Văn phòng phẩm" },
   { name: "Quà lưu niệm" },
 ];
-
+const topProducts = [
+  {
+    name: "NEXUS - Lược Sử Của Những Mạng Lưới Thông Tin Từ Thời Đại Đồ Đá Đến Trí Tuệ Nhân Tạo",
+    price: "365.600đ",
+  },
+  {
+    name: "Chat GPT Thực Chiến",
+    price: "110.000đ",
+  },
+  {
+    name: "Dán Dát Một Bây Sối Hay Chân Một Dàn Cửu",
+    price: "127.000đ",
+  },
+  {
+    name: "Theo Tùng Tâm Lý",
+    price: "115.100đ",
+  },
+  {
+    name: "Giải mã Hoóc-môn Dopamine",
+    price: "145.000đ",
+  },
+  {
+    name: "Personal Best American B1+ Intermediate Pack B",
+    price: "228.920đ",
+  },
+  {
+    name: "Bookmark kẹp sách giấy cứng",
+    price: "2.000đ",
+  },
+  {
+    name: "Here U Ave – Tập 3",
+    price: "119.000đ",
+  },
+  {
+    name: "Blue Period - Tập 03",
+    price: "45.500đ",
+  },
+  {
+    name: "Semantic Error – Lỗi Logic (Tập 2)",
+    price: "161.000đ",
+  },
+];
 const CategorySidebar = () => {
   const [expandedCategories, setExpandedCategories] = useState<
     Record<string, boolean>
@@ -48,7 +91,7 @@ const CategorySidebar = () => {
   };
 
   return (
-    <aside className="w-1/5 bg-white p-4 rounded-md ml-13 self-start">
+    <aside className="w-1/5 bg-white p-4 rounded-md ml-10 self-start">
       <h2 className="-mx-4 px-4 text-lg font-bold mb-3 pb-3 border-b border-gray-300">
         Khám phá theo danh mục
       </h2>
@@ -88,9 +131,9 @@ const CategorySidebar = () => {
 const HomePage = () => {
   return (
     <>
-      <div className="bg-gray-100 pt-5">
+      <div className="bg-gray-100">
         {/* Breadcrumb */}
-        <div className="pointer flex items-center space-x-1 text-gray-500 text-sm ml-13 mb-4">
+        <div className="pointer flex items-center space-x-1 text-gray-500 text-sm ml-10 mb-4">
           <span>Trang chủ</span>
           <span>{">"}</span>
           <span className="text-black font-medium">Nhà Sách Tiki</span>
@@ -277,11 +320,11 @@ const HomePage = () => {
               </div>
             </div>
             {/* Khám phá theo danh mục */}
-            <div className="bg-white p-4 rounded-lg shadow-md">
+            <div className="bg-white p-4 rounded-lg mt-4">
               <h2 className="text-lg font-semibold mb-4">
                 Khám phá theo danh mục
               </h2>
-              <div className="grid grid-cols-4 ml-[5px]">
+              <div className="flex mb-4">
                 {[
                   {
                     name: "English Books",
@@ -300,11 +343,11 @@ const HomePage = () => {
                     img: "https://salt.tikicdn.com/ts/category/17/59/4f/af1292bf74c4d2862afd269bdfd42a62.png",
                   },
                 ].map((item, index) => (
-                  <div key={index} className="flex flex-col items-center">
+                  <div key={index} className="flex flex-col items-center ml-20">
                     <img
                       src={item.img}
                       alt={item.name}
-                      className="w-16 h-16 rounded-full"
+                      className="w-20 h-20 rounded-full"
                     />
                     <p className="text-sm mt-2">{item.name}</p>
                   </div>
@@ -313,24 +356,48 @@ const HomePage = () => {
             </div>
 
             {/* Tất cả sản phẩm */}
-            <div className="bg-white p-4 rounded-lg shadow-md mt-6">
+            <div className="bg-white p-4 rounded-lg mt-6">
               <h2 className="text-lg font-semibold mb-4">Tất cả sản phẩm</h2>
               <div className="flex items-center space-x-4">
-                <label className="flex items-center space-x-2">
+                <label className="flex items-center space-x-2 pr-4 border-r border-gray-300">
                   <input type="checkbox" className="w-4 h-4" />
+                  <img
+                    src="https://salt.tikicdn.com/ts/tka/a8/31/b6/802e2c99dcce64c67aa2648edb15dd25.png"
+                    alt=""
+                    className="w-9 h-4"
+                  />
                   <span>Giao siêu tốc 2H</span>
                 </label>
-                <span className="text-red-500 font-semibold">🔥 TOP DEAL</span>
+                <label className="flex items-center space-x-2 pr-4 border-r border-gray-300">
+                  <input type="checkbox" className="w-4 h-4" />
+                  <img
+                    src="https://salt.tikicdn.com/ts/upload/b5/aa/48/2305c5e08e536cfb840043df12818146.png"
+                    alt=""
+                    className="w-20 h-4"
+                  />
+                  <span>Siêu rẻ</span>
+                </label>
+                <label className="flex items-center space-x-2 pr-4 border-r border-gray-300">
+                  <input type="checkbox" className="w-4 h-4" />
+                  <img
+                    src="https://salt.tikicdn.com/ts/upload/2f/20/77/0f96cfafdf7855d5e7fe076dd4f34ce0.png"
+                    alt=""
+                    className="w-20 h-4"
+                  />
+                </label>
                 <label className="flex items-center space-x-2">
                   <input type="checkbox" className="w-4 h-4" />
-                  <span>FREESHIP XTRA</span>
+                  <div className="flex space-x-1">
+                    {[...Array(4)].map((_, i) => (
+                      <FaStar key={i} className="text-yellow-400" />
+                    ))}
+                    <FaStar className="text-gray-400" />
+                  </div>
+                  <span>từ 4 sao</span>
                 </label>
-                <span className="flex items-center text-yellow-500">
-                  ⭐ 4 sao trở lên
-                </span>
               </div>
               <div className="mt-4">
-                <label className="text-sm font-medium mr-2">Sắp xếp:</label>
+                <label className="text-sm font-medium mr-2">Sắp xếp</label>
                 <select className="p-2 border rounded-md">
                   <option>Phổ biến</option>
                   <option>Giá thấp đến cao</option>
@@ -338,6 +405,43 @@ const HomePage = () => {
                 </select>
               </div>
             </div>
+            <BookShow />
+          </div>
+        </div>
+        <div className="bg-white p-6 mb-6 mt-8 m-10">
+          {/* Tiêu đề */}
+          <h2 className="text-lg font-semibold text-gray-800 mb-3">
+            Tìm Kiếm Liên Quan
+          </h2>
+        </div>
+        <div className="bg-white rounded-lg p-6 m-10">
+          {/* Phụ đề */}
+          <h2 className="text-lg font-semibold text-gray-700 mb-3">
+            Top Bán Chạy Sản Phẩm Nhà Sách Tiki
+          </h2>
+          {/* Danh sách sản phẩm */}
+          <div>
+            {topProducts.map((product, index) => (
+              <div
+                key={index}
+                className="flex justify-between items-center py-1"
+              >
+                {/* Tên sản phẩm với số thứ tự */}
+                <div className="flex items-center">
+                  <span className="text-gray-500 font-medium w-6">
+                    {index + 1}.
+                  </span>
+                  <p className="text-blue-600 text-sm hover:underline cursor-pointer">
+                    {product.name}
+                  </p>
+                </div>
+
+                {/* Giá sản phẩm */}
+                <p className="text-gray-800 text-sm font-medium">
+                  {product.price}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
