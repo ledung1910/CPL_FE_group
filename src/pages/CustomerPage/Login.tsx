@@ -30,13 +30,13 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
 
 
     return (
-        <div className="fixed inset-0 flex items-start justify-center bg-black/30 pt-20">
+        <div className="fixed inset-0 flex items-start justify-center bg-black/30 pt-20 z-1000">
             <button
                 className="relative top-[-15px] right-[-788px] bg-white rounded-full p-4 w-12 h-12 shadow-lg z-10 flex items-center justify-center"
                 onClick={onClose}
                 title="Đóng"
             >
-                <i className="fa fa-times text-gray-500 text-3xl"></i>  {/* Tăng kích thước icon */}
+                <i className="fa fa-times text-gray-500 text-3xl"></i>  
             </button>
 
             <div className={`bg-white w-[780px] rounded-2xl shadow-lg relative overflow-hidden transition-all duration-300
@@ -159,29 +159,29 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                                             e.preventDefault();
                                             setIsForgotPassword(true);
                                             setIsEmailLogin(false);
-                                            setIsRegister(false); 
+                                            setIsRegister(false);
                                         }}>
                                             Quên mật khẩu?
                                         </a>
                                     </div>
-                                    <p className="mt-1 text-gray-500">Chưa có tài khoản?
-                                        <a href="#" className="text-blue-800" onClick={(e) => {
+                                    <div className="flex">
+                                        <p className="mt-1 text-gray-500 mr-3">Chưa có tài khoản? </p>
+                                        <a href="#" className="text-blue-800 mt-1 " onClick={(e) => {
                                             e.preventDefault();
                                             setIsRegister(true);
                                             setIsEmailLogin(false);
-                                            setIsForgotPassword(false); 
+                                            setIsForgotPassword(false);
                                         }}>
                                             Tạo tài khoản
                                         </a>
-
-                                    </p>
+                                    </div>
                                 </div>
                             </div>
                         ) : isRegister ? (
                             <div className="w-full max-w-md mx-auto p-[-1]">
                                 <button type="button" onClick={() => {
                                     setIsRegister(false);
-                                    setIsEmailLogin(true);  
+                                    setIsEmailLogin(true);
                                     setIsForgotPassword(false);
                                 }} className="text-gray-500 mb-4">
                                     <ArrowLeft size={24} />
@@ -215,7 +215,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                                         <FcGoogle size={24} />
                                     </button>
                                 </div>
-                                
+
                                 <p className="text-sm text-gray-500 mt-4 text-left ml-4">
                                     Bằng việc tiếp tục, bạn đã đọc và đồng ý với
                                     <a href="#" className="text-gray-500 underline"> điều khoản sử dụng</a> và
@@ -257,8 +257,8 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
 
                                     <a href="#" className="text-blue-800 ml-5 self-start mt-5 " onClick={(e) => {
                                         e.preventDefault();
-                                        setIsForgotPassword(true);  
-                                        setIsPasswordPopup(false);  
+                                        setIsForgotPassword(true);
+                                        setIsPasswordPopup(false);
                                     }}>
                                         Quên mật khẩu?
                                     </a>
@@ -269,7 +269,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                             <div className="w-full max-w-md mx-auto p-6">
                                 <button type="button" onClick={() => {
                                     setIsForgotPassword(false);
-                                    setIsPasswordPopup(true); 
+                                    setIsPasswordPopup(true);
                                 }} className="text-gray-500 mb-4">
                                     <ArrowLeft size={24} />
                                 </button>
