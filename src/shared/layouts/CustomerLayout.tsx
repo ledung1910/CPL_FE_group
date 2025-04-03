@@ -8,12 +8,11 @@ const CustomerLayout = () => {
         <div className="h-screen flex flex-col">
             <Banner />
             <Header />
-            <main className="flex-grow bg-gray-100 pt-5">
+            <main className="flex-grow bg-gray-100">
                 <Outlet />
             </main>
             <Footer />
         </div>
     )
 }
-
 export default CustomerLayout;

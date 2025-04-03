@@ -8,6 +8,7 @@ import BookDetail from "./pages/CustomerPage/BookDetail"
 import UserList from "./pages/AdminPage/User/UserList";
 import CategoryList from "./pages/AdminPage/Category/CategoryList";
 import ManagementPage from "./pages/AdminPage/Bill/BillList";
+import Profile from "./pages/CustomerPage/Profile";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
         <Route path='/' element={<CustomerLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/detail" element={<BookDetail />} />
+          <Route path="/profile" element={<Profile/>}/>
         </Route>
         <Route path='/' element={<AdminLayout />}>
           <Route path="/adminPage" element={<AdminPage />} />
