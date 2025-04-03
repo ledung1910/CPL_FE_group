@@ -81,7 +81,6 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
 
                                 {/* Social Login */}
                                 <div className="flex justify-center gap-4 mt-3">
-                                    {/* Nút Facebook */}
                                     <button
                                         className="p-3 bg-[#1877F2] text-white rounded-full hover:bg-[#165DCC] flex items-center justify-center"
                                         title="Đăng nhập bằng Facebook"
@@ -89,8 +88,6 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                                     >
                                         <FaFacebookF size={24} />
                                     </button>
-
-                                    {/* Nút Google */}
                                     <button
                                         className="p-3 bg-white border border-gray-300 rounded-full hover:bg-gray-100 flex items-center justify-center"
                                         title="Đăng nhập bằng Google"
@@ -162,7 +159,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                                             e.preventDefault();
                                             setIsForgotPassword(true);
                                             setIsEmailLogin(false);
-                                            setIsRegister(false); // Đảm bảo không chuyển nhầm sang tạo tài khoản
+                                            setIsRegister(false); 
                                         }}>
                                             Quên mật khẩu?
                                         </a>
@@ -172,7 +169,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                                             e.preventDefault();
                                             setIsRegister(true);
                                             setIsEmailLogin(false);
-                                            setIsForgotPassword(false); // Đảm bảo không bị nhảy về đăng nhập
+                                            setIsForgotPassword(false); 
                                         }}>
                                             Tạo tài khoản
                                         </a>
@@ -184,7 +181,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                             <div className="w-full max-w-md mx-auto p-[-1]">
                                 <button type="button" onClick={() => {
                                     setIsRegister(false);
-                                    setIsEmailLogin(true);  // Quay lại pop-up Đăng nhập bằng Email
+                                    setIsEmailLogin(true);  
                                     setIsForgotPassword(false);
                                 }} className="text-gray-500 mb-4">
                                     <ArrowLeft size={24} />
@@ -203,7 +200,6 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
 
                                 {/* Social Login */}
                                 <div className="flex justify-center gap-4">
-                                    {/* Nút Facebook */}
                                     <button
                                         className="p-3 bg-[#1877F2] text-white rounded-full hover:bg-[#165DCC] flex items-center justify-center"
                                         title="Đăng nhập bằng Facebook"
@@ -211,8 +207,6 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                                     >
                                         <FaFacebookF size={24} />
                                     </button>
-
-                                    {/* Nút Google */}
                                     <button
                                         className="p-3 bg-white border border-gray-300 rounded-full hover:bg-gray-100 flex items-center justify-center"
                                         title="Đăng nhập bằng Google"
@@ -263,8 +257,8 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
 
                                     <a href="#" className="text-blue-800 ml-5 self-start mt-5 " onClick={(e) => {
                                         e.preventDefault();
-                                        setIsForgotPassword(true);  // Hiển thị pop-up "Quên mật khẩu"
-                                        setIsPasswordPopup(false);  // Ẩn pop-up "Nhập mật khẩu"
+                                        setIsForgotPassword(true);  
+                                        setIsPasswordPopup(false);  
                                     }}>
                                         Quên mật khẩu?
                                     </a>
@@ -275,7 +269,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                             <div className="w-full max-w-md mx-auto p-6">
                                 <button type="button" onClick={() => {
                                     setIsForgotPassword(false);
-                                    setIsPasswordPopup(true); // Quay lại pop-up "Nhập mật khẩu"
+                                    setIsPasswordPopup(true); 
                                 }} className="text-gray-500 mb-4">
                                     <ArrowLeft size={24} />
                                 </button>
@@ -283,7 +277,7 @@ const Login: React.FC<LoginProps> = ({ isOpen, onClose }) => {
                                 <h2 className="text-2xl font-semibold">Quên mật khẩu ?</h2>
                                 <p className="text-black mt-4 ">Vui lòng nhập thông tin tài khoản để lấy lại mật khẩu</p>
                                 <input type="email" placeholder="Số điện thoại/Email" className="w-full mt-4 p-2 text-2xl border-b text-[#BDBCBC] focus:outline-none focus:border-[#BDBCBC]" />
-                                <button className="w-full mt-15 p-2.5 bg-red-500 text-white text-xl rounded-sm hover:bg-red-600">Lấy lại mật khẩu</button>
+                                <button className="w-full mt-15 p-2.5 bg-red-500 text-white text-xl rounded-ssm hover:bg-red-600">Lấy lại mật khẩu</button>
                                 <p className="mt-4 text-blue-800 text-sm">
                                     Đổi số điện thoại? Liên hệ Hotline 1900-6035
                                 </p>
