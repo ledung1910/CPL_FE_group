@@ -1,21 +1,29 @@
-import { ReactNode, useContext, useEffect } from "react";
-import Sidebar from "../component/Sidebar"
-import { Outlet, useNavigate } from 'react-router-dom';
-
-
+import { useState } from "react";
+import Sidebar from "../component/Sidebar";
+import { Outlet } from "react-router-dom";
 
 const AdminLayout = () => {
-  const navigate = useNavigate()
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   return (
-      <main className="flex-grow flex">
-        <Sidebar />
-        <div className="content flex-grow p-4">
-          <Outlet />
-        </div>
-      </main>
-      
-  )
-}
+    <main className="flex bg-gray-900">
+      {/* Sidebar */}
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+
+      {/* Nội dung chính */}
+      <div
+        className={`transition-all duration-300 flex-grow p-4 ${
+          isSidebarOpen ? "ml-64" : "ml-16"
+        }`}
+      >
+        <Outlet />
+      </div>
+    </main>
+  );
+};
 
 export default AdminLayout;
