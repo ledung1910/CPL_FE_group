@@ -7,7 +7,13 @@ export default function Profile() {
         <div className=" bg-[#F5F5FA] p-6 flex">
             {/* Sidebar */}
             <div className="w-1/4 rounded-xl ">
-                <p className="text-gray-500 text-l ">Trang chủ &gt; Đơn hàng của tôi</p>
+                <p className="text-gray-500 text-l">
+                    <Link to="/" className="hover:underline">
+                        Trang chủ
+                    </Link>
+                    &nbsp;&gt;&nbsp;
+                    <span className="font-bold text-black">Đơn hàng của tôi</span>
+                </p>
                 <div className="flex items-center pb-4 mt-3">
                     <div className="w-13 h-13 bg-gray-300 rounded-full mb-2 mr-3 mt-2"></div>
                     <div className="flex-col">
@@ -16,11 +22,11 @@ export default function Profile() {
                     </div>
                 </div>
                 <div className="space-y-4">
-                <Link to="/user_profile"><div className="flex items-center gap-3 text-gray-700 hover:text-blue-600 cursor-pointer">
+                    <Link to="/user_profile"><div className="flex items-center gap-3 text-gray-700 hover:text-blue-600 cursor-pointer">
                         <User size={20} />
                         <p>Thông tin tài khoản</p>
                     </div></Link>
-                    <div className="flex items-center gap-3 text-gray-700 hover:text-blue-600 cursor-pointer">
+                    <div className="flex items-center gap-3 mt-3 text-gray-700 hover:text-blue-600 cursor-pointer">
                         <Bell size={20} />
                         <p>Thông báo của tôi</p>
                     </div>
