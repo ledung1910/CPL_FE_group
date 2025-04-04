@@ -1,5 +1,6 @@
 import React from "react";
 import { User, Bell, BookOpen } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Profile() {
     return (
@@ -15,10 +16,10 @@ export default function Profile() {
                     </div>
                 </div>
                 <div className="space-y-4">
-                    <div className="flex items-center gap-3 text-gray-700 hover:text-blue-600 cursor-pointer">
+                <Link to="/user_profile"><div className="flex items-center gap-3 text-gray-700 hover:text-blue-600 cursor-pointer">
                         <User size={20} />
                         <p>Thông tin tài khoản</p>
-                    </div>
+                    </div></Link>
                     <div className="flex items-center gap-3 text-gray-700 hover:text-blue-600 cursor-pointer">
                         <Bell size={20} />
                         <p>Thông báo của tôi</p>
