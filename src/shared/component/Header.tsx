@@ -30,8 +30,21 @@ const commitments = [
   },
 ];
 
-const Header = () => {
+type HeaderProps = {
+  onSearch: (keyword: string) => void;
+};
+
+const Header : React.FC<HeaderProps> = ({ onSearch }) => {
   const [isLoginOpen, setLoginOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = () => {
+    const keyword = searchTerm.trim();
+    if (keyword) {
+      onSearch(keyword);
+    }
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between p-4 bg-white sticky top-0 ">
@@ -49,10 +62,18 @@ const Header = () => {
             />
             <input
               type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSearch();
+              }}
               className="flex-1 border-none outline-none text-sm p-2"
               placeholder="Nhập từ khóa..."
             />
-            <button className="text-gray-800 text-sm px-4 py-1 border-l border-gray-300 rounded-r-lg">
+            <button
+              onClick={handleSearch}
+              className="text-gray-800 text-sm px-4 py-1 border-l border-gray-300 rounded-r-lg"
+            >
               Tìm kiếm
             </button>
           </div>
