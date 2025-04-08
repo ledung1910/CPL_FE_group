@@ -47,7 +47,7 @@ export default function Profile() {
                 <div className="flex justify-between items-start pb-4">
                     <div>
                         <h2 className="text-xl mb-1 text-gray-700">Chi tiết đơn hàng #861977987 - <span className="text-black font-normal ">Đang xử lý</span></h2>
-                        <p className="text-sm text-black mt-2 ml-180">Ngày đặt hàng: 10:47 28/03/2025</p>
+                        <p className="text-sm text-black mt-2 ml-200">Ngày đặt hàng: 10:47 28/03/2025</p>
                     </div>
                 </div>
 
