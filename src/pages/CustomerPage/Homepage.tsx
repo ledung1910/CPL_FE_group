@@ -3,6 +3,7 @@ import ChevronUpIcon from "@heroicons/react/16/solid/ChevronUpIcon";
 import ChevronDownIcon from "@heroicons/react/16/solid/ChevronDownIcon";
 import { FaStar } from "react-icons/fa";
 import BookShow from "../../shared/component/Bookshow";
+import { useOutletContext } from "react-router-dom";
 
 const categories = [
   {
@@ -129,6 +130,14 @@ const CategorySidebar = () => {
 };
 
 const HomePage = () => {
+  const [filters, setFilters] = useState({
+    shipNow: false, // Giao siêu tốc 2H
+    topDeal: false, // Siêu rẻ
+    freeshipExtra: false, // Freeship
+    rating: false, // từ 4 sao
+    sortBy: "Phổ biến", // mặc định
+  });
+  const { keyword } = useOutletContext<{ keyword: string }>();
   return (
     <>
       <div className="bg-gray-100">
@@ -359,8 +368,16 @@ const HomePage = () => {
             <div className="bg-white p-4 rounded-lg mt-6">
               <h2 className="text-lg font-semibold mb-4">Tất cả sản phẩm</h2>
               <div className="flex items-center space-x-4">
+                {/* Giao siêu tốc 2H */}
                 <label className="flex items-center space-x-2 pr-4 border-r border-gray-300">
-                  <input type="checkbox" className="w-4 h-4" />
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4"
+                    checked={filters.shipNow}
+                    onChange={() =>
+                      setFilters({ ...filters, shipNow: !filters.shipNow })
+                    }
+                  />
                   <img
                     src="https://salt.tikicdn.com/ts/tka/a8/31/b6/802e2c99dcce64c67aa2648edb15dd25.png"
                     alt=""
@@ -368,8 +385,17 @@ const HomePage = () => {
                   />
                   <span>Giao siêu tốc 2H</span>
                 </label>
+
+                {/* Siêu rẻ */}
                 <label className="flex items-center space-x-2 pr-4 border-r border-gray-300">
-                  <input type="checkbox" className="w-4 h-4" />
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4"
+                    checked={filters.topDeal}
+                    onChange={() =>
+                      setFilters({ ...filters, topDeal: !filters.topDeal })
+                    }
+                  />
                   <img
                     src="https://salt.tikicdn.com/ts/upload/b5/aa/48/2305c5e08e536cfb840043df12818146.png"
                     alt=""
@@ -377,16 +403,38 @@ const HomePage = () => {
                   />
                   <span>Siêu rẻ</span>
                 </label>
+
+                {/* Freeship */}
                 <label className="flex items-center space-x-2 pr-4 border-r border-gray-300">
-                  <input type="checkbox" className="w-4 h-4" />
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4"
+                    checked={filters.freeshipExtra}
+                    onChange={() =>
+                      setFilters({
+                        ...filters,
+                        freeshipExtra: !filters.freeshipExtra,
+                      })
+                    }
+                  />
                   <img
                     src="https://salt.tikicdn.com/ts/upload/2f/20/77/0f96cfafdf7855d5e7fe076dd4f34ce0.png"
                     alt=""
                     className="w-20 h-4"
                   />
+                  <span>Freeship</span>
                 </label>
+
+                {/* Rating */}
                 <label className="flex items-center space-x-2">
-                  <input type="checkbox" className="w-4 h-4" />
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4"
+                    checked={filters.rating}
+                    onChange={() =>
+                      setFilters({ ...filters, rating: !filters.rating })
+                    }
+                  />
                   <div className="flex space-x-1">
                     {[...Array(4)].map((_, i) => (
                       <FaStar key={i} className="text-yellow-400" />
@@ -396,16 +444,25 @@ const HomePage = () => {
                   <span>từ 4 sao</span>
                 </label>
               </div>
-              <div className="mt-4">
-                <label className="text-sm font-medium mr-2">Sắp xếp</label>
-                <select className="p-2 border rounded-md">
-                  <option>Phổ biến</option>
-                  <option>Giá thấp đến cao</option>
-                  <option>Giá cao đến thấp</option>
+
+              <div className="mt-10">
+                <label className="text-sm text-gray-600 mr-2">Sắp xếp</label>
+                <select
+                  value={filters.sortBy}
+                  onChange={(e) =>
+                    setFilters((prev) => ({ ...prev, sortBy: e.target.value }))
+                  }
+                  className="px-3 py-1 border border-gray-400 rounded-2xl text-sm w-[130px]"
+                >
+                  <option value="Phổ biến">Phổ biến</option>
+                  <option value="sold">Bán chạy</option>
+                  <option value="priceAsc">Giá thấp đến cao</option>
+                  <option value="priceDesc">Giá cao đến thấp</option>
+                  <option value="rating">Đánh giá cao</option>
                 </select>
               </div>
             </div>
-            <BookShow />
+            <BookShow filters={filters} keyword={keyword} />
           </div>
         </div>
         <div className="bg-white p-6 mb-6 mt-8 m-10">

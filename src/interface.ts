@@ -13,6 +13,9 @@ export interface Book {
     short_description: string;
     specifications: Specification[] ;
     book_cover?: string ;
+    is_ship_now: boolean;
+    is_freeship_extra: boolean;
+    is_top_deal: boolean;
 }
 
 export interface Author {
