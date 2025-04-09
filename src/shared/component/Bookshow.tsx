@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Book } from "../../interface";
+import { Book } from "../../../interfaces";
 
 type BookShowProps = {
   filters: {

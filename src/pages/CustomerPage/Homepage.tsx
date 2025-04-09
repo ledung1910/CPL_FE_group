@@ -471,6 +471,7 @@ const HomePage = () => {
               <div className="mt-10">
                 <label className="text-sm text-gray-600 mr-2">Sắp xếp</label>
                 <select
+                  title="Sắp xếp"
                   value={filters.sortBy}
                   onChange={(e) =>
                     setFilters((prev) => ({ ...prev, sortBy: e.target.value }))
