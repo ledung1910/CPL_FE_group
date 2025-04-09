@@ -46,7 +46,7 @@ const BookList = () => {
 
   useEffect(() => {
     const results = books.filter((book) =>
-      book.name.toLowerCase().includes(searchTerm.toLowerCase())
+      book.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredBooks(results);
   }, [searchTerm, books]);
@@ -212,7 +212,7 @@ const BookList = () => {
                 <td className="px-4 py-3">{book.name}</td>
                 <td className="px-4 py-3">
                   <img
-                    src={book.images?.[0]?.large_url || "https://via.placeholder.com/100"}
+                    src={book.images?.[0]?.large_url}
                     alt={book.name}
                     className="w-16 h-24 object-cover rounded-md shadow-md mx-auto"
                   />

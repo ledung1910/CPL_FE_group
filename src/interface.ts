@@ -13,6 +13,8 @@ export interface Book {
     is_ship_now: boolean;
     is_freeship_extra: boolean;
     is_top_deal: boolean;
+    rating_average: number;
+    quantity_sold: QuantitySold;
 }
 
 export interface Author {
@@ -20,11 +22,14 @@ export interface Author {
     name: string;
   }
 
-  export interface Category {
+export interface Category {
     id: string;
     name: string;
   }
-
+export interface QuantitySold{
+    text: string;
+    value: number;
+}
 export interface Seller {
     price: number;
     is_best_store: boolean;

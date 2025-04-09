@@ -14,8 +14,7 @@ type BookShowProps = {
 
 const BookItem: React.FC<{ book: Book }> = ({ book }) => {
   const [imgSrc, setImgSrc] = useState(
-    book.images?.[0]?.small_url ||
-    book.images?.[0]?.base_url ||
+    book.images?.[0]?.large_url ||
     "/placeholder-book.jpg"
   );
 

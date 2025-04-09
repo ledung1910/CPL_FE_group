@@ -18,7 +18,12 @@ const initialBookDefault: Omit<Book, "id"> = {
   images: [],
   original_price: 0,
   specifications: [],
-  list_price: 0
+  list_price: 0,
+  is_ship_now: false,
+  is_freeship_extra: false,
+  is_top_deal: false,
+  rating_average: 0,
+  quantity_sold: {text: "", value: 0},
 };
 
 const BookForm: React.FC<Props> = ({ onAddBook, initialBook, categoryOptions, onCancel }) => {
@@ -95,7 +100,7 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, categoryOptions, on
             <label className="text-sm font-medium mb-1">Author</label>
             <input
               title="Author"
-              value={book.authors[0]?.name || ""}
+              value={book.authors && book.authors[0]?.name || ""}
               onChange={(e) => handleAuthorChange(e.target.value)}
               className="bg-gray-800 border border-gray-700 p-2 rounded"
               required

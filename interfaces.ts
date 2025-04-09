@@ -1,26 +1,34 @@
 export interface Book {
     id: string;
     name: string;
-    authors: Author[] ;
+    authors: Author[];
     categories: Category;
-    current_seller: Seller ;
-    description: string ;
+    current_seller: Seller;
+    description: string;
     images: BookImage[];
     list_price: number;
     original_price: number;
-    specifications: Specification[] ;
+    specifications: Specification[];
+    is_ship_now: boolean;
+    is_freeship_extra: boolean;
+    is_top_deal: boolean;
+    rating_average: number;
+    quantity_sold: QuantitySold;
 }
 
 export interface Author {
     id: string;
     name: string;
-  }
+}
 
-  export interface Category {
+export interface Category {
     id: string;
     name: string;
-  }
-
+}
+export interface QuantitySold{
+    text: string;
+    value: number;
+}
 export interface Seller {
     price: number;
     is_best_store: boolean;
