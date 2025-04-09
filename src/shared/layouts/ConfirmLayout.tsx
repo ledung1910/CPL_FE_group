@@ -1,13 +1,13 @@
 import FooterOrder from "../component/FooterOrder";
-import HeaderOrder from "../component/HeaderOrder";
+import HeaderConfirm from "../component/HeaderConfirm";
 import Banner from "../component/Banner";
 import { Outlet } from 'react-router-dom'
 
-const OrderLayout = () => {
+const ConfirmLayout = () => {
     return (
         <div className="h-screen flex flex-col">
             <Banner />
-            <HeaderOrder />
+            <HeaderConfirm />
             <main className="flex-grow bg-gray-100">
                 <Outlet />
             </main>
@@ -15,4 +15,4 @@ const OrderLayout = () => {
         </div>
     )
 }
-export default OrderLayout;
+export default ConfirmLayout;
