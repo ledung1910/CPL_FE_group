@@ -8,52 +8,28 @@ export interface Book {
     images: BookImage[];
     list_price: number;
     original_price: number;
-    quantity_sold: QuantitySold;
-    rating_average: number;
-    short_description: string;
     specifications: Specification[] ;
     book_cover?: string ;
 }
 
 export interface Author {
-    id: number;
+    id: string;
     name: string;
-    slug: string;
-}
+  }
 
-export interface Category {
-    id: number;
+  export interface Category {
+    id: string;
     name: string;
-    is_leaf: boolean;
-}
+  }
 
 export interface Seller {
-    id: number;
-    sku: string;
-    name: string;
-    link: string;
-    logo: string;
     price: number;
-    product_id: string;
-    store_id: number;
     is_best_store: boolean;
-    is_offline_installment_supported: boolean | null;
 }
 
 export interface BookImage {
-    base_url: string;
-    is_gallery: boolean;
-    label: string | null;
+    id: string;
     large_url: string;
-    medium_url: string;
-    small_url: string;
-    thumbnail_url: string;
-    position: number | null;
-}
-
-export interface QuantitySold {
-    text: string;
-    value: number;
 }
 
 export interface Specification {
