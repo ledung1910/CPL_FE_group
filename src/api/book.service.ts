@@ -1,33 +1,44 @@
-import { apiClient } from './api.client';
-import { Book, ApiResponse } from '../../interfaces';
+import { Book, Category } from "../../interfaces";
+import apiClient from "./api.client";
 
-export const BookService = {
-  // Lấy danh sách sách
-  getBooks: async (): Promise<Book[]> => {
-    const response = await apiClient.get<ApiResponse>('/books');
-    return response.data.books; 
-  },
+// Lấy tất cả sách
+export const getBooks = async (): Promise<Book[]> => {
+  return await apiClient.get("/books") as Book[];
+};
 
-  // Lấy chi tiết sách
-  getBookById: async (id: string): Promise<Book> => {
-    const response = await apiClient.get<{ data: Book }>(`/books/${id}`);
-    return response.data.data;
-  },
+// Lấy sách theo ID
+export const getBookById = async (id: string): Promise<Book> => {
+  return await apiClient.get(`/books/${id}`) as Book;
+};
 
-  // Tạo sách mới
-  createBook: async (bookData: Omit<Book, 'id'>): Promise<Book> => {
-    const response = await apiClient.post<Book>('/books', bookData);
-    return response.data; // Axios trả về data đã được parse
-  },
+// Tạo mới sách
+export const createBook = async (bookData: Omit<Book, "id">): Promise<Book> => {
+  return await apiClient.post("/books", bookData) as Book;
+};
 
-  // Cập nhật sách
-  updateBook: async (id: string, bookData: Partial<Book>): Promise<Book> => {
-    const response = await apiClient.patch<Book>(`/books/${id}`, bookData);
-    return response.data;
-  },
+// Cập nhật sách
+export const updateBook = async (
+  id: string,
+  bookData: Partial<Book>
+): Promise<Book> => {
+  return await apiClient.patch(`/books/${id}`, bookData) as Book;
+};
 
-  // Xóa sách
-  deleteBook: async (id: string): Promise<void> => {
-    await apiClient.delete(`/books/${id}`);
-  }
+// Xoá sách
+export const deleteBook = async (id: string): Promise<void> => {
+  await apiClient.delete(`/books/${id}`);
+};
+
+export const getCategories = async (): Promise<Category[]> => {
+  const books = await getBooks();
+  const categoryMap = new Map<string, Category>();
+
+  books.forEach((book) => {
+    const category = book.categories;
+    if (category && !categoryMap.has(category.id)) {
+      categoryMap.set(category.id, category);
+    }
+  });
+
+  return Array.from(categoryMap.values());
 };
