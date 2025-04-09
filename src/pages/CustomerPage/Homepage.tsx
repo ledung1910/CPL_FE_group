@@ -8,7 +8,9 @@ import { useOutletContext } from "react-router-dom";
 const categories = [
   {
     name: "English Books",
-    subcategories: [
+    leaves: [
+      "Fiction - Literature",
+      "Grammar, vocabulary & skills",
       "Art & Photography",
       "Biographies & Memoirs",
       "Business & Economics",
@@ -16,7 +18,6 @@ const categories = [
       "Children's Books",
       "Dictionary",
       "Education - Teaching",
-      "Fiction - Literature",
       "Magazines",
       "Medical Books",
       "Parenting & Relationships",
@@ -27,9 +28,31 @@ const categories = [
       "Cookbooks, Food & Wine",
     ],
   },
-  { name: "Sách tiếng Việt" },
-  { name: "Văn phòng phẩm" },
-  { name: "Quà lưu niệm" },
+  {
+    name: "Sách tiếng Việt",
+    leaves: [
+      "Sách tư duy - Kỹ năng sống",
+      "Tác phẩm kinh điển",
+      "Truyện ngắn - Tản văn - Tạp Văn",
+      "Sách kỹ năng làm việc",
+    ],
+  },
+  { name: "Văn phòng phẩm",
+    leaves: [
+      "Dịch vụ văn phòng",
+      "Lịch",
+      "Máy tính điện tử",
+      "Thiết bị văn phòng",
+    ],
+   },
+  { name: "Quà lưu niệm",
+    leaves: [
+      "Bookmark",
+      "Album",
+      "Đồng hồ cát",
+      "Quả cầu tuyết",
+    ],
+   },
 ];
 const topProducts = [
   {
@@ -110,9 +133,9 @@ const CategorySidebar = () => {
                 <ChevronDownIcon className="w-5 h-5 text-gray-700" />
               )}
             </div>
-            {expandedCategories[category.name] && category.subcategories && (
+            {expandedCategories[category.name] && category.leaves && (
               <ul className="ml-4 mt-2 space-y-2">
-                {category.subcategories.map((sub, subIndex) => (
+                {category.leaves.map((sub, subIndex) => (
                   <li
                     key={subIndex}
                     className="text-gray-700 hover:text-blue-500 cursor-pointer"
@@ -131,11 +154,11 @@ const CategorySidebar = () => {
 
 const HomePage = () => {
   const [filters, setFilters] = useState({
-    shipNow: false, // Giao siêu tốc 2H
-    topDeal: false, // Siêu rẻ
-    freeshipExtra: false, // Freeship
-    rating: false, // từ 4 sao
-    sortBy: "Phổ biến", // mặc định
+    shipNow: false, 
+    topDeal: false, 
+    freeshipExtra: false, 
+    rating: false, 
+    sortBy: "Phổ biến", 
   });
   const { keyword } = useOutletContext<{ keyword: string }>();
   return (
