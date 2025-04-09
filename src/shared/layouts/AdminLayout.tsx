@@ -11,10 +11,7 @@ const AdminLayout = () => {
 
   return (
     <main className="flex bg-gray-900">
-      {/* Sidebar */}
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-
-      {/* Nội dung chính */}
       <div
         className={`transition-all duration-300 flex-grow p-4 ${
           isSidebarOpen ? "ml-64" : "ml-16"
