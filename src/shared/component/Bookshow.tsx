@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Book } from "../../../interfaces";
+import { getBooks } from "../../api/book.service";
+import { useParams } from "react-router-dom";////
 
 type BookShowProps = {
   filters: {
@@ -48,13 +50,13 @@ const BookItem: React.FC<{ book: Book }> = ({ book }) => {
             book.is_freeship_extra && book.is_top_deal
               ? "https://salt.tikicdn.com/ts/upload/21/c9/ce/ecf520f4346274799396496b3cbbf7d8.png"
               : book.is_freeship_extra
-                ? "https://salt.tikicdn.com/ts/upload/f7/9e/83/ab28365ea395893fe5abac88b5103444.png"
-                : book.is_top_deal
-                  ? "https://salt.tikicdn.com/ts/upload/12/e2/4a/c5226426ee9429b0050449ae5403c9cf.png"
-                  : "https://salt.tikicdn.com/ts/upload/c2/bc/6d/ff18cc8968e2bbb43f7ac58efbfafdff.png"
+              ? "https://salt.tikicdn.com/ts/upload/f7/9e/83/ab28365ea395893fe5abac88b5103444.png"
+              : book.is_top_deal
+              ? "https://salt.tikicdn.com/ts/upload/12/e2/4a/c5226426ee9429b0050449ae5403c9cf.png"
+              : "https://salt.tikicdn.com/ts/upload/c2/bc/6d/ff18cc8968e2bbb43f7ac58efbfafdff.png"
           }
           alt="status-icon"
-          className="absolute top-5 left-1 w-100 h-100 object-contain"
+          className="absolute bottom-0 left-0 w-[90%] max-w-[200px] aspect-square object-contain"
         />
       </div>
 
@@ -134,9 +136,8 @@ const BookShow: React.FC<BookShowProps> = ({ filters,keyword }) => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await fetch("/api.json");
-        const data = await response.json();
-        setBooks(Array.isArray(data.books) ? data.books : []);
+        const data = await getBooks();
+        setBooks(data);
       } catch (err) {
         console.error("Lỗi khi tải sách:", err);
       }
@@ -146,9 +147,18 @@ const BookShow: React.FC<BookShowProps> = ({ filters,keyword }) => {
 
   // Apply filters
   const keywordLower = keyword.toLowerCase().trim();
+  const { category } = useParams();////
+  const categoryName = decodeURIComponent(category || "");/////
   const filteredBooks = books
     .filter((book) => {
-      
+      /////
+      if (
+        categoryName &&
+        (!book.categories || book.categories.name !== categoryName)
+      ) {
+        return false;
+      }
+      /////
       if (
         keywordLower &&
         !book.name.toLowerCase().includes(keywordLower) &&
