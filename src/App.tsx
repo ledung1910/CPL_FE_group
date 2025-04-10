@@ -13,6 +13,8 @@ import UserProfile from "./pages/CustomerPage/UserProfile";
 import Checkout from "./pages/CustomerPage/Checkout";
 import Bookshow from "./shared/component/Bookshow";
 import ScrollToTop from "./shared/component/ScrollToTop";
+import OrderLayout from "./shared/layouts/OrderLayout";
+import ConfirmLayout from "./shared/layouts/ConfirmLayout";
 
 const App = () => {
   return (
@@ -40,7 +42,7 @@ const App = () => {
           <Route path="/detail/:id" element={<BookDetail />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/user_profile" element={<UserProfile />} />
-          <Route path="/checkout" element={<Checkout />} />
+
         </Route>
         <Route path="/" element={<AdminLayout />}>
           <Route path="/admin" element={<AdminPage />} />
@@ -49,7 +51,12 @@ const App = () => {
           <Route path="admin/categories" element={<CategoryList />} />
           <Route path="admin/bills" element={<ManagementPage />} />
         </Route>
-        {/* <Route path="/product/:id" element={<ProductDetail />} /> */}
+        <Route path="/" element={<OrderLayout />}>
+          <Route path="/checkout" element={<Checkout />} />
+        </Route>
+        <Route path="/" element={<ConfirmLayout />}>
+          {/* <Route path="/confirm" element={<Confirm />} /> */}
+        </Route>
       </Routes>
     </Router>
   );
