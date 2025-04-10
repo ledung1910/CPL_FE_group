@@ -14,7 +14,7 @@ const AccountDropdown = ({ onClose }: { onClose: () => void }) => {
         Xin chào, <strong>{user?.name}</strong>
       </div>
       <Link
-        to="/account"
+        to="/user_profile"
         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         onClick={onClose}
       >

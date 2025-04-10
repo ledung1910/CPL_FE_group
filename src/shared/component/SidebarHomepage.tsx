@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCategories } from "../../api/book.service";
+import { getRealCategories } from "../../api/book.service";
 import { Category } from "../../../interfaces";
 
 const SidebarHomepage = () => {
@@ -9,7 +9,7 @@ const SidebarHomepage = () => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const result = await getCategories();
+      const result = await getRealCategories();
       setCategories(result);
     };
 
