@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Book } from "../../../interfaces";
 import { getBooks } from "../../api/book.service";
-import { useParams, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 type BookShowProps = {
   filters: {
@@ -12,6 +12,7 @@ type BookShowProps = {
     sortBy: string;
   };
   keyword: string;
+  category: number;
 };
 
 const BookItem: React.FC<{ book: Book }> = ({ book }) => {
@@ -20,8 +21,8 @@ const BookItem: React.FC<{ book: Book }> = ({ book }) => {
   );
 
   const discount =
-    book.list_price && book.current_seller?.price
-      ? Math.round(100 - (book.current_seller.price / book.list_price) * 100)
+    book.original_price && book.current_seller?.price
+      ? Math.round(100 - (book.current_seller.price / book.original_price) * 100)
       : 0;
 
   const formatPrice = (price?: number) => {
@@ -132,10 +133,8 @@ const BookItem: React.FC<{ book: Book }> = ({ book }) => {
 };
 
 
-const BookShow: React.FC<BookShowProps> = ({ filters, keyword }) => {
+const BookShow: React.FC<BookShowProps> = ({ filters, keyword, category }) => {
   const [books, setBooks] = useState<Book[]>([]);
-  const { category } = useParams();
-  const categoryName = decodeURIComponent(category || "");
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -153,12 +152,7 @@ const BookShow: React.FC<BookShowProps> = ({ filters, keyword }) => {
 
   const filteredBooks = books
     .filter((book) => {
-      if (
-        categoryName &&
-        (!book.categories || book.categories.name !== categoryName)
-      ) {
-        return false;
-      }
+      if (category && book.categories?.id !== category) return false;
 
       if (
         keywordLower &&

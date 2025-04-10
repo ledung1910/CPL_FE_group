@@ -15,7 +15,6 @@ import Checkout from "./pages/CustomerPage/Checkout";
 import OrderLayout from "./shared/layouts/OrderLayout"
 import ConfirmLayout from "./shared/layouts/ConfirmLayout"
 import { AuthProvider } from "./context/AuthContext";
-import Bookshow from "./shared/component/Bookshow";
 import ScrollToTop from "./shared/component/ScrollToTop";
 const App = () => {
   return (
@@ -25,22 +24,6 @@ const App = () => {
       <Routes>
         <Route path="/" element={<CustomerLayout />}>
           <Route path="/" element={<HomePage />} />
-          {/*route category test */}
-          <Route path="/:category"
-            element={
-              <Bookshow
-                filters={{
-                  shipNow: false,
-                  topDeal: false,
-                  freeshipExtra: false,
-                  rating: false,
-                  sortBy: "",
-                }}
-                keyword=""
-              />
-            }
-          />
-          {/* */}
           <Route path="/detail/:id" element={<BookDetail />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/user_profile" element={<UserProfile />} />
