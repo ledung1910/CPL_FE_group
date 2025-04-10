@@ -230,19 +230,21 @@ const BookList = () => {
                     ? book.authors.map((author) => author.name).join(", ")
                     : "Không rõ"}
                 </td>
-                <td className="px-4 py-3 flex justify-center items-center gap-3">
-                  <button
-                    onClick={() => handleEdit(book)}
-                    className="bg-yellow-500 text-white px-3 py-2 rounded-lg hover:bg-yellow-600 transition-all flex items-center gap-2 shadow-md"
-                  >
-                    <FaEdit /> Sửa
-                  </button>
-                  <button
-                    onClick={() => handleDelete(book.id)}
-                    className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition-all flex items-center gap-2 shadow-md"
-                  >
-                    <FaTrash /> Xóa
-                  </button>
+                <td className="h-full px-4 py-3">
+                  <div className="flex justify-center items-center gap-3 h-full">
+                    <button
+                      onClick={() => handleEdit(book)}
+                      className="bg-yellow-500 text-white px-3 py-2 rounded-lg hover:bg-yellow-600 transition-all flex items-center gap-2 shadow-md"
+                    >
+                      <FaEdit /> Sửa
+                    </button>
+                    <button
+                      onClick={() => handleDelete(book.id)}
+                      className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition-all flex items-center gap-2 shadow-md"
+                    >
+                      <FaTrash /> Xóa
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
