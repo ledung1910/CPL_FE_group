@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import BookForm from "./ProductForm";
 import { FaTimes, FaEdit, FaTrash, FaSearch, FaSort } from "react-icons/fa";
-import { getBooks, createBook, updateBook, deleteBook, getCategories } from "../../../api/book.service";
-import { Book, Category } from "../../../../interfaces";
+import { getBooks, createBook, updateBook, deleteBook } from "../../../api/book.service";
+import { Book } from "../../../../interfaces";
 
 const BookList = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [filteredBooks, setFilteredBooks] = useState<Book[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBook, setEditingBook] = useState<Book | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -30,18 +29,8 @@ const BookList = () => {
     }
   };
 
-  const fetchCategories = async () => {
-    try {
-      const fetchedCategories = await getCategories();
-      setCategories(fetchedCategories);
-    } catch (err) {
-      console.error("Failed to fetch categories:", err);
-    }
-  };
-
   useEffect(() => {
     fetchBooks();
-    fetchCategories();
   }, []);
 
   useEffect(() => {
@@ -55,10 +44,10 @@ const BookList = () => {
     const sortedBooks = [...filteredBooks];
     switch (option) {
       case "price_asc":
-        sortedBooks.sort((a, b) => (a.list_price || 0) - (b.list_price || 0));
+        sortedBooks.sort((a, b) => (a.current_seller.price || 0) - (b.current_seller.price || 0));
         break;
       case "price_desc":
-        sortedBooks.sort((a, b) => (b.list_price || 0) - (a.list_price || 0));
+        sortedBooks.sort((a, b) => (b.current_seller.price || 0) - (a.current_seller.price || 0));
         break;
       case "name_asc":
         sortedBooks.sort((a, b) => a.name.localeCompare(b.name));
@@ -153,11 +142,11 @@ const BookList = () => {
               onChange={(e) => handleSort(e.target.value)}
               className="bg-transparent text-white outline-none px-2 w-full cursor-pointer appearance-none"
             >
-              <option value="">🔽 Sắp xếp...</option>
-              <option value="price_asc">💰 Giá thấp đến cao</option>
-              <option value="price_desc">💰 Giá cao đến thấp</option>
-              <option value="name_asc">📖 Tên A-Z</option>
-              <option value="name_desc">📖 Tên Z-A</option>
+              <option value="" className="bg-gray-800">🔽 Sắp xếp...</option>
+              <option value="price_asc" className="bg-gray-800">💰 Giá thấp đến cao</option>
+              <option value="price_desc" className="bg-gray-800">💰 Giá cao đến thấp</option>
+              <option value="name_asc" className="bg-gray-800">📖 Tên A-Z</option>
+              <option value="name_desc" className="bg-gray-800">📖 Tên Z-A</option>
             </select>
           </div>
         </div>
@@ -187,7 +176,6 @@ const BookList = () => {
               onAddBook={handleAddOrUpdateBook}
               initialBook={editingBook}
               onCancel={() => setIsModalOpen(false)}
-              categoryOptions={categories}
             />
           </div>
         </div>
@@ -222,7 +210,7 @@ const BookList = () => {
                 </td>
                 <td className="px-4 py-3">
                   {book.current_seller?.price
-                    ? `${book.current_seller.price.toLocaleString()} đ`
+                    ? `${book.current_seller.price.toLocaleString()}`
                     : "N/A"}
                 </td>
                 <td className="px-4 py-3">

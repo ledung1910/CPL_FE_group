@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight, faChevronLeft, faStar } from "@fortawesome/free-solid-svg-icons";
@@ -17,7 +17,7 @@ const ProductDetail = () => {
     const [selectedImage, setSelectedImage] = useState<string>("");
     const [expanded, setExpanded] = useState(false);
     const [quantity, setQuantity] = useState(1);
-
+    const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
     useEffect(() => {
         const fetchData = async () => {
             if (!id) return;
@@ -26,9 +26,9 @@ const ProductDetail = () => {
                     getBooks(),
                     getBookById(id) // id này bạn có thể lấy từ URL params
                 ]);
-    
+
                 if (booksData.length === 0) throw new Error('Không có sản phẩm nào');
-    
+
                 setBooks(booksData);
                 setProduct(bookDetail);
                 setSelectedImage(bookDetail.images[0]?.large_url || '');
@@ -38,16 +38,16 @@ const ProductDetail = () => {
                 setLoading(false);
             }
         };
-    
+
         fetchData();
     }, [id]); // nhớ truyền `id` vào dependency nếu nó thay đổi theo route
-    
+
     // Lọc sách cùng category (trừ sách hiện tại)
-    const relatedBooks = product 
-        ? books.filter(book => 
-            book.id !== product.id && 
+    const relatedBooks = product
+        ? books.filter(book =>
+            book.id !== product.id &&
             book.categories.id === product.categories.id
-          )
+        )
         : [];
 
     // Lọc top deals (is_best_store = true)
@@ -71,14 +71,6 @@ const ProductDetail = () => {
         currentPage: currentTopDealPage,
         totalPages: totalTopDealPages
     } = usePagination(topDeals, 4);
-
-    const getSpecification = (name: string) => {
-        if (!product?.specifications?.[0]?.attributes) return 'N/A';
-        const spec = product.specifications[0].attributes.find(attr =>
-            attr.name?.toLowerCase().includes(name.toLowerCase())
-        );
-        return spec?.value || 'N/A';
-    };
 
     const calculateDiscountPercentage = () => {
         if (!product || product.original_price <= product.current_seller.price) return 0;
@@ -112,7 +104,7 @@ const ProductDetail = () => {
 
             <div className="relative min-h-[300px]">
                 {currentPage > 0 && (
-                    <button 
+                    <button
                         title="Previous"
                         onClick={onPrev}
                         className="absolute left-4 top-1/2 -translate-y-1/2 bg-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 z-10 border border-gray-200"
@@ -151,7 +143,7 @@ const ProductDetail = () => {
                 </div>
 
                 {currentPage < totalPages - 1 && items.length > 0 && (
-                    <button 
+                    <button
                         title="Next"
                         onClick={onNext}
                         className="absolute right-4 top-1/2 -translate-y-1/2 bg-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-100 z-10 border border-gray-200"
@@ -167,11 +159,10 @@ const ProductDetail = () => {
                         <button
                             key={index}
                             onClick={() => title.includes("Top Deals") ? goToTopDealPage(index) : goToRelatedPage(index)}
-                            className={`w-6 h-1.5 rounded-full transition-all duration-300 ${
-                                (title.includes("Top Deals") ? currentTopDealPage : currentRelatedPage) === index 
-                                    ? 'bg-blue-500 w-8' 
-                                    : 'bg-gray-300'
-                            }`}
+                            className={`w-6 h-1.5 rounded-full transition-all duration-300 ${(title.includes("Top Deals") ? currentTopDealPage : currentRelatedPage) === index
+                                ? 'bg-blue-500 w-8'
+                                : 'bg-gray-300'
+                                }`}
                         />
                     ))}
                 </div>
@@ -193,19 +184,29 @@ const ProductDetail = () => {
                         alt={product.name}
                         className="w-full object-cover rounded-lg"
                     />
-                    <div className="flex gap-2 mt-4">
+                    <div className="flex gap-2 mt-4 px-1 overflow-hidden max-w-full">
                         {product.images.map((img, index) => (
                             <img
                                 key={index}
+                                ref={(el) => {
+                                    imageRefs.current[index] = el;
+                                }}
                                 src={img.large_url}
                                 alt={`Ảnh ${index + 1}`}
-                                className={`w-16 h-20 object-cover rounded-lg cursor-pointer border-2 ${
-                                    selectedImage === img.large_url ? "border-blue-500" : "border-gray-300"
-                                }`}
-                                onClick={() => setSelectedImage(img.large_url)}
+                                className={`w-16 h-20 object-cover rounded-lg border-2 flex-shrink-0 transition-transform duration-300 transform cursor-pointer ${selectedImage === img.large_url ? "border-blue-500" : "border-gray-300"
+                                    }`}
+                                onClick={() => {
+                                    setSelectedImage(img.large_url);
+                                    imageRefs.current[index]?.scrollIntoView({
+                                        behavior: "smooth",
+                                        inline: "center",
+                                        block: "nearest",
+                                    });
+                                }}
                             />
                         ))}
                     </div>
+
                     <div className="mt-4 border-t border-gray-100 pt-4 cursor-pointer flex items-center justify-between">
                         <div className="flex items-center space-x-2">
                             <img src="/src/images/iconDauNguoiXanh.png" alt="Icon" className="w-4" />
@@ -224,7 +225,7 @@ const ProductDetail = () => {
                     <span className="text-blue-400 font-semibold">
                         {product.authors?.map(author => author.name).join(', ')}
                     </span>
-                    
+
                     <div className="flex items-center mt-2 mb-1">
                         <span className="text-sm text-gray-500 mr-1">
                             {product.rating_average?.toFixed(1) || '0.0'}
@@ -233,15 +234,14 @@ const ProductDetail = () => {
                             <FontAwesomeIcon
                                 key={i}
                                 icon={faStar}
-                                className={`${
-                                    i < Math.floor(product.rating_average || 0) 
-                                        ? 'text-yellow-400' 
-                                        : 'text-gray-300'
-                                } w-4 h-4`}
+                                className={`${i < Math.floor(product.rating_average || 0)
+                                    ? 'text-yellow-400'
+                                    : 'text-gray-300'
+                                    } w-4 h-4`}
                             />
                         ))}
                     </div>
-                    
+
                     <h1 className="text-2xl font-bold">{product.name}</h1>
                     <div className="flex items-end gap-2 mt-2">
                         <p className="text-red-500 text-2xl font-bold">
@@ -263,11 +263,20 @@ const ProductDetail = () => {
                 <div className="rounded-lg p-4 bg-white">
                     <h2 className="text-lg font-semibold mb-2">Thông tin chi tiết</h2>
                     <div className="grid grid-cols-1 divide-y divide-gray-300 text-gray-600">
-                        <div className="flex py-2"><span className="w-1/2 font-semibold">Nhà phát hành:</span> <span className="w-1/2">{getSpecification('Công ty phát hành')}</span></div>
-                        <div className="flex py-2"><span className="w-1/2 font-semibold">Ngày xuất bản:</span> <span className="w-1/2">{getSpecification('Ngày xuất bản')}</span></div>
-                        <div className="flex py-2"><span className="w-1/2 font-semibold">Kích thước:</span> <span className="w-1/2">{getSpecification('Kích thước')}</span></div>
-                        <div className="flex py-2"><span className="w-1/2 font-semibold">Loại bìa:</span> <span className="w-1/2">{getSpecification('Loại bìa')}</span></div>
-                        <div className="flex py-2"><span className="w-1/2 font-semibold">Số trang:</span> <span className="w-1/2">{getSpecification('Số trang')}</span></div>
+                        {product?.specifications && (
+                            <table className="w-full">
+                                <tbody>
+                                    {product.specifications.flatMap((spec, specIndex) =>
+                                        spec.attributes.map((attr, attrIndex) => (
+                                            <tr key={`${specIndex}-${attrIndex}`} className="border-t border-gray-300">
+                                                <td className="py-2 w-1/2 text-gray-400">{attr.name}</td>
+                                                <td className="py-2 w-1/2 text-black">{attr.value}</td>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                            </table>
+                        )}
                     </div>
                 </div>
 
@@ -360,7 +369,7 @@ const ProductDetail = () => {
                         <span className="text-lg font-semibold border border-gray-300 p-2 w-8 h-8 flex items-center justify-center rounded">
                             {quantity}
                         </span>
-                        <button 
+                        <button
                             title="Quantity +"
                             onClick={() => setQuantity(prev => prev + 1)}
                             className="border border-gray-300 p-2 w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100"

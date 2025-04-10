@@ -6,7 +6,6 @@ export interface Book {
     current_seller: Seller;
     description: string;
     images: BookImage[];
-    list_price: number;
     original_price: number;
     specifications: Specification[];
     is_ship_now: boolean;
