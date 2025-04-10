@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 //Layout
 import CustomerLayout from "./shared/layouts/CustomerLayout";
 import AdminLayout from "./shared/layouts/AdminLayout";
-import OrderLayout from "./shared/layouts/OrderLayout"
-import ConfirmLayout from "./shared/layouts/ConfirmLayout"
+import OrderLayout from "./shared/layouts/OrderLayout";
+import ConfirmLayout from "./shared/layouts/ConfirmLayout";
 
 //Admin Page
 import AdminPage from "./pages/AdminPage/adminPage";
@@ -23,9 +23,7 @@ import Checkout from "./pages/CustomerPage/Checkout";
 
 //Component
 import { AuthProvider } from "./context/AuthContext";
-import Bookshow from "./shared/component/Bookshow";
 import ScrollToTop from "./shared/component/ScrollToTop";
-
 
 const App = () => {
   return (
@@ -35,25 +33,10 @@ const App = () => {
         <Routes>
           <Route path="/" element={<CustomerLayout />}>
             <Route path="/" element={<HomePage />} />
-            {/*route category test */}
-            <Route path="/:category"
-              element={
-                <Bookshow
-                  filters={{
-                    shipNow: false,
-                    topDeal: false,
-                    freeshipExtra: false,
-                    rating: false,
-                    sortBy: "",
-                  }}
-                  keyword=""
-                />
-              }
-            />
-            {/* */}
             <Route path="/detail/:id" element={<BookDetail />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/user_profile" element={<UserProfile />} />
+            <Route path="/confirm" element={<OrderConfirmation />} />
           </Route>
           <Route path="/" element={<AdminLayout />}>
             <Route path="/admin" element={<AdminPage />} />
@@ -66,7 +49,7 @@ const App = () => {
             <Route path="/checkout" element={<Checkout />} />
           </Route>
           <Route path="/" element={<ConfirmLayout />}>
-            <Route path="/confirm" element={<OrderConfirmation />} />
+            {/* <Route path="/confirm" element={<Confirm />} /> */}
           </Route>
         </Routes>
       </Router>

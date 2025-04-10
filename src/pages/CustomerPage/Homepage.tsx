@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import BookShow from "../../shared/component/Bookshow";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 import SidebarHomepage from "../../shared/component/SidebarHomepage";
+import { Category } from "../../../interfaces";
+import { getCategories } from "../../api/book.service";
 
 const topProducts = [
   {
@@ -49,13 +51,35 @@ const topProducts = [
 
 const HomePage = () => {
   const [filters, setFilters] = useState({
-    shipNow: false, 
-    topDeal: false, 
-    freeshipExtra: false, 
-    rating: false, 
-    sortBy: "Phổ biến", 
+    shipNow: false,
+    topDeal: false,
+    freeshipExtra: false,
+    rating: false,
+    sortBy: "Phổ biến",
   });
   const { keyword } = useOutletContext<{ keyword: string }>();
+  const [searchParams] = useSearchParams();
+  const categoryName = searchParams.get("category") || "";
+
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [categoryId, setCategoryId] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const result = await getCategories();
+      setCategories(result);
+    };
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    if (categoryName && categories.length > 0) {
+      const matched = categories.find(
+        (cat) => cat.name.toLowerCase() === categoryName.toLowerCase()
+      );
+      setCategoryId(matched?.id ?? 0);
+    }
+  }, [categoryName, categories]);
   return (
     <>
       <div className="bg-gray-100">
@@ -381,7 +405,11 @@ const HomePage = () => {
                 </select>
               </div>
             </div>
-            <BookShow filters={filters} keyword={keyword} />
+            <BookShow
+              filters={filters}
+              keyword={keyword}
+              category={categoryId ?? 0}
+            />
           </div>
         </div>
         <div className="bg-white p-6 mb-6 mt-8 m-10">
