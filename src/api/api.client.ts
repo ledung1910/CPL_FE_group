@@ -1,16 +1,26 @@
 import axios from "axios";
 
-export const apiClient = axios.create({
-    baseURL: import.meta.env.VITE_API_SERVER,
+const apiClient = axios.create({
+    baseURL: "http://localhost:8080",
     timeout: 10000,
+    headers: {
+        "Content-Type": "application/json",
+      },
 });
-
-apiClient.interceptors.response.use(
-    (response) => {
-        return response.data?.data || response.data;
-    },
-    (error) => {
-        console.error('API Error:', error);
-        return Promise.reject(error);
+apiClient.interceptors.request.use(function (config) {
+    const token = localStorage.getItem("accessToken");
+    config.headers.Authorization = token;
+    return config;
+}, function (error) {
+    return Promise.reject(error);
+});
+apiClient.interceptors.response.use(function (response) {
+    if (response.data) {
+        return response.data;
     }
+    return response;
+}, function (error) {
+    return Promise.reject(error);
+}
 );
+export default apiClient;

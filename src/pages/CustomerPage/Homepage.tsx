@@ -1,35 +1,9 @@
-import React, { useEffect, useState } from "react";
-import ChevronUpIcon from "@heroicons/react/16/solid/ChevronUpIcon";
-import ChevronDownIcon from "@heroicons/react/16/solid/ChevronDownIcon";
+import React, { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import BookShow from "../../shared/component/Bookshow";
+import { useOutletContext } from "react-router-dom";
+import SidebarHomepage from "../../shared/component/SidebarHomepage";
 
-const categories = [
-  {
-    name: "English Books",
-    subcategories: [
-      "Art & Photography",
-      "Biographies & Memoirs",
-      "Business & Economics",
-      "How-to - Self Help",
-      "Children's Books",
-      "Dictionary",
-      "Education - Teaching",
-      "Fiction - Literature",
-      "Magazines",
-      "Medical Books",
-      "Parenting & Relationships",
-      "Reference",
-      "Science - Technology",
-      "History, Politics & Social Sciences",
-      "Travel & Holiday",
-      "Cookbooks, Food & Wine",
-    ],
-  },
-  { name: "Sách tiếng Việt" },
-  { name: "Văn phòng phẩm" },
-  { name: "Quà lưu niệm" },
-];
 const topProducts = [
   {
     name: "NEXUS - Lược Sử Của Những Mạng Lưới Thông Tin Từ Thời Đại Đồ Đá Đến Trí Tuệ Nhân Tạo",
@@ -72,63 +46,16 @@ const topProducts = [
     price: "161.000đ",
   },
 ];
-const CategorySidebar = () => {
-  const [expandedCategories, setExpandedCategories] = useState<
-    Record<string, boolean>
-  >({});
-
-  useEffect(() => {
-    if (categories.length > 0) {
-      setExpandedCategories({ [categories[0].name]: true });
-    }
-  }, []);
-
-  const toggleCategory = (categoryName: string) => {
-    setExpandedCategories((prev) => ({
-      ...prev,
-      [categoryName]: !prev[categoryName],
-    }));
-  };
-
-  return (
-    <aside className="w-1/5 bg-white p-4 rounded-md ml-10 self-start">
-      <h2 className="-mx-4 px-4 text-lg font-bold mb-3 pb-3 border-b border-gray-300">
-        Khám phá theo danh mục
-      </h2>
-      <ul>
-        {categories.map((category, index) => (
-          <li key={index} className="mb-2">
-            <div
-              className="flex items-center justify-between text-gray-900 font-semibold cursor-pointer"
-              onClick={() => toggleCategory(category.name)}
-            >
-              <span>{category.name}</span>
-              {expandedCategories[category.name] ? (
-                <ChevronUpIcon className="w-5 h-5 text-gray-700" />
-              ) : (
-                <ChevronDownIcon className="w-5 h-5 text-gray-700" />
-              )}
-            </div>
-            {expandedCategories[category.name] && category.subcategories && (
-              <ul className="ml-4 mt-2 space-y-2">
-                {category.subcategories.map((sub, subIndex) => (
-                  <li
-                    key={subIndex}
-                    className="text-gray-700 hover:text-blue-500 cursor-pointer"
-                  >
-                    {sub}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
-        ))}
-      </ul>
-    </aside>
-  );
-};
 
 const HomePage = () => {
+  const [filters, setFilters] = useState({
+    shipNow: false, 
+    topDeal: false, 
+    freeshipExtra: false, 
+    rating: false, 
+    sortBy: "Phổ biến", 
+  });
+  const { keyword } = useOutletContext<{ keyword: string }>();
   return (
     <>
       <div className="bg-gray-100">
@@ -140,7 +67,7 @@ const HomePage = () => {
         </div>
         <div className="flex items-start">
           {/* Sidebar */}
-          <CategorySidebar />
+          <SidebarHomepage />
           <div className="w-3/4 pl-4">
             <div className="title bg-white p-4 text-3xl">
               <span>Nhà sách Tiki</span>
@@ -359,8 +286,16 @@ const HomePage = () => {
             <div className="bg-white p-4 rounded-lg mt-6">
               <h2 className="text-lg font-semibold mb-4">Tất cả sản phẩm</h2>
               <div className="flex items-center space-x-4">
+                {/* Giao siêu tốc 2H */}
                 <label className="flex items-center space-x-2 pr-4 border-r border-gray-300">
-                  <input type="checkbox" className="w-4 h-4" />
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4"
+                    checked={filters.shipNow}
+                    onChange={() =>
+                      setFilters({ ...filters, shipNow: !filters.shipNow })
+                    }
+                  />
                   <img
                     src="https://salt.tikicdn.com/ts/tka/a8/31/b6/802e2c99dcce64c67aa2648edb15dd25.png"
                     alt=""
@@ -368,8 +303,17 @@ const HomePage = () => {
                   />
                   <span>Giao siêu tốc 2H</span>
                 </label>
+
+                {/* Siêu rẻ */}
                 <label className="flex items-center space-x-2 pr-4 border-r border-gray-300">
-                  <input type="checkbox" className="w-4 h-4" />
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4"
+                    checked={filters.topDeal}
+                    onChange={() =>
+                      setFilters({ ...filters, topDeal: !filters.topDeal })
+                    }
+                  />
                   <img
                     src="https://salt.tikicdn.com/ts/upload/b5/aa/48/2305c5e08e536cfb840043df12818146.png"
                     alt=""
@@ -377,16 +321,38 @@ const HomePage = () => {
                   />
                   <span>Siêu rẻ</span>
                 </label>
+
+                {/* Freeship */}
                 <label className="flex items-center space-x-2 pr-4 border-r border-gray-300">
-                  <input type="checkbox" className="w-4 h-4" />
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4"
+                    checked={filters.freeshipExtra}
+                    onChange={() =>
+                      setFilters({
+                        ...filters,
+                        freeshipExtra: !filters.freeshipExtra,
+                      })
+                    }
+                  />
                   <img
                     src="https://salt.tikicdn.com/ts/upload/2f/20/77/0f96cfafdf7855d5e7fe076dd4f34ce0.png"
                     alt=""
                     className="w-20 h-4"
                   />
+                  <span>Freeship</span>
                 </label>
+
+                {/* Rating */}
                 <label className="flex items-center space-x-2">
-                  <input type="checkbox" className="w-4 h-4" />
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4"
+                    checked={filters.rating}
+                    onChange={() =>
+                      setFilters({ ...filters, rating: !filters.rating })
+                    }
+                  />
                   <div className="flex space-x-1">
                     {[...Array(4)].map((_, i) => (
                       <FaStar key={i} className="text-yellow-400" />
@@ -396,16 +362,26 @@ const HomePage = () => {
                   <span>từ 4 sao</span>
                 </label>
               </div>
-              <div className="mt-4">
-                <label className="text-sm font-medium mr-2">Sắp xếp</label>
-                <select className="p-2 border rounded-md">
-                  <option>Phổ biến</option>
-                  <option>Giá thấp đến cao</option>
-                  <option>Giá cao đến thấp</option>
+
+              <div className="mt-10">
+                <label className="text-sm text-gray-600 mr-2">Sắp xếp</label>
+                <select
+                  title="Sắp xếp"
+                  value={filters.sortBy}
+                  onChange={(e) =>
+                    setFilters((prev) => ({ ...prev, sortBy: e.target.value }))
+                  }
+                  className="px-3 py-1 border border-gray-400 rounded-2xl text-sm w-[130px]"
+                >
+                  <option value="Phổ biến">Phổ biến</option>
+                  <option value="sold">Bán chạy</option>
+                  <option value="priceAsc">Giá thấp đến cao</option>
+                  <option value="priceDesc">Giá cao đến thấp</option>
+                  <option value="rating">Đánh giá cao</option>
                 </select>
               </div>
             </div>
-            <BookShow />
+            <BookShow filters={filters} keyword={keyword} />
           </div>
         </div>
         <div className="bg-white p-6 mb-6 mt-8 m-10">
