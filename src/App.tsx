@@ -10,6 +10,7 @@ import CategoryList from "./pages/AdminPage/Category/CategoryList";
 import ManagementPage from "./pages/AdminPage/Bill/BillList";
 import Profile from "./pages/CustomerPage/Profile";
 import UserProfile from "./pages/CustomerPage/UserProfile";
+import OrderConfirmation from "./pages/CustomerPage/ConfirmPage";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/detail" element={<BookDetail />} />
           <Route path="/profile" element={<Profile/>}/>
           <Route path="/user_profile" element={<UserProfile/>}/>
+          <Route path="/confirm" element={<OrderConfirmation/>}/>
         </Route>
         <Route path='/' element={<AdminLayout />}>
           <Route path="/admin" element={<AdminPage />} />

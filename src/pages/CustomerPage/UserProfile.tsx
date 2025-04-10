@@ -1,55 +1,78 @@
 import React from "react";
 import { FaUser, FaBell, FaBox, FaExchangeAlt, FaMapMarkerAlt, FaCreditCard, FaStar, FaEye, FaHeart, FaCommentDots, FaShareAlt, FaShieldAlt, FaTag, FaLock, FaEnvelope, FaPhone, FaFacebook, FaGoogle } from "react-icons/fa";
-
+import { Link } from 'react-router-dom';
 const UserProfile = () => {
   return (
     <div className="flex justify-center bg-gray-100 w-[1240px] h-[751px] mx-auto py-10">
-      {/* Sidebar */}
-      <div className=" p-6 rounded-lg  w-1/4 h-full flex flex-col  text-xs flex-shrink-0 overflow-y-auto">
-        <h2 className="text-sm font-semibold text-gray-800 mb-4">Tài khoản của</h2>
-        <p className="text-base font-bold text-gray-900 mb-4">Tài khoản Google</p>
-        <ul className="space-y-1 flex-1 text-gray-700">
-          <li className="flex items-center font-medium bg-gray-200 p-2 rounded text-blue-600">
-            <FaUser className="mr-2" /> Thông tin tài khoản
-          </li>
-          <li className="flex items-center p-2 hover:bg-gray-200 rounded">
-            <FaBell className="mr-2" /> Thông báo của tôi
-          </li>
-          <li className="flex items-center p-2 hover:bg-gray-200 rounded">
-            <FaBox className="mr-2" /> Quản lý đơn hàng
-          </li>
-          <li className="flex items-center p-2 hover:bg-gray-200 rounded">
-            <FaExchangeAlt className="mr-2" /> Quản lý đổi trả
-          </li>
-          <li className="flex items-center p-2 hover:bg-gray-200 rounded">
-            <FaMapMarkerAlt className="mr-2" /> Số địa chỉ
-          </li>
-          <li className="flex items-center p-2 hover:bg-gray-200 rounded">
-            <FaCreditCard className="mr-2" /> Thông tin thanh toán
-          </li>
-          <li className="flex items-center p-2 hover:bg-gray-200 rounded">
-            <FaStar className="mr-2" /> Đánh giá sản phẩm
-          </li>
-          <li className="flex items-center p-2 hover:bg-gray-200 rounded">
-            <FaEye className="mr-2" /> Sản phẩm bạn đã xem
-          </li>
-          <li className="flex items-center p-2 hover:bg-gray-200 rounded">
-            <FaHeart className="mr-2" /> Sản phẩm yêu thích
-          </li>
-          <li className="flex items-center p-2 hover:bg-gray-200 rounded">
-            <FaCommentDots className="mr-2" /> Nhận xét của tôi
-          </li>
-          <li className="flex items-center p-2 hover:bg-gray-200 rounded">
-            <FaShareAlt className="mr-2" /> Chia sẻ có lời
-          </li>
-          <li className="flex items-center p-2 hover:bg-gray-200 rounded">
-            <FaShieldAlt className="mr-2" /> Hợp đồng bảo hiểm
-          </li>
-          <li className="flex items-center p-2 hover:bg-gray-200 rounded">
-            <FaTag className="mr-2" /> Mã giảm giá
-          </li>
-        </ul>
+      <div className="w-1/4 pr-4">
+
+      {/* User Info */}
+      <div className="flex items-center mb-6">
+        <div className="w-[48px] h-[48px] bg-gray-300 rounded-full mr-3" />
+        <div className="flex flex-col">
+          <p className="text-sm text-gray-500">Tài khoản của</p>
+          <p className="text-base font-semibold text-gray-800">Vũ Anh Tú</p>
+        </div>
       </div>
+
+      {/* Sidebar Menu */}
+      <ul className="space-y-3 text-sm text-gray-700">
+        <Link to="/user_profile">
+          <li className="flex items-center gap-3 px-2 py-2 rounded hover:bg-gray-100 cursor-pointer transition text-blue-600 font-medium bg-gray-100">
+            <FaUser size={16} />
+            Thông tin tài khoản
+          </li>
+        </Link>
+        <li className="flex items-center gap-3 px-2 py-2 rounded hover:bg-gray-100 cursor-pointer">
+          <FaBell size={16} />
+          Thông báo của tôi
+        </li>
+        <li className="flex items-center gap-3 px-2 py-2 rounded hover:bg-gray-100 cursor-pointer">
+          <FaBox size={16} />
+          Quản lý đơn hàng
+        </li>
+        <li className="flex items-center gap-3 px-2 py-2 rounded hover:bg-gray-100 cursor-pointer">
+          <FaExchangeAlt size={16} />
+          Quản lý đổi trả
+        </li>
+        <li className="flex items-center gap-3 px-2 py-2 rounded hover:bg-gray-100 cursor-pointer">
+          <FaMapMarkerAlt size={16} />
+          Sổ địa chỉ
+        </li>
+        <li className="flex items-center gap-3 px-2 py-2 rounded hover:bg-gray-100 cursor-pointer">
+          <FaCreditCard size={16} />
+          Thông tin thanh toán
+        </li>
+        <li className="flex items-center gap-3 px-2 py-2 rounded hover:bg-gray-100 cursor-pointer">
+          <FaStar size={16} />
+          Đánh giá sản phẩm
+        </li>
+        <li className="flex items-center gap-3 px-2 py-2 rounded hover:bg-gray-100 cursor-pointer">
+          <FaEye size={16} />
+          Sản phẩm đã xem
+        </li>
+        <li className="flex items-center gap-3 px-2 py-2 rounded hover:bg-gray-100 cursor-pointer">
+          <FaHeart size={16} />
+          Sản phẩm yêu thích
+        </li>
+        <li className="flex items-center gap-3 px-2 py-2 rounded hover:bg-gray-100 cursor-pointer">
+          <FaCommentDots size={16} />
+          Nhận xét của tôi
+        </li>
+        <li className="flex items-center gap-3 px-2 py-2 rounded hover:bg-gray-100 cursor-pointer">
+          <FaShareAlt size={16} />
+          Chia sẻ có lời
+        </li>
+        <li className="flex items-center gap-3 px-2 py-2 rounded hover:bg-gray-100 cursor-pointer">
+          <FaShieldAlt size={16} />
+          Hợp đồng bảo hiểm
+        </li>
+        <li className="flex items-center gap-3 px-2 py-2 rounded hover:bg-gray-100 cursor-pointer">
+          <FaTag size={16} />
+          Mã giảm giá
+        </li>
+      </ul>
+    </div>
       
       {/* User Profile Form */}
       <div className="bg-white p-6 rounded-lg shadow w-3/4 flex h-full">

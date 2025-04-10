@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function Profile() {
     return (
-        <div className=" bg-[#F5F5FA] p-6 flex">
+        <div className=" bg-[#F5F5FA] p-20 flex">
             {/* Sidebar */}
             <div className="w-1/4 rounded-xl ">
                 <p className="text-gray-500 text-l">
