@@ -126,7 +126,7 @@ const ProductDetail = () => {
                         items.map((book) => (
                             <div key={book.id} className="bg-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow h-full flex flex-col">
                                 <img
-                                    src={book.images[0]?.small_url || '/placeholder-book.jpg'}
+                                    src={book.images[0]?.large_url || '/placeholder-book.jpg'}
                                     alt={book.name}
                                     className="w-full h-40 object-cover mb-2 rounded"
                                 />
@@ -197,7 +197,7 @@ const ProductDetail = () => {
                         {product.images.map((img, index) => (
                             <img
                                 key={index}
-                                src={img.small_url}
+                                src={img.large_url}
                                 alt={`Ảnh ${index + 1}`}
                                 className={`w-16 h-20 object-cover rounded-lg cursor-pointer border-2 ${
                                     selectedImage === img.large_url ? "border-blue-500" : "border-gray-300"
@@ -342,7 +342,7 @@ const ProductDetail = () => {
                 <div className="grid grid-cols-[auto_1fr] items-center gap-3 pb-4 border-b border-gray-300">
                     <img src="/src/images/tikiCircle.png" alt="Tiki" className="h-8" />
                     <div className="grid grid-rows-2 items-start gap-1">
-                        <h3 className="text-lg font-semibold leading-tight">{product.current_seller.name}</h3>
+                        <h3 className="text-lg font-semibold leading-tight">Nhà sách Tiki</h3>
                         <img src="/src/images/official.png" alt="Official" className="h-5 mt-[-2px]" />
                     </div>
                 </div>
