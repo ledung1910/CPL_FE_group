@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Book } from "../../../interfaces";
 import { getBooks } from "../../api/book.service";
-import { useParams } from "react-router-dom";////
+import { useParams, Link } from "react-router-dom";
 
 type BookShowProps = {
   filters: {
@@ -9,15 +9,14 @@ type BookShowProps = {
     topDeal: boolean;
     freeshipExtra: boolean;
     rating: boolean;
-    sortBy: string; 
+    sortBy: string;
   };
   keyword: string;
 };
 
 const BookItem: React.FC<{ book: Book }> = ({ book }) => {
   const [imgSrc, setImgSrc] = useState(
-    book.images?.[0]?.large_url ||
-    "/placeholder-book.jpg"
+    book.images?.[0]?.large_url || "/placeholder-book.jpg"
   );
 
   const discount =
@@ -37,7 +36,7 @@ const BookItem: React.FC<{ book: Book }> = ({ book }) => {
   };
 
   return (
-    <div className="w-full mb-6 bg-white relative pb-12">
+    <div className="flex flex-col h-full w-full bg-white relative min-h-[400px]">
       <div className="relative aspect-[3/4] bg-gray-100 overflow-hidden mb-3">
         <img
           src={imgSrc}
@@ -60,7 +59,7 @@ const BookItem: React.FC<{ book: Book }> = ({ book }) => {
         />
       </div>
 
-      <div className="flex gap-2 items-end mb-1 pr-2 pl-2">
+      <div className="flex gap-2 items-end mb-1 px-2">
         <span className="text-red-500 font-medium text-lg">
           {formatPrice(book.current_seller?.price)}
         </span>
@@ -72,26 +71,27 @@ const BookItem: React.FC<{ book: Book }> = ({ book }) => {
       </div>
 
       {book.authors?.[0]?.name && (
-        <p className="text-sm text-gray-600 mb-1 line-clamp-1 pr-2 pl-2 pt-2">
+        <p className="text-sm text-gray-600 mb-1 line-clamp-1 px-2 pt-2">
           {book.authors[0].name}
         </p>
       )}
 
-      <h3 className="font-normal text-sm line-clamp-2 pr-2 pl-2">
+      <h3 className="font-normal text-sm line-clamp-2 px-2">
         {book.name}
       </h3>
 
-      <div className="flex items-center mt-2 pl-2 pb-15">
+      <div className="flex items-center mt-2 px-2 mb-20">
         {book.rating_average ? (
           <>
             <div className="flex mr-1">
               {[...Array(5)].map((_, i) => (
                 <svg
                   key={`star-${book.id}-${i}`}
-                  className={`w-3 h-3 ${i < Math.floor(book.rating_average)
-                    ? "text-yellow-400"
-                    : "text-gray-300"
-                    }`}
+                  className={`w-3 h-3 ${
+                    i < Math.floor(book.rating_average)
+                      ? "text-yellow-400"
+                      : "text-gray-300"
+                  }`}
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -110,7 +110,8 @@ const BookItem: React.FC<{ book: Book }> = ({ book }) => {
         )}
       </div>
 
-      <div className="absolute bottom-2 left-0 right-0 px-4">
+      {/* Giao hàng - đẩy xuống đáy bằng mt-auto */}
+      <div className="mt-auto px-4">
         <div className="py-1 px-1 text-sm text-gray-500 flex items-center gap-2 border-t border-gray-300 bg-white rounded font-medium">
           {book.is_ship_now ? (
             <>
@@ -130,8 +131,11 @@ const BookItem: React.FC<{ book: Book }> = ({ book }) => {
   );
 };
 
-const BookShow: React.FC<BookShowProps> = ({ filters,keyword }) => {
+
+const BookShow: React.FC<BookShowProps> = ({ filters, keyword }) => {
   const [books, setBooks] = useState<Book[]>([]);
+  const { category } = useParams();
+  const categoryName = decodeURIComponent(category || "");
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -145,20 +149,17 @@ const BookShow: React.FC<BookShowProps> = ({ filters,keyword }) => {
     fetchBooks();
   }, []);
 
-  // Apply filters
   const keywordLower = keyword.toLowerCase().trim();
-  const { category } = useParams();////
-  const categoryName = decodeURIComponent(category || "");/////
+
   const filteredBooks = books
     .filter((book) => {
-      /////
       if (
         categoryName &&
         (!book.categories || book.categories.name !== categoryName)
       ) {
         return false;
       }
-      /////
+
       if (
         keywordLower &&
         !book.name.toLowerCase().includes(keywordLower) &&
@@ -168,26 +169,31 @@ const BookShow: React.FC<BookShowProps> = ({ filters,keyword }) => {
       ) {
         return false;
       }
+
       if (filters.shipNow && !book.is_ship_now) return false;
       if (filters.topDeal && !book.is_top_deal) return false;
       if (filters.freeshipExtra && !book.is_freeship_extra) return false;
       if (filters.rating && book.rating_average < 4) return false;
+
       return true;
     })
     .sort((a, b) => {
       switch (filters.sortBy) {
         case "priceAsc":
-          return (a.current_seller?.price || 0) - (b.current_seller?.price || 0);
+          return (
+            (a.current_seller?.price || 0) - (b.current_seller?.price || 0)
+          );
         case "priceDesc":
-          return (b.current_seller?.price || 0) - (a.current_seller?.price || 0);
+          return (
+            (b.current_seller?.price || 0) - (a.current_seller?.price || 0)
+          );
         case "rating":
           return (b.rating_average || 0) - (a.rating_average || 0);
-          case "sold": {
-            const soldA = parseInt(String(a.quantity_sold?.value ?? "0"));
-            const soldB = parseInt(String(b.quantity_sold?.value ?? "0"));
-            return soldB - soldA;
-          }
-          
+        case "sold": {
+          const soldA = parseInt(String(a.quantity_sold?.value ?? "0"));
+          const soldB = parseInt(String(b.quantity_sold?.value ?? "0"));
+          return soldB - soldA;
+        }
         default:
           return 0;
       }
@@ -197,7 +203,13 @@ const BookShow: React.FC<BookShowProps> = ({ filters,keyword }) => {
     <div className="container mx-auto py-6">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {filteredBooks.map((book) => (
-          <BookItem key={`book-${book.id}`} book={book} />
+          <Link
+            to={`/detail/${book.id}`}
+            key={`book-${book.id}`}
+            className="hover:opacity-80 transition-all"
+          >
+            <BookItem book={book} />
+          </Link>
         ))}
       </div>
     </div>
