@@ -22,7 +22,7 @@ export interface Author {
 }
 
 export interface Category {
-    id: string;
+    id: number;
     name: string;
 }
 export interface QuantitySold{
