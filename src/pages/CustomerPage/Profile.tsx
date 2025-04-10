@@ -5,7 +5,7 @@ import { faUser, faBell, faBookOpen } from '@fortawesome/free-solid-svg-icons'
 
 export default function Profile() {
     return (
-        <div className=" bg-[#F5F5FA] mt-2 flex mr-20  ml-20">
+        <div className=" bg-[#F5F5FA] p-20 flex">
             {/* Sidebar */}
             <div className="w-1/5 rounded-xl">
                 <p className="text-gray-500 text-l">
