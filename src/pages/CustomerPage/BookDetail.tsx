@@ -340,6 +340,7 @@ const ProductDetail = () => {
                 <div className="grid grid-cols-[auto_1fr] items-center gap-3 pb-4 border-b border-gray-300">
                     <img src="/src/images/tikiCircle.png" alt="Tiki" className="h-8" />
                     <div className="grid grid-rows-2 items-start gap-1">
+                        <h3 className="text-lg font-semibold leading-tight">Nhà sách Tiki</h3>
                         <img src="/src/images/official.png" alt="Official" className="h-5 mt-[-2px]" />
                     </div>
                 </div>
