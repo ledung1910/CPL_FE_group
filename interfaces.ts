@@ -60,7 +60,6 @@ export interface Address {
     street: string;
     city: string;
     state: string;
-    is_default: boolean;
 }
 
 export interface Order {
@@ -70,7 +69,6 @@ export interface Order {
     total_amount: number;
     status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
     created_at: string;
-    updated_at: string;
     payment_method: string;
     shipping_address: Address;
 }
