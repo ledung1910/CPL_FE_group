@@ -2,10 +2,14 @@ import { useState, useEffect } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight, faChevronLeft, faStar } from "@fortawesome/free-solid-svg-icons";
-import { Book, ApiResponse } from '../../../interfaces';
+import { Book } from '../../../interfaces';
 import usePagination from '../../hooks/usePagination';
+import { getBooks, getBookById } from "../../api/book.service";
+import { useParams } from 'react-router-dom';
+
 
 const ProductDetail = () => {
+    const { id } = useParams<{ id: string }>();
     const [product, setProduct] = useState<Book | null>(null);
     const [books, setBooks] = useState<Book[]>([]);
     const [loading, setLoading] = useState(true);
@@ -16,30 +20,28 @@ const ProductDetail = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            if (!id) return;
             try {
-                const response = await fetch('/api.json');
-                if (!response.ok) throw new Error('Không thể tải dữ liệu');
-
-                const data: ApiResponse = await response.json();
-
-                if (data.books?.length > 0) {
-                    setBooks(data.books);
-                    const mainProduct = data.books[0];
-                    setProduct(mainProduct);
-                    setSelectedImage(mainProduct.images[0]?.large_url || '');
-                } else {
-                    throw new Error('Không có sản phẩm nào');
-                }
+                const [booksData, bookDetail] = await Promise.all([
+                    getBooks(),
+                    getBookById(id) // id này bạn có thể lấy từ URL params
+                ]);
+    
+                if (booksData.length === 0) throw new Error('Không có sản phẩm nào');
+    
+                setBooks(booksData);
+                setProduct(bookDetail);
+                setSelectedImage(bookDetail.images[0]?.large_url || '');
             } catch (err) {
                 setError(err instanceof Error ? err.message : 'Lỗi không xác định');
             } finally {
                 setLoading(false);
             }
         };
-
+    
         fetchData();
-    }, []);
-
+    }, [id]); // nhớ truyền `id` vào dependency nếu nó thay đổi theo route
+    
     // Lọc sách cùng category (trừ sách hiện tại)
     const relatedBooks = product 
         ? books.filter(book => 
