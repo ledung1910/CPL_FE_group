@@ -12,15 +12,17 @@ import Profile from "./pages/CustomerPage/Profile";
 import UserProfile from "./pages/CustomerPage/UserProfile";
 import Checkout from "./pages/CustomerPage/Checkout";
 import Bookshow from "./shared/component/Bookshow";
+import ScrollToTop from "./shared/component/ScrollToTop";
 
 const App = () => {
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<CustomerLayout />}>
           <Route path="/" element={<HomePage />} />
           {/*route category test */}
-          <Route path="/category/:category"
+          <Route path="/:category"
             element={
               <Bookshow
                 filters={{
@@ -35,7 +37,7 @@ const App = () => {
             }
           />
           {/* */}
-          <Route path="/detail" element={<BookDetail />} />
+          <Route path="/detail/:id" element={<BookDetail />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/user_profile" element={<UserProfile />} />
           <Route path="/checkout" element={<Checkout />} />

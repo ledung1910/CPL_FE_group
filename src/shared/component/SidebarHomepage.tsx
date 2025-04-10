@@ -1,4 +1,3 @@
-// SidebarHomepage.tsx
 import React, { useEffect, useState } from "react";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
@@ -71,7 +70,7 @@ const SidebarHomepage = () => {
 
   const handleCategoryClick = (name: string) => {
     const encodedName = encodeURIComponent(name);
-    navigate(`/category/${encodedName}`);
+    navigate(`/${encodedName}`);
   };
 
   return (
