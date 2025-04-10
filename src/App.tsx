@@ -12,13 +12,14 @@ import Profile from "./pages/CustomerPage/Profile";
 import UserProfile from "./pages/CustomerPage/UserProfile";
 import OrderConfirmation from "./pages/CustomerPage/ConfirmPage";
 import Checkout from "./pages/CustomerPage/Checkout";
+import OrderLayout from "./shared/layouts/OrderLayout"
+import ConfirmLayout from "./shared/layouts/ConfirmLayout"
+import { AuthProvider } from "./context/AuthContext";
 import Bookshow from "./shared/component/Bookshow";
 import ScrollToTop from "./shared/component/ScrollToTop";
-import OrderLayout from "./shared/layouts/OrderLayout";
-import ConfirmLayout from "./shared/layouts/ConfirmLayout";
-
 const App = () => {
   return (
+    <AuthProvider>
     <Router>
       <ScrollToTop />
       <Routes>
@@ -60,6 +61,7 @@ const App = () => {
         </Route>
       </Routes>
     </Router>
+      </AuthProvider>
   );
 };
 
