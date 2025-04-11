@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { FaTrash, FaSearch, FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
+import { FaBan, FaSearch, FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 
-interface IUser {
-    id: number;
+interface Address {
+    street?: string;
+    city?: string;
+    country?: string;
+}
+
+export interface User {
+    id: string;
+    name: string;
     email: string;
-    password: string;
+    phone?: string;
+    address?: Address;
+    orders?: any[];
 }
 
 const UserManagement = () => {
-    const [users, setUsers] = useState<IUser[]>([]);
+    const [users, setUsers] = useState<User[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
-    const [sortConfig, setSortConfig] = useState<{ key: keyof IUser; direction: "asc" | "desc" } | null>(null);
+    const [sortConfig, setSortConfig] = useState<{ key: keyof User; direction: "asc" | "desc" } | null>(null);
 
     useEffect(() => {
         fetch("/api.json")
@@ -22,31 +31,23 @@ const UserManagement = () => {
             .catch((err) => console.error("Lỗi API:", err));
     }, []);
 
-    const deleteUser = (id: number) => {
+    const deleteUser = (id: string) => {
         setUsers(users.filter(user => user.id !== id));
     };
 
-    // Lọc danh sách theo từ khóa tìm kiếm
     const filteredUsers = users.filter(user =>
         user.email.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    // Hàm sắp xếp
     const sortedUsers = [...filteredUsers].sort((a, b) => {
         if (!sortConfig) return 0;
-
         const { key, direction } = sortConfig;
         const order = direction === "asc" ? 1 : -1;
 
-        if (typeof a[key] === "number" && typeof b[key] === "number") {
-            return order * ((a[key] as number) - (b[key] as number));
-        } else {
-            return order * String(a[key]).localeCompare(String(b[key]));
-        }
+        return order * String(a[key] ?? "").localeCompare(String(b[key] ?? ""));
     });
 
-    // Thay đổi trạng thái sắp xếp
-    const handleSort = (key: keyof IUser) => {
+    const handleSort = (key: keyof User) => {
         let direction: "asc" | "desc" = "asc";
         if (sortConfig && sortConfig.key === key && sortConfig.direction === "asc") {
             direction = "desc";
@@ -54,8 +55,7 @@ const UserManagement = () => {
         setSortConfig({ key, direction });
     };
 
-    // Biểu tượng sắp xếp
-    const getSortIcon = (key: keyof IUser) => {
+    const getSortIcon = (key: keyof User) => {
         if (!sortConfig || sortConfig.key !== key) return <FaSort />;
         return sortConfig.direction === "asc" ? <FaSortUp /> : <FaSortDown />;
     };
@@ -83,12 +83,14 @@ const UserManagement = () => {
                             <th className="px-4 py-3 cursor-pointer" onClick={() => handleSort("id")}>
                                 ID {getSortIcon("id")}
                             </th>
+                            <th className="px-4 py-3 cursor-pointer" onClick={() => handleSort("name")}>
+                                Tên {getSortIcon("name")}
+                            </th>
                             <th className="px-4 py-3 cursor-pointer" onClick={() => handleSort("email")}>
                                 Email {getSortIcon("email")}
                             </th>
-                            <th className="px-4 py-3 cursor-pointer" onClick={() => handleSort("password")}>
-                                Mật khẩu {getSortIcon("password")}
-                            </th>
+                            <th className="px-4 py-3">SĐT</th>
+                            <th className="px-4 py-3">Địa chỉ</th>
                             <th className="px-4 py-3">Hành động</th>
                         </tr>
                     </thead>
@@ -97,21 +99,27 @@ const UserManagement = () => {
                             sortedUsers.map((user) => (
                                 <tr key={user.id} className="text-center border-b border-gray-700">
                                     <td className="px-4 py-3">{user.id}</td>
+                                    <td className="px-4 py-3">{user.name}</td>
                                     <td className="px-4 py-3">{user.email}</td>
-                                    <td className="px-4 py-3">{user.password}</td>
+                                    <td className="px-4 py-3">{user.phone || "—"}</td>
                                     <td className="px-4 py-3">
-                                        <button 
-                                            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-all shadow-md flex items-center gap-2"
-                                            onClick={() => deleteUser(user.id)}
+                                        {user.address
+                                            ? `${user.address.street ?? ""}, ${user.address.city ?? ""}, ${user.address.country ?? ""}`
+                                            : "—"}
+                                    </td>
+                                    <td className="px-4 py-3">
+                                        <button
+                                            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-all shadow-md flex items-center gap-2"
+                                            onClick={() => deleteUser(user.id)} // bạn có thể đổi thành handleBanUser nếu cần soft ban
                                         >
-                                            <FaTrash /> Xóa
+                                            <FaBan /> Ban
                                         </button>
                                     </td>
                                 </tr>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={4} className="px-4 py-3 text-center text-gray-400">Không có dữ liệu</td>
+                                <td colSpan={6} className="px-4 py-3 text-center text-gray-400">Không có dữ liệu</td>
                             </tr>
                         )}
                     </tbody>
