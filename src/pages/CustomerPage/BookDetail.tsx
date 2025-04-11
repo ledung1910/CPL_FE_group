@@ -97,7 +97,6 @@ const ProductDetail = () => {
                 <h2 className="text-lg font-semibold">{title}</h2>
                 {onViewMore && items.length > 0 && (
                     <button onClick={onViewMore} className="text-blue-500 text-sm flex items-center hover:underline">
-                        Xem thêm <FontAwesomeIcon icon={faChevronRight} className="ml-1" />
                     </button>
                 )}
             </div>

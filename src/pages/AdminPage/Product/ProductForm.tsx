@@ -16,7 +16,7 @@ const initialBookDefault: Omit<Book, "id"> = {
   categories: { id: 0, name: "" },
   current_seller: { price: 0, is_best_store: false },
   description: "",
-  images: [{ id: "", large_url: "" }],
+  images: [],
   original_price: 0,
   specifications: [],
   is_ship_now: false,
@@ -104,21 +104,19 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
     setImages(newImages);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (images.length === 0) {
-      alert("Vui lòng chọn ít nhất một ảnh.");
-      return;
-    }
-  
-    const fullBook: Book = {
+    const fullBook = {
       ...book,
-      id: initialBook?.id ?? Date.now().toString(),
       images,
     };
-  
-    onAddBook(fullBook);
-    if (!initialBook) setBook(initialBookDefault);
+    if (initialBook) {
+      await onAddBook({ ...fullBook, id: initialBook.id });
+    } else {
+      await onAddBook(fullBook);
+      setBook(initialBookDefault);
+      setImages([]);
+    }
   };
 
   return (
@@ -343,6 +341,7 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
 
                 <div className="flex flex-wrap gap-4 mt-3">
                   {images.map((img, index) => (
+                    img.large_url && (
                     <div key={index} className="relative w-24 h-24">
                       <img
                         src={img.large_url}
@@ -358,6 +357,7 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
                         ×
                       </button>
                     </div>
+                    )
                   ))}
                 </div>
 
