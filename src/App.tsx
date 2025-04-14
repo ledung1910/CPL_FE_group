@@ -24,6 +24,7 @@ import Checkout from "./pages/CustomerPage/Checkout";
 //Component
 import { AuthProvider } from "./context/AuthContext";
 import ScrollToTop from "./shared/component/ScrollToTop";
+import Cart from "./pages/CustomerPage/Cart";
 import PrivateRoute from "./shared/component/PrivateRoute"
 import AdminLogin from "./pages/AdminPage/AdminLogin";
 
@@ -38,6 +39,7 @@ const App = () => {
             <Route path="/detail/:id" element={<BookDetail />} />
             <Route path="/order_tracking" element={<OrderManagement />} />
             <Route path="/user_profile" element={<UserProfile />} />
+            <Route path="/cart" element={<Cart/>} />
           </Route>
           <Route path="/admin" element={
               <PrivateRoute requiredRole="Admin">
