@@ -79,20 +79,16 @@ const BookList = () => {
     setIsModalOpen(true);
   };
 
-  const handleAddOrUpdateBook = async (bookData: Book | Omit<Book, "id">) => {
-    try {
-      if ("id" in bookData && bookData.id) {
-        await updateBook(bookData.id, bookData);
-      } else {
-        await createBook(bookData);
-      }
-      setIsModalOpen(false);
-      await fetchBooks();
-    } catch (err) {
-      console.error("Failed to save book:", err);
-      setError("Không thể lưu sách. Vui lòng thử lại.");
-    }
-  };
+const handleAddOrUpdateBook = async (bookData: Book | Omit<Book, "id">) => {
+  if ("id" in bookData) {
+    await updateBook(bookData.id, bookData);
+  } else {
+    await createBook(bookData);
+  }
+  setIsModalOpen(false);
+  fetchBooks();
+};
+
 
   if (isLoading) {
     return (
