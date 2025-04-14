@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { ArrowLeft } from "lucide-react";
+import { IoClose } from 'react-icons/io5';
+
 
 interface RegisterPopupProps {
   isOpen: boolean;
@@ -35,9 +37,9 @@ const RegisterPopup: React.FC<RegisterPopupProps> = ({ isOpen, onClose, onSwitch
     }
 
     try {
-      await register(fullName, email, password, phone); 
+      await register(fullName, email, password, phone);
       onClose();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message || 'Đăng ký thất bại');
     }
@@ -46,13 +48,12 @@ const RegisterPopup: React.FC<RegisterPopupProps> = ({ isOpen, onClose, onSwitch
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-start justify-center bg-black/30 pt-20 z-1000">
-      <button className="absolute top-[5rem] right-[calc(50%-390px)] bg-white rounded-full p-4 w-12 h-12 shadow-lg z-10"
-        onClick={onClose}>
-        <i className="fa fa-times text-gray-500 text-3xl"></i>
-      </button>
-
-      <div className="bg-white w-[780px] rounded-2xl shadow-lg h-auto flex">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+      <div className="relative flex w-[780px] overflow-hidden rounded-2xl bg-white shadow-2xl">
+        <button className="absolute right-4 top-4 text-2xl text-gray-500 hover:text-gray-700"
+          onClick={onClose}>
+          <IoClose />
+        </button>
         <div className="w-2/3 p-6">
           <button onClick={onSwitchToLogin} className="text-gray-500 mb-4">
             <ArrowLeft size={24} />

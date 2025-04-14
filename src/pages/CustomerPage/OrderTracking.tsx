@@ -1,56 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faBell, faBookOpen } from '@fortawesome/free-solid-svg-icons'
+import SidebarProfile from "../../shared/component/SideBarProfile";
+
 
 export default function Profile() {
     return (
-        <div className=" bg-[#F5F5FA] p-20 flex">
-            {/* Sidebar */}
-            <div className="w-1/5 rounded-xl">
-                <p className="text-gray-500 text-l">
-                    <Link to="/" className="hover:underline">
-                        Trang chủ
-                    </Link>
-                    &nbsp;&gt;&nbsp;
-                    <span className=" text-black">Đơn hàng của tôi</span>
-                </p>
-                <div className="flex items-center pb-4 mt-1">
-                    <img
-                        src="https://salt.tikicdn.com/desktop/img/avatar.png"
-                        alt="Avatar"
-                        className="w-11 h-11 rounded-full mb-2 mr-3 mt-2 bg-gray-300 object-cover"
-                    />
-                    <div className="flex-col">
-                        <p className="text-gray-700 text-[14px]">Tài khoản của</p>
-                        <p className=" text-black text-xm">Vũ Anh Tú</p>
-                    </div>
-                </div>
-                <div className="space-y-4 ml-3">
-                    <div className="flex items-center gap-3 cursor-pointer hover:text-blue-600 text-gray-600">
-                        <FontAwesomeIcon icon={faUser} className="text-gray-400" />
-                        <p>Thông tin tài khoản</p>
-                    </div>
-                    <div className="flex items-center gap-3 cursor-pointer hover:text-blue-600 text-gray-600">
-                        <FontAwesomeIcon icon={faBell} className="text-gray-400" />
-                        <p>Thông báo của tôi</p>
-                    </div>
-                    <div className="flex items-center gap-3 cursor-pointer hover:text-blue-600 text-gray-600">
-                        <FontAwesomeIcon icon={faBookOpen} className="text-gray-400" />
-                        <p>Quản lý đơn hàng</p>
-                    </div>
-                </div>
-            </div>
-
+        <div className="bg-[#F5F5FA] p-5 pl-15 pr-15 flex">
+            <SidebarProfile />
             {/* Main Content */}
-            <div className="w-4/5  rounded-xl mt-13">
+            <div className="w-4/5 rounded-xl mt-12">
                 <div className="flex justify-between items-start pb-4">
-                    <div>
-                        <h2 className="text-xl mb-1 text-gray-700">Chi tiết đơn hàng #861977987 - <span className="text-black font-normal ">Đang xử lý</span></h2>
-                        <p className="text-sm text-black mt-2 ml-200">Ngày đặt hàng: 10:47 28/03/2025</p>
-                    </div>
+                    <h2 className="text-xl mb-1 text-gray-700">Chi tiết đơn hàng #861977987 - <span className="text-black font-normal ">Đang xử lý</span></h2>
                 </div>
-
+                <p className="text-sm text-black text-right mb-4 w-full">Ngày đặt hàng: 10:47 28/03/2025</p>
                 <div className="grid grid-cols-3 gap-4 mb-6">
                     <div>
                         <h3 className="mb-4 text-[14px]">ĐỊA CHỈ NGƯỜI NHẬN</h3>
@@ -94,7 +55,6 @@ export default function Profile() {
                             </thead>
                         </table>
                     </div>
-                    {/* Nội dung bảng cuộn riêng khi cần */}
                     <div className="overflow-y-auto">
                         <table className="min-w-full text-sm">
                             <tbody>
@@ -128,8 +88,6 @@ export default function Profile() {
                         </table>
                     </div>
 
-
-                    {/* Tổng kết đơn hàng */}
                     <div className="flex justify-end mt-0.5 bg-white h-50">
                         <div className="w-1/3 mr-4 mt-5 text-right">
                             <div className="flex justify-between text-sm mb-2">

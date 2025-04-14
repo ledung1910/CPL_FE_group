@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from "react";
 import SidebarProfile from "../../shared/component/SideBarProfile";
 import { useAuth } from "../../context/AuthContext";
+import userService from '../../api/user.service';
 
 const UserProfile = () => {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
 
   const [formData, setFormData] = useState({
-    name: user?.name || "",
-    email: user?.email || "",
-    phone: user?.phone || "",
+    name: "",
+    email: "",
+    phone: "",
     address: {
-      street: user?.address?.street || "",
-      city: user?.address?.city || "",
-      state: user?.address?.state || "",
+      street: "",
+      district: "",
+      city: "",
     },
   });
+
+  const [editAddress, setEditAddress] = useState(false);
+
   useEffect(() => {
     if (user) {
       setFormData({
@@ -23,14 +27,12 @@ const UserProfile = () => {
         phone: user.phone || "",
         address: {
           street: user.address?.street || "",
+          district: user.address?.district || "",
           city: user.address?.city || "",
-          state: user.address?.state || "",
         },
       });
     }
   }, [user]);
-
-
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -44,37 +46,59 @@ const UserProfile = () => {
           [key]: value,
         },
       }));
-    } else {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Dữ liệu gửi đi:", formData);
-    // TODO: Gọi API cập nhật user ở đây
+    if (!user) return;
+
+    try {
+      const updatedUser = await userService.updateUser(user.id, {
+        address: formData.address,
+      });
+
+      console.log("Cập nhật thành công:", updatedUser);
+      setUser(updatedUser);
+      setEditAddress(false);
+    } catch (error) {
+      console.error("Lỗi khi cập nhật:", error);
+      alert("Đã có lỗi xảy ra khi cập nhật!");
+    }
+  };
+
+  const handleCancel = () => {
+    // Khôi phục lại địa chỉ từ user
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        address: {
+          street: user.address?.street || "",
+          district: user.address?.district || "",
+          city: user.address?.city || "",
+        },
+      }));
+    }
+    setEditAddress(false);
   };
 
   return (
-    <div className="flex gap-6 px-32 py-8 bg-gray-50 min-h-screen">
+    <div className="bg-[#F5F5FA] p-5 pl-15 pr-15 flex">
       <SidebarProfile />
 
       <div className="flex-1">
         <div className="bg-white p-6 rounded-lg shadow border">
           <h2 className="text-xl font-semibold mb-6">Thông tin tài khoản</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
+
+          <div className="space-y-4">
             <div>
               <label className="block mb-1 font-medium">Họ và tên</label>
               <input
                 type="text"
                 name="name"
-                readOnly
                 value={formData.name}
-                onChange={handleChange}
-                className="w-full border rounded px-4 py-2"
+                readOnly
+                className="w-full border rounded px-4 py-2 bg-gray-100 cursor-not-allowed"
               />
             </div>
 
@@ -100,48 +124,77 @@ const UserProfile = () => {
               />
             </div>
 
+            {/* Địa chỉ */}
+            <div className="mt-6">
+              <div className="flex justify-between items-center">
+                <h3 className="text-lg font-semibold">Địa chỉ</h3>
+                {!editAddress && (
+                  <button
+                    onClick={() => setEditAddress(true)}
+                    className="bg-amber-400 px-4 py-2 rounded hover:bg-amber-500"
+                  >
+                    Chỉnh sửa
+                  </button>
+                )}
+              </div>
 
-            <div>
-              <label className="block mb-1 font-medium">Địa chỉ - Đường</label>
-              <input
-                type="text"
-                name="address.street"
-                value={formData.address.street}
-                onChange={handleChange}
-                className="w-full border rounded px-4 py-2"
-              />
+              <form onSubmit={handleSubmit} className="space-y-3 mt-3">
+                <div>
+                  <label className="block mb-1 font-medium">Đường</label>
+                  <input
+                    type="text"
+                    name="address.street"
+                    value={formData.address.street}
+                    onChange={handleChange}
+                    readOnly={!editAddress}
+                    className={`w-full border rounded px-4 py-2 ${!editAddress ? "bg-gray-100 cursor-not-allowed" : ""}`}
+                  />
+                </div>
+
+                <div>
+                  <label className="block mb-1 font-medium">Quận/Huyện</label>
+                  <input
+                    type="text"
+                    name="address.district"
+                    value={formData.address.district}
+                    onChange={handleChange}
+                    readOnly={!editAddress}
+                    className={`w-full border rounded px-4 py-2 ${!editAddress ? "bg-gray-100 cursor-not-allowed" : ""}`}
+                  />
+                </div>
+
+                <div>
+                  <label className="block mb-1 font-medium">Thành phố</label>
+                  <input
+                    type="text"
+                    name="address.city"
+                    value={formData.address.city}
+                    onChange={handleChange}
+                    readOnly={!editAddress}
+                    className={`w-full border rounded px-4 py-2 ${!editAddress ? "bg-gray-100 cursor-not-allowed" : ""}`}
+                  />
+                </div>
+
+                {editAddress && (
+                  <div className="flex gap-3 mt-3">
+                    <button
+                      type="submit"
+                      className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                    >
+                      Cập nhật
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleCancel}
+                      className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
+                    >
+                      Hủy
+                    </button>
+                  </div>
+                )}
+              </form>
             </div>
-
-            <div>
-              <label className="block mb-1 font-medium">Địa chỉ - Thành phố</label>
-              <input
-                type="text"
-                name="address.city"
-                value={formData.address.city}
-                onChange={handleChange}
-                className="w-full border rounded px-4 py-2"
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1 font-medium">Địa chỉ - Tỉnh/Bang</label>
-              <input
-                type="text"
-                name="address.state"
-                value={formData.address.state}
-                onChange={handleChange}
-                className="w-full border rounded px-4 py-2"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-            >
-              Lưu thay đổi
-            </button>
-          </form>
-
+          </div>
         </div>
       </div>
     </div>

@@ -106,6 +106,7 @@ const CategoryManagement = () => {
                 </div>
 
                 <select
+                    title="Sorting"
                     className="px-4 py-2 bg-gray-800 text-white rounded-lg"
                     onChange={(e) => handleSort(e.target.value)}
                 >
