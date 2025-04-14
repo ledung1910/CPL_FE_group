@@ -152,7 +152,7 @@ const BookShow: React.FC<BookShowProps> = ({ filters, keyword, category }) => {
 
   const filteredBooks = books
     .filter((book) => {
-      if (category && book.categories?.id !== category) return false;
+      if (category !== 0 && book.categories?.id !== category) return false;
 
       if (
         keywordLower &&

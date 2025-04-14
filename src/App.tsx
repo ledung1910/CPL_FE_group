@@ -24,6 +24,7 @@ import Checkout from "./pages/CustomerPage/Checkout";
 //Component
 import { AuthProvider } from "./context/AuthContext";
 import ScrollToTop from "./shared/component/ScrollToTop";
+import Cart from "./pages/CustomerPage/Cart";
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
             <Route path="/detail/:id" element={<BookDetail />} />
             <Route path="/order_tracking" element={<OrderManagement />} />
             <Route path="/user_profile" element={<UserProfile />} />
+            <Route path="/cart" element={<Cart/>} />
           </Route>
           <Route path="/" element={<AdminLayout />}>
             <Route path="/admin" element={<AdminPage />} />

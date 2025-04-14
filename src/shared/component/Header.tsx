@@ -103,9 +103,13 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
       <div className="flex items-center justify-between p-4 bg-white sticky top-0 z-50">
         {/* Logo */}
         <div className="ml-6">
-          <Link to="/">
+          <button
+            onClick={() => {
+              window.location.href = "/";
+            }}
+          >
             <img src={logo} alt="Logo" className="h-[90px] w-[110px]" />
-          </Link>
+          </button>
         </div>
 
         {/* Search */}
@@ -134,8 +138,21 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
 
           {/* Keywords */}
           <div className="flex gap-3 mt-2 text-gray-700 text-sm cursor-pointer">
-            {["Điện gia dụng", "Xe cộ", "Mẹ & bé", "Khỏe đẹp", "Nhà cửa", "Sách", "Thể thao", "Harry Potter", "Lịch 2024", "Nguyễn Nhật Ánh"].map((keyword, i) => (
-              <span key={i} className="hover:underline">{keyword}</span>
+            {[
+              "Điện gia dụng",
+              "Xe cộ",
+              "Mẹ & bé",
+              "Khỏe đẹp",
+              "Nhà cửa",
+              "Sách",
+              "Thể thao",
+              "Harry Potter",
+              "Lịch 2024",
+              "Nguyễn Nhật Ánh",
+            ].map((keyword, i) => (
+              <span key={i} className="hover:underline">
+                {keyword}
+              </span>
             ))}
           </div>
         </div>
@@ -143,8 +160,15 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
         {/* Menu phải */}
         <div className="flex items-center space-x-6 mb-10 pr-10">
           {/* Trang chủ */}
-          <Link to="/" className="flex items-center text-black gap-2 hover:text-blue-600">
-            <img src="https://salt.tikicdn.com/ts/upload/b4/90/74/6baaecfa664314469ab50758e5ee46ca.png" alt="Trang chủ" className="w-6 h-6" />
+          <Link
+            to="/"
+            className="flex items-center text-black gap-2 hover:text-blue-600"
+          >
+            <img
+              src="https://salt.tikicdn.com/ts/upload/b4/90/74/6baaecfa664314469ab50758e5ee46ca.png"
+              alt="Trang chủ"
+              className="w-6 h-6"
+            />
             Trang chủ
           </Link>
 
@@ -163,7 +187,9 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
                   />
                   {user.name}
                 </button>
-                {isDropdownOpen && <AccountDropdown onClose={() => setDropdownOpen(false)} />}
+                {isDropdownOpen && (
+                  <AccountDropdown onClose={() => setDropdownOpen(false)} />
+                )}
               </div>
             ) : (
               <button
@@ -184,7 +210,11 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
           {/* Giỏ hàng */}
           <Link to="/cart" className="hover:text-blue-600 relative">
             <div className="relative">
-              <img src="https://salt.tikicdn.com/ts/upload/51/e2/92/8ca7e2cc5ede8c09e34d1beb50267f4f.png" alt="cart" className="w-8 h-8" />
+              <img
+                src="https://salt.tikicdn.com/ts/upload/51/e2/92/8ca7e2cc5ede8c09e34d1beb50267f4f.png"
+                alt="cart"
+                className="w-8 h-8"
+              />
               <span className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-[#FF424F] text-white text-xs font-semibold min-w-[16px] h-[16px] flex items-center justify-center rounded-full">
                 0
               </span>
