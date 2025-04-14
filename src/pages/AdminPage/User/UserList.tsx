@@ -1,34 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaBan, FaSearch, FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 
 interface Address {
-    street?: string;
-    city?: string;
-    country?: string;
+    street: string;
+    city: string;
+    state: string;
 }
 
-export interface User {
+interface User {
     id: string;
     name: string;
     email: string;
     phone?: string;
     address?: Address;
-    orders?: any[];
+    orders?: any[]; // Nếu có thêm dữ liệu về đơn hàng
 }
 
-const UserManagement = () => {
+const UserManagement: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [sortConfig, setSortConfig] = useState<{ key: keyof User; direction: "asc" | "desc" } | null>(null);
 
     useEffect(() => {
-        fetch("/api.json")
-            .then((res) => res.json())
-            .then((data) => {
-                console.log("API Data:", data);
+        // Lấy dữ liệu người dùng từ API khi component được mount
+        const fetchUsers = async () => {
+            try {
+                const response = await fetch("http://localhost:3000/api.json"); // Chỉnh URL API cho phù hợp
+                const data = await response.json();
                 setUsers(data.users || []);
-            })
-            .catch((err) => console.error("Lỗi API:", err));
+            } catch (error) {
+                console.error("Error fetching users:", error);
+            }
+        };
+        fetchUsers();
     }, []);
 
     const deleteUser = (id: string) => {
@@ -43,7 +47,6 @@ const UserManagement = () => {
         if (!sortConfig) return 0;
         const { key, direction } = sortConfig;
         const order = direction === "asc" ? 1 : -1;
-
         return order * String(a[key] ?? "").localeCompare(String(b[key] ?? ""));
     });
 
@@ -64,7 +67,6 @@ const UserManagement = () => {
         <div className="p-6 mt-10 bg-gray-900 text-white min-h-screen">
             <h2 className="text-2xl font-semibold mb-6 text-center">👤 Quản lý Người Dùng</h2>
 
-            {/* Thanh tìm kiếm */}
             <div className="mb-4 flex items-center gap-2 bg-gray-800 p-3 rounded-md shadow-md">
                 <FaSearch className="text-gray-400" />
                 <input
@@ -104,13 +106,13 @@ const UserManagement = () => {
                                     <td className="px-4 py-3">{user.phone || "—"}</td>
                                     <td className="px-4 py-3">
                                         {user.address
-                                            ? `${user.address.street ?? ""}, ${user.address.city ?? ""}, ${user.address.country ?? ""}`
+                                            ? `${user.address.street ?? ""}, ${user.address.city ?? ""}, ${user.address.state ?? ""}`
                                             : "—"}
                                     </td>
                                     <td className="px-4 py-3">
                                         <button
                                             className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-all shadow-md flex items-center gap-2"
-                                            onClick={() => deleteUser(user.id)} // bạn có thể đổi thành handleBanUser nếu cần soft ban
+                                            onClick={() => deleteUser(user.id)}
                                         >
                                             <FaBan /> Ban
                                         </button>
