@@ -28,6 +28,7 @@ const ProductDetail = () => {
   const { user } = useAuth();
   const [isLoginOpen, setLoginOpen] = useState(false);
   const [isRegisterOpen, setRegisterOpen] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       if (!id) return;
@@ -51,6 +52,7 @@ const ProductDetail = () => {
 
     fetchData();
   }, [id]);
+
   const handleAddToCart = async () => {
     if (!user) {
       setLoginOpen(true);
@@ -58,7 +60,6 @@ const ProductDetail = () => {
     }
     if (!product) return;
     try {
-      // Nếu `book` là đối tượng đơn
       await cartService.addToCart({
         userId: user.id,
         bookId: product.id,
@@ -67,6 +68,17 @@ const ProductDetail = () => {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  // Mua ngay
+  const handleBuyNow = () => {
+    if (!product) return;
+    const orderItem = {
+      id: product.id,
+      quantity,
+    };
+    localStorage.setItem("latestOrder", JSON.stringify(orderItem));
+    window.location.href = "/order_tracking";
   };
 
   // Lọc sách cùng category (trừ sách hiện tại)
@@ -495,15 +507,20 @@ const ProductDetail = () => {
           </p>
         </div>
 
-        <button className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg mt-4 text-lg font-semibold transition-colors">
+        <button
+          className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg mt-4 text-lg font-semibold transition-colors"
+          onClick={handleBuyNow}
+        >
           Mua ngay
         </button>
+
         <button
           onClick={handleAddToCart}
           className="w-full border border-blue-500 text-blue-500 hover:bg-blue-50 py-3 rounded-lg mt-2 text-lg font-semibold transition-colors"
         >
           Thêm vào giỏ
         </button>
+
         <LoginPopup
           isOpen={isLoginOpen}
           onClose={() => setLoginOpen(false)}
@@ -520,6 +537,7 @@ const ProductDetail = () => {
             setLoginOpen(true);
           }}
         />
+
         <button className="w-full border border-blue-500 text-blue-500 hover:bg-blue-50 py-3 rounded-lg mt-2 text-lg font-semibold transition-colors">
           Mua trước trả sau
         </button>

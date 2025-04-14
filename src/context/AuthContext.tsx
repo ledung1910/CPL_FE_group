@@ -8,6 +8,7 @@ interface AuthContextProps {
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string, phone: string) => Promise<void>;
   logout: () => void;
+  setUser: (user: User) => void;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -19,10 +20,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const profile = await userService.getProfile();
-        setUser(profile);
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const userId = localStorage.getItem("userId");
+        if (!userId) return;
+        const profile = await userService.getProfile(Number(userId));
+        const role = profile.role ?? "User";
+        localStorage.setItem("role", role);
+        setUser({ ...profile, role });
       } catch (error) {
+        console.log(error);
         setUser(null);
       } finally {
         setLoading(false);
@@ -41,8 +46,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const response = await userService.login({ email, password });
       const { accessToken, user } = response;
+      const role = user.role ?? "User";
+
       localStorage.setItem("accessToken", accessToken);
-      setUser(user);
+      localStorage.setItem("userId", user.id.toString());
+      localStorage.setItem("role", role);
+
+      setUser({ ...user, role });
     } catch (error: any) {
       if (error.response?.status === 401 || error.response?.status === 400) {
         throw new Error("Sai email hoặc mật khẩu. Vui lòng thử lại.");
@@ -50,31 +60,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       throw new Error("Đăng nhập thất bại. Vui lòng thử lại sau.");
     }
   };
-  
 
   const register = async (name: string, email: string, password: string, phone: string) => {
     const { accessToken, user } = await userService.register({ name, email, password, phone });
+    const role = user.role ?? "User";
+
     localStorage.setItem("accessToken", accessToken);
-    setUser(user);
+    localStorage.setItem("userId", user.id.toString());
+    localStorage.setItem("role", role);
+
+    setUser({ ...user, role });
   };
 
   const logout = () => {
     userService.logout();
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("role");
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, setUser }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = (): AuthContextProps => {
+const useAuth = (): AuthContextProps => {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
+
+export { AuthContext, useAuth };

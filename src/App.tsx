@@ -7,7 +7,7 @@ import OrderLayout from "./shared/layouts/OrderLayout";
 import ConfirmLayout from "./shared/layouts/ConfirmLayout";
 
 //Admin Page
-import AdminPage from "./pages/AdminPage/adminPage";
+import AdminPage from "./pages/AdminPage/Dashboard";
 import ProductAdminPage from "./pages/AdminPage/Product/ProductList";
 import BookDetail from "./pages/CustomerPage/BookDetail";
 import UserList from "./pages/AdminPage/User/UserList";
@@ -25,6 +25,8 @@ import Checkout from "./pages/CustomerPage/Checkout";
 import { AuthProvider } from "./context/AuthContext";
 import ScrollToTop from "./shared/component/ScrollToTop";
 import Cart from "./pages/CustomerPage/Cart";
+import PrivateRoute from "./shared/component/PrivateRoute"
+import AdminLogin from "./pages/AdminPage/AdminLogin";
 
 const App = () => {
   return (
@@ -39,13 +41,19 @@ const App = () => {
             <Route path="/user_profile" element={<UserProfile />} />
             <Route path="/cart" element={<Cart/>} />
           </Route>
-          <Route path="/" element={<AdminLayout />}>
-            <Route path="/admin" element={<AdminPage />} />
-            <Route path="admin/product" element={<ProductAdminPage />} />
-            <Route path="admin/user" element={<UserList />} />
-            <Route path="admin/categories" element={<CategoryList />} />
-            <Route path="admin/bills" element={<ManagementPage />} />
+          <Route path="/admin" element={
+              <PrivateRoute requiredRole="Admin">
+                <AdminLayout />
+              </PrivateRoute>}>
+            <Route index element={<AdminPage />} />
+            <Route path="product" element={<ProductAdminPage />} />
+            <Route path="user" element={<UserList />} />
+            <Route path="categories" element={<CategoryList />} />
+            <Route path="bills" element={<ManagementPage />} />
           </Route>
+
+          <Route path="/admin-login" element={<AdminLogin />} />
+
           <Route path="/" element={<OrderLayout />}>
             <Route path="/checkout" element={<Checkout />} />
           </Route>

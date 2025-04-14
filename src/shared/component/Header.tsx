@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import LoginPopup from "../../pages/CustomerPage/Login";
 import RegisterPopup from "../../pages/CustomerPage/Register";
@@ -7,7 +7,7 @@ import logo from "../../assets/logo.png";
 
 const AccountDropdown = ({ onClose }: { onClose: () => void }) => {
   const { user, logout } = useAuth();
-
+  const navigate = useNavigate();
   return (
     <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow z-50">
       <div className="px-4 py-2 text-sm text-gray-700 border-b">
@@ -24,6 +24,7 @@ const AccountDropdown = ({ onClose }: { onClose: () => void }) => {
         onClick={() => {
           logout();
           onClose();
+          navigate("/");
         }}
         className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
       >

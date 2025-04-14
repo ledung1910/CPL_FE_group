@@ -1,72 +1,85 @@
 import { Link, useLocation } from "react-router-dom";
-import { User, Bell, BookOpen } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
 const SidebarProfile = () => {
   const { user } = useAuth();
   const location = useLocation();
-
+  
+  const breadcrumbMap: { [key: string]: string } = {
+    "/user_profile": "Tài khoản",
+    "/order_tracking": "Đơn hàng",
+    "/notifications": "Thông báo",
+  };
+  const currentPath = location.pathname;
+  const breadcrumbLabel = breadcrumbMap[currentPath] || "Tài khoản";
   const isActive = (path: string) => location.pathname === path;
 
   if (!user) return null;
 
   return (
-    <div className="w-1/4 rounded-xl">
-      <p className="text-gray-500 text-l">
-        <Link to="/" className="hover:underline">Trang chủ</Link>
-        <span className="font-bold text-black">Tài khoản</span>
+    <div className="w-1/5 rounded-xl">
+      <p className="text-gray-500 text-base mb-2">
+        <Link to="/" className="hover:underline">Trang chủ</Link> &gt;{" "}
+        <span className="text-gray-800 text-base">{breadcrumbLabel}</span>
       </p>
 
-      <div className="flex items-center pb-4 mt-3">
-        <div className="w-13 h-13 bg-gray-300 rounded-full mb-2 mr-3 mt-2"></div>
-        <div className="flex-col">
-          <p className="text-gray-500">Tài khoản của</p>
-          <p className="font-semibold text-lg">{user.name}</p>
+      <div className="flex items-center">
+        <img
+          src="/src/images/avatar.png"
+          alt="Ảnh đại diện"
+          className="w-12 h-12 bg-gray-300 rounded-full mr-3"
+        />
+        <div className="flex flex-col">
+          <p className="text-gray-500 text-sm">Tài khoản của</p>
+          <p className="font-semibold text-[15px]">{user.name}</p>
         </div>
       </div>
 
-      <div className="space-y-4">
-        <Link to="/user_profile">
-          <div
-            className={`flex items-center gap-3 text-sm px-2 py-2 rounded cursor-pointer ${
-              isActive("/user_profile")
-                ? "text-blue-600 font-medium bg-blue-50"
-                : "text-gray-700 hover:text-blue-600"
-            }`}
-          >
-            <User size={20} />
-            <p>Thông tin tài khoản</p>
-          </div>
-        </Link>
-
-        <Link to="/notifications">
-          <div
-            className={`flex items-center gap-3 text-sm px-2 py-2 rounded cursor-pointer ${
-              isActive("/notifications")
-                ? "text-blue-600 font-medium bg-blue-50"
-                : "text-gray-700 hover:text-blue-600"
-            }`}
-          >
-            <Bell size={20} />
-            <p>Thông báo của tôi</p>
-          </div>
-        </Link>
-
-        <Link to="/order_tracking">
-          <div
-            className={`flex items-center gap-3 text-sm px-2 py-2 rounded cursor-pointer ${
-              isActive("/order_tracking")
-                ? "text-blue-600 font-medium bg-blue-50"
-                : "text-gray-700 hover:text-blue-600"
-            }`}
-          >
-            <BookOpen size={20} />
-            <p>Quản lý đơn hàng</p>
-          </div>
-        </Link>
+      <div className="space-y-2">
+        <SidebarLink
+          to="/user_profile"
+          icon="/src/images/user.png"
+          label="Thông tin tài khoản"
+          active={isActive("/user_profile")}
+        />
+        <SidebarLink
+          to=""
+          icon="/src/images/noti.png"
+          label="Thông báo của tôi"
+          active={isActive("/notifications")}
+        />
+        <SidebarLink
+          to="/order_tracking"
+          icon="/src/images/order.png"
+          label="Quản lý đơn hàng"
+          active={isActive("/order_tracking")}
+        />
       </div>
     </div>
   );
 };
+
+const SidebarLink = ({
+  to,
+  icon,
+  label,
+  active,
+}: {
+  to: string;
+  icon: string;
+  label: string;
+  active: boolean;
+}) => (
+  <Link to={to}>
+    <div
+      className={`inline-flex items-center gap-3 text-sm px-2 py-2 rounded-lg w-fit ${
+        active ? "text-blue-600 font-medium" : "text-gray-700 hover:text-blue-600"
+      }`}
+    >
+      <img src={icon} alt={label} className="w-7 h-7" />
+      <p>{label}</p>
+    </div>
+  </Link>
+);
 
 export default SidebarProfile;

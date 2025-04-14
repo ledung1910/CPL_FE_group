@@ -82,7 +82,7 @@ const HomePage = () => {
   }, [categoryName, categories]);
   return (
     <>
-      <div className="bg-gray-100">
+      <div className="bg-gray-100 mt-4">
         {/* Breadcrumb */}
         <div className="pointer flex items-center space-x-1 text-gray-500 text-sm ml-10 mb-4">
           <span>Trang chủ</span>

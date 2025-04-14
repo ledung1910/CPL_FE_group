@@ -103,6 +103,7 @@ const OrderManagement = () => {
                                     <td className="px-4 py-3">
                                         {editingOrderId === order.id ? (
                                             <select
+                                                title="Status"
                                                 value={newStatus}
                                                 onChange={(e) => setNewStatus(e.target.value as OrderStatus)}
                                                 className="px-3 py-2 rounded-md bg-gray-700 text-white border border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"

@@ -48,18 +48,19 @@ export interface Attribute {
     value: string;
 }
 export interface User {
-    id: string;
+    id: number;
     name: string;
     email: string;
     phone?: string;
     address?: Address;
     orders?: Order[];
+    role: "User" | "Admin";
 }
 
 export interface Address {
     street: string;
     city: string;
-    state: string;
+    district: string;
 }
 
 export interface Order {
