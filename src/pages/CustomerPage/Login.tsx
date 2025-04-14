@@ -28,7 +28,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
   const handleLogin = async () => {
     setError('');
     try {
-      await login(email, password);
+      await login(email, password, "User");
       onClose();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

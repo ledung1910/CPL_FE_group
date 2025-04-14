@@ -11,7 +11,8 @@ import usePagination from "../../hooks/usePagination";
 import { getBooks, getBookById } from "../../api/book.service";
 import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { cartService } from "../../api/cart.service";
+// import { cartService } from "../../api/cart.service";
+import { useNavigate } from "react-router-dom";
 import LoginPopup from "./Login";
 import RegisterPopup from "./Register";
 
@@ -25,9 +26,10 @@ const ProductDetail = () => {
   const [expanded, setExpanded] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
-  const { user } = useAuth();
   const [isLoginOpen, setLoginOpen] = useState(false);
   const [isRegisterOpen, setRegisterOpen] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,40 +55,43 @@ const ProductDetail = () => {
     fetchData();
   }, [id]);
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = () => {
     if (!user) {
       setLoginOpen(true);
       return;
     }
-    if (!product) return;
-    try {
-      await cartService.addToCart({
-        userId: user.id,
-        bookId: product.id,
-        quantity: 1,
-      });
-    } catch (err) {
-      console.error(err);
+    if (product) {
+      const cartItem = {
+        id: product.id,
+        quantity,
+      };
+      console.log("Thêm vào giỏ hàng:", cartItem);
     }
   };
 
-  // Mua ngay
   const handleBuyNow = () => {
-    if (!product) return;
-    const orderItem = {
-      id: product.id,
-      quantity,
-    };
-    localStorage.setItem("latestOrder", JSON.stringify(orderItem));
-    window.location.href = "/order_tracking";
+    if (!user) {
+      setLoginOpen(true);
+      return;
+    }
+
+    if (product) {
+      const orderItem = {
+        id: product.id,
+        quantity,
+      };
+      localStorage.setItem("latestOrder", JSON.stringify(orderItem));
+      navigate("/checkout");
+    }
   };
+
 
   // Lọc sách cùng category (trừ sách hiện tại)
   const relatedBooks = product
     ? books.filter(
-        (book) =>
-          book.id !== product.id && book.categories.id === product.categories.id
-      )
+      (book) =>
+        book.id !== product.id && book.categories.id === product.categories.id
+    )
     : [];
 
   // Lọc top deals (is_best_store = true)
@@ -119,7 +124,7 @@ const ProductDetail = () => {
     return Math.round(
       ((product.original_price - product.current_seller.price) /
         product.original_price) *
-        100
+      100
     );
   };
 
@@ -222,13 +227,12 @@ const ProductDetail = () => {
                   ? goToTopDealPage(index)
                   : goToRelatedPage(index)
               }
-              className={`w-6 h-1.5 rounded-full transition-all duration-300 ${
-                (title.includes("Top Deals")
-                  ? currentTopDealPage
-                  : currentRelatedPage) === index
-                  ? "bg-blue-500 w-8"
-                  : "bg-gray-300"
-              }`}
+              className={`w-6 h-1.5 rounded-full transition-all duration-300 ${(title.includes("Top Deals")
+                ? currentTopDealPage
+                : currentRelatedPage) === index
+                ? "bg-blue-500 w-8"
+                : "bg-gray-300"
+                }`}
             />
           ))}
         </div>
@@ -274,11 +278,10 @@ const ProductDetail = () => {
                 }}
                 src={img.large_url}
                 alt={`Ảnh ${index + 1}`}
-                className={`w-16 h-20 object-cover rounded-lg border-2 flex-shrink-0 transition-transform duration-300 transform cursor-pointer ${
-                  selectedImage === img.large_url
-                    ? "border-blue-500"
-                    : "border-gray-300"
-                }`}
+                className={`w-16 h-20 object-cover rounded-lg border-2 flex-shrink-0 transition-transform duration-300 transform cursor-pointer ${selectedImage === img.large_url
+                  ? "border-blue-500"
+                  : "border-gray-300"
+                  }`}
                 onClick={() => {
                   setSelectedImage(img.large_url);
                   imageRefs.current[index]?.scrollIntoView({
@@ -325,11 +328,10 @@ const ProductDetail = () => {
               <FontAwesomeIcon
                 key={i}
                 icon={faStar}
-                className={`${
-                  i < Math.floor(product.rating_average || 0)
-                    ? "text-yellow-400"
-                    : "text-gray-300"
-                } w-4 h-4`}
+                className={`${i < Math.floor(product.rating_average || 0)
+                  ? "text-yellow-400"
+                  : "text-gray-300"
+                  } w-4 h-4`}
               />
             ))}
           </div>
@@ -381,9 +383,8 @@ const ProductDetail = () => {
           <h2 className="text-lg font-semibold mb-2">Mô tả sản phẩm</h2>
           <div className="relative">
             <div
-              className={`text-gray-600 transition-all ${
-                expanded ? "line-clamp-none" : "line-clamp-3"
-              }`}
+              className={`text-gray-600 transition-all ${expanded ? "line-clamp-none" : "line-clamp-3"
+                }`}
               dangerouslySetInnerHTML={{ __html: product.description }}
             />
             {!expanded && (
@@ -521,22 +522,26 @@ const ProductDetail = () => {
           Thêm vào giỏ
         </button>
 
-        <LoginPopup
-          isOpen={isLoginOpen}
-          onClose={() => setLoginOpen(false)}
-          onSwitchToRegister={() => {
-            setLoginOpen(false);
-            setRegisterOpen(true);
-          }}
-        />
-        <RegisterPopup
-          isOpen={isRegisterOpen}
-          onClose={() => setRegisterOpen(false)}
-          onSwitchToLogin={() => {
-            setRegisterOpen(false);
-            setLoginOpen(true);
-          }}
-        />
+        {!user && (
+          <>
+            <LoginPopup
+              isOpen={isLoginOpen}
+              onClose={() => setLoginOpen(false)}
+              onSwitchToRegister={() => {
+                setLoginOpen(false);
+                setRegisterOpen(true);
+              }}
+            />
+            <RegisterPopup
+              isOpen={isRegisterOpen}
+              onClose={() => setRegisterOpen(false)}
+              onSwitchToLogin={() => {
+                setRegisterOpen(false);
+                setLoginOpen(true);
+              }}
+            />
+          </>
+        )}
 
         <button className="w-full border border-blue-500 text-blue-500 hover:bg-blue-50 py-3 rounded-lg mt-2 text-lg font-semibold transition-colors">
           Mua trước trả sau
