@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { FaSearch, FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 import userService from "../../../api/user.service";
@@ -23,7 +24,7 @@ const UserManagement = () => {
 
     fetchUsers();
   }, []);
-
+  
   const filteredUsers = users.filter((user) =>
     user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -54,7 +55,6 @@ const UserManagement = () => {
       <h2 className="text-2xl font-semibold mb-6 text-center">
         👤 Quản lý Người Dùng
       </h2>
-
       {/* Thanh tìm kiếm */}
       <div className="mb-4 flex items-center gap-2 bg-gray-800 p-3 rounded-md shadow-md">
         <FaSearch className="text-gray-400" />
