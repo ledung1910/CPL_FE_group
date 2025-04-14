@@ -82,7 +82,17 @@ const ProductDetail = () => {
     const handleViewMore = () => {
         console.log("Xem thêm sản phẩm");
     };
-
+    //mua ngay
+    const handleBuyNow = () => {
+        if (!product) return;
+        const orderItem = {
+            id: product.id,
+            quantity,
+        };
+        localStorage.setItem("latestOrder", JSON.stringify(orderItem));
+        window.location.href = "/order_tracking"; // hoặc dùng navigate nếu có react-router
+    };
+    
     const renderProductGrid = (
         title: string,
         items: Book[],
@@ -385,9 +395,13 @@ const ProductDetail = () => {
                     </p>
                 </div>
 
-                <button className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg mt-4 text-lg font-semibold transition-colors">
+                <button
+                    className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg mt-4 text-lg font-semibold transition-colors"
+                    onClick={handleBuyNow}
+                >
                     Mua ngay
                 </button>
+
                 <button className="w-full border border-blue-500 text-blue-500 hover:bg-blue-50 py-3 rounded-lg mt-2 text-lg font-semibold transition-colors">
                     Thêm vào giỏ
                 </button>
