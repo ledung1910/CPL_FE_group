@@ -24,12 +24,7 @@ const UserManagement = () => {
 
     fetchUsers();
   }, []);
-
-
-//   const deleteUser = (id: string) => {
-//     setUsers((prev) => prev.filter((user) => user.id !== id));
-//   };
-
+  
   const filteredUsers = users.filter((user) =>
     user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -87,7 +82,7 @@ const UserManagement = () => {
               </th>
               <th className="px-4 py-3">SĐT</th>
               <th className="px-4 py-3">Địa chỉ</th>
-              {/* <th className="px-4 py-3">Hành động</th> */}
+              <th className="px-4 py-3">Role</th>
             </tr>
           </thead>
           <tbody className="bg-gray-800 text-gray-200">
@@ -97,20 +92,15 @@ const UserManagement = () => {
                   <td className="px-4 py-3">{user.id}</td>
                   <td className="px-4 py-3">{user.name}</td>
                   <td className="px-4 py-3">{user.email}</td>
-                  <td className="px-4 py-3">{user.phone || "—"}</td>
+                  <td className="px-4 py-3">{user.phone}</td>
                   <td className="px-4 py-3">
-                    {user.address
-                      ? `${user.address.street ?? ""}, ${user.address.city ?? ""}, ${user.address.state ?? ""}`
-                      : "—"}
+                    {user.address && (user.address.street || user.address.district || user.address.city) ? (
+                      `${user.address.street ?? ""}, ${user.address.district ?? ""}, ${user.address.city ?? ""}`
+                    ) : (
+                      "Không có dữ liệu"
+                    )}
                   </td>
-                  {/* <td className="px-4 py-3">
-                    <button
-                      className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition-all shadow-md flex items-center gap-2"
-                      onClick={() => deleteUser(user.id)}
-                    >
-                      <FaBan /> Ban
-                    </button>
-                  </td> */}
+                  <td className="px-4 py-3">{user.role}</td>
                 </tr>
               ))
             ) : (

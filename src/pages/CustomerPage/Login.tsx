@@ -30,6 +30,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
     try {
       await login(email, password);
       onClose();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       const message = err.message || 'Đăng nhập thất bại';
       if (message.toLowerCase().includes('unauthorized')) {
@@ -83,7 +84,6 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-blue-600"
             >
-              {showPassword ? 'Ẩn' : 'Hiện'}
             </button>
           </div>
 
