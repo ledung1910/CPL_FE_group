@@ -13,8 +13,8 @@ const AdminLogin = () => {
 
   const handleLogin = async () => {
     try {
-      await login(email, password);
-      const role = localStorage.getItem("role");
+      await login(email, password, "Admin");
+      const role = localStorage.getItem("admin_role");
       if (role !== "Admin") {
         setError("Bạn không có quyền truy cập trang quản trị.");
         return;
@@ -69,5 +69,6 @@ const AdminLogin = () => {
     </div>
   );
 };
+
 
 export default AdminLogin;

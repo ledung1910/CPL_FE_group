@@ -25,9 +25,11 @@ const AccountDropdown = ({ onClose }: { onClose: () => void }) => {
       </Link>
       <button
         onClick={() => {
-          logout();
-          onClose();
-          navigate("/");
+          if (user?.role) {
+            logout(user.role);
+            onClose();
+            navigate("/");
+          }
         }}
         className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
       >
