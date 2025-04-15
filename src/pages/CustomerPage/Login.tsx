@@ -30,7 +30,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
     try {
       await login(email, password, "User");
       onClose();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       const message = err.message || 'Đăng nhập thất bại';
       if (message.toLowerCase().includes('unauthorized')) {
@@ -44,8 +44,8 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="relative flex w-[780px] overflow-hidden rounded-2xl bg-white shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+      <div className="relative flex w-full max-w-3xl flex-col md:flex-row overflow-hidden rounded-2xl bg-white shadow-2xl">
         {/* Close button */}
         <button
           onClick={onClose}
@@ -55,18 +55,19 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
         </button>
 
         {/* Login form */}
-        <div className="flex w-2/3 flex-col justify-center p-8">
-          <h2 className="text-2xl font-bold mb-2">Đăng nhập bằng email</h2>
-          <p className="mb-6 text-gray-500">Nhập email và mật khẩu tài khoản Tiki</p>
+        <div className="flex w-full md:w-2/3 flex-col justify-center p-6 sm:p-8">
+          <h2 className="text-xl sm:text-2xl font-bold mb-2">Đăng nhập bằng email</h2>
+          <p className="mb-6 text-sm sm:text-base text-gray-500">
+            Nhập email và mật khẩu tài khoản Tiki
+          </p>
 
           <input
             type="email"
             placeholder="abc@email.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className={`w-full border-b p-2 mt-4 ${
-              error ? 'border-red-500' : 'border-gray-300'
-            } focus:outline-none`}
+            className={`w-full border-b p-2 mt-4 ${error ? 'border-red-500' : 'border-gray-300'
+              } focus:outline-none`}
           />
 
           <div className="relative mb-2">
@@ -75,15 +76,15 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
               placeholder="Mật khẩu"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className={`w-full border-b p-2 mt-4 ${
-                error ? 'border-red-500' : 'border-gray-300'
-              } focus:outline-none`}
+              className={`w-full border-b p-2 mt-4 ${error ? 'border-red-500' : 'border-gray-300'
+                } focus:outline-none`}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-blue-600"
             >
+              {showPassword ? 'Ẩn' : 'Hiện'}
             </button>
           </div>
 
@@ -96,8 +97,10 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
             Đăng nhập
           </button>
 
-          <div className="mt-4 flex justify-between text-sm text-gray-600">
-            <a href="#" className="text-blue-700 hover:underline">Quên mật khẩu?</a>
+          <div className="mt-4 flex flex-col sm:flex-row sm:justify-between text-sm text-gray-600 gap-2 sm:gap-0">
+            <a href="#" className="text-blue-700 hover:underline">
+              Quên mật khẩu?
+            </a>
             <span>
               Chưa có tài khoản?{' '}
               <a
@@ -114,8 +117,8 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
           </div>
         </div>
 
-        {/* Right image section */}
-        <div className="flex w-1/3 flex-col items-center justify-center bg-blue-100 p-6 text-center">
+        {/* Right image section - ẩn trên mobile */}
+        <div className="hidden md:flex w-1/3 flex-col items-center justify-center bg-blue-100 p-6 text-center">
           <img
             src="https://salt.tikicdn.com/ts/upload/df/48/21/b4d225f471fe06887284e1341751b36e.png"
             alt="Tiki Bot"
