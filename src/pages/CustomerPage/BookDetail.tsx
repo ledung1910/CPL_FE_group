@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef} from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -13,8 +13,11 @@ import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 // import { cartService } from "../../api/cart.service";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import LoginPopup from "./Login";
 import RegisterPopup from "./Register";
+
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -30,6 +33,7 @@ const ProductDetail = () => {
   const [isRegisterOpen, setRegisterOpen] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [isLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,21 +73,47 @@ const ProductDetail = () => {
     }
   };
 
-  const handleBuyNow = () => {
+  const handleBuyNow = async () => {
     if (!user) {
-      setLoginOpen(true);
-      return;
+        toast.warning("Bạn cần đăng nhập để mua sản phẩm này.");
+        setLoginOpen(true);
+        return;
     }
 
-    if (product) {
-      const orderItem = {
-        id: product.id,
-        quantity,
-      };
-      localStorage.setItem("latestOrder", JSON.stringify(orderItem));
-      navigate("/checkout");
+    if (!product) {
+        toast.error("Sản phẩm không tồn tại.");
+        return;
     }
-  };
+
+    if (quantity <= 0) {
+        toast.warning("Vui lòng chọn số lượng lớn hơn 0.");
+        return;
+    }
+
+    if (!user.address || !user.address.street || !user.address.city || !user.address.district) {
+        toast.warning("Vui lòng cập nhật đầy đủ địa chỉ giao hàng trước khi đặt hàng.");
+        return;
+    }
+
+    try {
+        const checkoutData = {
+            bookId: product.id,
+            quantity: quantity,
+            price: product.current_seller.price * quantity,
+        };
+
+        // Chuyển hướng đến trang Checkout với dữ liệu qua URLSearchParams
+        const searchParams = new URLSearchParams();
+        for (const key in checkoutData) {
+            searchParams.append(key, checkoutData[key as keyof typeof checkoutData].toString());
+        }
+        navigate(`/checkout?${searchParams.toString()}`);
+
+    } catch (error) {
+        console.error("Lỗi khi xử lý mua ngay:", error);
+        toast.error("Đã có lỗi xảy ra. Vui lòng thử lại!");
+    }
+};
 
 
   // Lọc sách cùng category (trừ sách hiện tại)
@@ -509,10 +539,16 @@ const ProductDetail = () => {
         </div>
 
         <button
-          className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg mt-4 text-lg font-semibold transition-colors"
           onClick={handleBuyNow}
+          disabled={isLoading}
+          className={`w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg mt-4 text-lg font-semibold transition-colors ${isLoading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
         >
-          Mua ngay
+          {isLoading ? (
+            <span className="flex items-center justify-center"> Đang xử lý... </span>
+          ) : (
+            'Mua ngay'
+          )}
         </button>
 
         <button
