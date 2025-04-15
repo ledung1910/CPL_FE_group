@@ -25,7 +25,8 @@ import Checkout from "./pages/CustomerPage/Checkout";
 import { AuthProvider } from "./context/AuthContext";
 import ScrollToTop from "./shared/component/ScrollToTop";
 import AdminLogin from "./pages/AdminPage/AdminLogin";
-import PrivateRoute from "./shared/component/PrivateRoute";
+import PrivateRoute from "./shared/component/PrivateRoute"
+import Cart from "./pages/CustomerPage/Cart";
 
 //Import CSS
 import { ToastContainer } from 'react-toastify';
@@ -53,6 +54,7 @@ const App = () => {
           <Route path="/" element={<CustomerLayout />}>
             <Route index element={<HomePage />} /> {/* Sử dụng index cho route mặc định */}
             <Route path="/detail/:id" element={<BookDetail />} />
+            <Route path="/cart" element={<Cart />} />
             <Route
               path="/order_tracking"
               element={
