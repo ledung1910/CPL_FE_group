@@ -30,6 +30,7 @@ import { AuthProvider } from "./context/AuthContext";
 import ScrollToTop from "./shared/component/ScrollToTop";
 import AdminLogin from "./pages/AdminPage/AdminLogin";
 import PrivateRoute from "./shared/component/PrivateRoute"
+import Cart from "./pages/CustomerPage/Cart";
 
 
 const App = () => {
@@ -42,6 +43,7 @@ const App = () => {
           <Route path="/" element={<CustomerLayout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/detail/:id" element={<BookDetail />} />
+            <Route path="/cart" element={<Cart />} />
             <Route
               path="/order_tracking"
               element={
