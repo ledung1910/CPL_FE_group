@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import LoginPopup from "../../pages/CustomerPage/Login";
 import RegisterPopup from "../../pages/CustomerPage/Register";
 import logo from "../../assets/logo.png";
+import { cartService } from "../../api/cart.service";
+
 
 const AccountDropdown = ({ onClose }: { onClose: () => void }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
   return (
     <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow z-50">
       <div className="px-4 py-2 text-sm text-gray-700 border-b">
@@ -34,7 +37,6 @@ const AccountDropdown = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
-// Component con: Cam kết
 const Commitments = () => {
   const commitments = [
     {
@@ -93,6 +95,23 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
   const [isLoginOpen, setLoginOpen] = useState(false);
   const [isRegisterOpen, setRegisterOpen] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(cartService.getCartCount());
+  
+  useEffect(() => {
+    const handleCartUpdate = () => {
+      setCartCount(cartService.getCartCount());
+    };
+
+    // Lắng nghe sự kiện custom thay vì sự kiện storage
+    window.addEventListener("cartUpdated", handleCartUpdate);
+    
+    // Cập nhật lần đầu khi component mount
+    handleCartUpdate();
+
+    return () => {
+      window.removeEventListener("cartUpdated", handleCartUpdate);
+    };
+  }, []);
 
   const handleSearch = () => {
     const keyword = searchTerm.trim();
@@ -104,11 +123,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
       <div className="flex items-center justify-between p-4 bg-white sticky top-0 z-50">
         {/* Logo */}
         <div className="ml-6">
-          <button
-            onClick={() => {
-              window.location.href = "/";
-            }}
-          >
+          <button onClick={() => (window.location.href = "/")}>
             <img src={logo} alt="Logo" className="h-[90px] w-[110px]" />
           </button>
         </div>
@@ -160,7 +175,6 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
 
         {/* Menu phải */}
         <div className="flex items-center space-x-6 mb-10 pr-10">
-          {/* Trang chủ */}
           <Link
             to="/"
             className="flex items-center text-black gap-2 hover:text-blue-600"
@@ -203,7 +217,6 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
                   className="w-6 h-6"
                 />
                 Tài khoản
-                <span className="absolute right-0 top-1/2 transform -translate-y-1/2 h-5 w-px bg-gray-300"></span>
               </button>
             )}
           </div>
@@ -217,7 +230,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
                 className="w-8 h-8"
               />
               <span className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-[#FF424F] text-white text-xs font-semibold min-w-[16px] h-[16px] flex items-center justify-center rounded-full">
-                0
+                {cartCount} {/* Hiển thị số lượng giỏ hàng */}
               </span>
             </div>
           </Link>

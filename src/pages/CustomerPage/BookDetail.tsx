@@ -11,9 +11,10 @@ import usePagination from "../../hooks/usePagination";
 import { getBooks, getBookById } from "../../api/book.service";
 import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { cartService } from "../../api/cart.service";
 import LoginPopup from "./Login";
 import RegisterPopup from "./Register";
+import { cartService } from "../../api/cart.service";
+import AddToCartSuccessPopup from "../../shared/component/AddtoCartSuccess";
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -27,7 +28,8 @@ const ProductDetail = () => {
   const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
   const { user } = useAuth();
   const [isLoginOpen, setLoginOpen] = useState(false);
-  const [isRegisterOpen, setRegisterOpen] = useState(false);
+  const [isRegisterOpen, setRegisterOpen] = useState(false);  
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,16 +61,23 @@ const ProductDetail = () => {
       return;
     }
     if (!product) return;
+  
     try {
-      await cartService.addToCart({
-        userId: user.id,
-        bookId: product.id,
-        quantity: 1,
+      cartService.addToCart({
+        id: product.id,
+        list_price: product.current_seller.price,
+        quantity: quantity,
       });
+      
+      // Phát sự kiện thay vì setState
+      window.dispatchEvent(new Event("cartUpdated"));
     } catch (err) {
       console.error(err);
     }
+    setShowPopup(true);
   };
+
+  
 
   // Mua ngay
   const handleBuyNow = () => {
@@ -514,12 +523,15 @@ const ProductDetail = () => {
           Mua ngay
         </button>
 
+        <div>
+        <AddToCartSuccessPopup isOpen={showPopup} onClose={() => setShowPopup(false)} />
         <button
           onClick={handleAddToCart}
           className="w-full border border-blue-500 text-blue-500 hover:bg-blue-50 py-3 rounded-lg mt-2 text-lg font-semibold transition-colors"
         >
           Thêm vào giỏ
         </button>
+        </div>
 
         <LoginPopup
           isOpen={isLoginOpen}
