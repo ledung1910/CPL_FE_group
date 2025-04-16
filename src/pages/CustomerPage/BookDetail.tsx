@@ -1,20 +1,19 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef} from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronRight,
-  faChevronLeft,
-  faStar,
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight, faChevronLeft, faStar } from "@fortawesome/free-solid-svg-icons";
 import { Book } from "../../../interfaces";
 import usePagination from "../../hooks/usePagination";
 import { getBooks, getBookById } from "../../api/book.service";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-// import { cartService } from "../../api/cart.service";
-import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import LoginPopup from "./Login";
 import RegisterPopup from "./Register";
+import { cartService } from "../../api/cart.service";
+import AddToCartSuccessPopup from "../../shared/component/AddtoCartSuccess";
+
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,11 +24,13 @@ const ProductDetail = () => {
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [expanded, setExpanded] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [showPopup, setShowPopup] = useState(false);
   const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
+  const { user } = useAuth();
   const [isLoginOpen, setLoginOpen] = useState(false);
   const [isRegisterOpen, setRegisterOpen] = useState(false);
-  const { user } = useAuth();
   const navigate = useNavigate();
+  const [isLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,49 +61,73 @@ const ProductDetail = () => {
       setLoginOpen(true);
       return;
     }
-    if (product) {
-      const cartItem = {
+    if (!product) return;
+
+    try {
+      cartService.addToCart({
         id: product.id,
-        quantity,
-      };
-      console.log("Thêm vào giỏ hàng:", cartItem);
+        list_price: product.current_seller.price,
+        quantity: quantity,
+      });
+      
+      window.dispatchEvent(new Event("cartUpdated"));
+      setShowPopup(true);
+    } catch (err) {
+      console.error(err);
     }
   };
-
-  const handleBuyNow = () => {
-  
+  const handleBuyNow = async () => {
     if (!user) {
-      setLoginOpen(true);
-      return;
+        toast.warning("Bạn cần đăng nhập để mua sản phẩm này.");
+        setLoginOpen(true);
+        return;
+    }
+    if (!product) {
+        toast.error("Sản phẩm không tồn tại.");
+        return;
     }
 
-    if (product) {
-      
-      const orderItem = {
-        id: product.id,
-        quantity,
-      };
-      localStorage.setItem("latestOrder", JSON.stringify(orderItem));
-      
-      navigate("/checkout");
+    if (quantity <= 0) {
+        toast.warning("Vui lòng chọn số lượng lớn hơn 0.");
+        return;
     }
-  };
 
+    if (!user.address || !user.address.street || !user.address.city || !user.address.district) {
+        toast.warning("Vui lòng cập nhật đầy đủ địa chỉ giao hàng trước khi đặt hàng.");
+        return;
+    }
 
-  // Lọc sách cùng category (trừ sách hiện tại)
+    try {
+        const checkoutData = {
+            bookId: product.id,
+            quantity: quantity,
+            price: product.current_seller.price * quantity,
+        };
+
+        // Chuyển hướng đến trang Checkout với dữ liệu qua URLSearchParams
+        const searchParams = new URLSearchParams();
+        for (const key in checkoutData) {
+            searchParams.append(key, checkoutData[key as keyof typeof checkoutData].toString());
+        }
+        navigate(`/checkout?${searchParams.toString()}`);
+
+    } catch (error) {
+        console.error("Lỗi khi xử lý mua ngay:", error);
+        toast.error("Đã có lỗi xảy ra. Vui lòng thử lại!");
+    }
+};
+
   const relatedBooks = product
     ? books.filter(
-      (book) =>
-        book.id !== product.id && book.categories.id === product.categories.id
-    )
+        (book) =>
+          book.id !== product.id && book.categories.id === product.categories.id
+      )
     : [];
 
-  // Lọc top deals (is_best_store = true)
   const topDeals = books.filter(
     (book) => book.current_seller?.is_best_store && book.id !== product?.id
   );
 
-  // Sử dụng hook phân trang
   const {
     currentItems: relatedItems,
     next: nextRelated,
@@ -127,7 +152,7 @@ const ProductDetail = () => {
     return Math.round(
       ((product.original_price - product.current_seller.price) /
         product.original_price) *
-      100
+        100
     );
   };
 
@@ -230,12 +255,13 @@ const ProductDetail = () => {
                   ? goToTopDealPage(index)
                   : goToRelatedPage(index)
               }
-              className={`w-6 h-1.5 rounded-full transition-all duration-300 ${(title.includes("Top Deals")
-                ? currentTopDealPage
-                : currentRelatedPage) === index
-                ? "bg-blue-500 w-8"
-                : "bg-gray-300"
-                }`}
+              className={`w-6 h-1.5 rounded-full transition-all duration-300 ${
+                (title.includes("Top Deals")
+                  ? currentTopDealPage
+                  : currentRelatedPage) === index
+                  ? "bg-blue-500 w-8"
+                  : "bg-gray-300"
+              }`}
             />
           ))}
         </div>
@@ -281,10 +307,11 @@ const ProductDetail = () => {
                 }}
                 src={img.large_url}
                 alt={`Ảnh ${index + 1}`}
-                className={`w-16 h-20 object-cover rounded-lg border-2 flex-shrink-0 transition-transform duration-300 transform cursor-pointer ${selectedImage === img.large_url
-                  ? "border-blue-500"
-                  : "border-gray-300"
-                  }`}
+                className={`w-16 h-20 object-cover rounded-lg border-2 flex-shrink-0 transition-transform duration-300 transform cursor-pointer ${
+                  selectedImage === img.large_url
+                    ? "border-blue-500"
+                    : "border-gray-300"
+                }`}
                 onClick={() => {
                   setSelectedImage(img.large_url);
                   imageRefs.current[index]?.scrollIntoView({
@@ -331,10 +358,11 @@ const ProductDetail = () => {
               <FontAwesomeIcon
                 key={i}
                 icon={faStar}
-                className={`${i < Math.floor(product.rating_average || 0)
-                  ? "text-yellow-400"
-                  : "text-gray-300"
-                  } w-4 h-4`}
+                className={`${
+                  i < Math.floor(product.rating_average || 0)
+                    ? "text-yellow-400"
+                    : "text-gray-300"
+                } w-4 h-4`}
               />
             ))}
           </div>
@@ -386,8 +414,9 @@ const ProductDetail = () => {
           <h2 className="text-lg font-semibold mb-2">Mô tả sản phẩm</h2>
           <div className="relative">
             <div
-              className={`text-gray-600 transition-all ${expanded ? "line-clamp-none" : "line-clamp-3"
-                }`}
+              className={`text-gray-600 transition-all ${
+                expanded ? "line-clamp-none" : "line-clamp-3"
+              }`}
               dangerouslySetInnerHTML={{ __html: product.description }}
             />
             {!expanded && (
@@ -512,18 +541,30 @@ const ProductDetail = () => {
         </div>
 
         <button
-          className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg mt-4 text-lg font-semibold transition-colors"
           onClick={handleBuyNow}
+          disabled={isLoading}
+          className={`w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg mt-4 text-lg font-semibold transition-colors ${isLoading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
         >
-          Mua ngay
+          {isLoading ? (
+            <span className="flex items-center justify-center"> Đang xử lý... </span>
+          ) : (
+            'Mua ngay'
+          )}
         </button>
 
-        <button
-          onClick={handleAddToCart}
-          className="w-full border border-blue-500 text-blue-500 hover:bg-blue-50 py-3 rounded-lg mt-2 text-lg font-semibold transition-colors"
-        >
-          Thêm vào giỏ
-        </button>
+        <div>
+          <AddToCartSuccessPopup
+            isOpen={showPopup}
+            onClose={() => setShowPopup(false)}
+          />
+          <button
+            onClick={handleAddToCart}
+            className="w-full border border-blue-500 text-blue-500 hover:bg-blue-50 py-3 rounded-lg mt-2 text-lg font-semibold transition-colors"
+          >
+            Thêm vào giỏ
+          </button>
+        </div>
 
         {!user && (
           <>

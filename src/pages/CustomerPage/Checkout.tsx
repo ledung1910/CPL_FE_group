@@ -1,6 +1,11 @@
-import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTicket } from '@fortawesome/free-solid-svg-icons';
+import { Book } from '../../../interfaces';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getBookById } from '../../api/book.service';
+import { useState, useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
+import orderService from '../../api/order.service';
 
 const promotions = [
     {
@@ -65,7 +70,105 @@ const promotions = [
     },
 ];
 
-export default function PromotionsGrid() {
+export default function Checkout() {
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const bookId = queryParams.get('bookId');
+    const quantityParam = queryParams.get('quantity');
+    const [book, setBook] = useState<Book | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const quantity = quantityParam ? parseInt(quantityParam, 10) : 1;
+    const shippingFee = 25000;
+    const { user } = useAuth();
+    const navigate = useNavigate();
+    const [paymentMethod, setPaymentMethod] = useState('cash');
+    const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+    const [orderErrorMessage, setOrderErrorMessage] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchBookDetails = async () => {
+            if (bookId) {
+                try {
+                    const bookData = await getBookById(bookId);
+                    setBook(bookData);
+                } catch (err) {
+                    setError(err instanceof Error ? err.message : "Lỗi khi lấy thông tin sách");
+                } finally {
+                    setLoading(false);
+                }
+            } else {
+                setLoading(false);
+            }
+        };
+
+        fetchBookDetails();
+    }, [bookId]);
+
+    if (loading) {
+        return <div>Đang tải thông tin đơn hàng...</div>;
+    }
+
+    if (error) {
+        return <div>Lỗi: {error}</div>;
+    }
+
+    if (!book) {
+        return <div>Không tìm thấy thông tin sản phẩm.</div>;
+    }
+
+    const giaSachGiam = book.current_seller?.price || 0;
+    const giaGoc = book.original_price || 0;
+    const giaGiam = giaGoc - giaSachGiam;
+    const tongTienHang = giaSachGiam * quantity;
+    const tongTienThanhToan = tongTienHang;
+    const phanTietKiem = (giaGiam * quantity) + shippingFee;
+
+    const handlePaymentMethodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPaymentMethod(event.target.value);
+    };
+
+    const handlePlaceOrder = async () => {
+        if (!user) {
+            setOrderErrorMessage("Bạn cần đăng nhập để đặt hàng.");
+            return;
+        }
+
+        setIsPlacingOrder(true);
+        setOrderErrorMessage(null);
+
+        try {
+            if (!book || !book.id || !user.id || !user.address || typeof giaSachGiam !== 'number') {
+                console.error("Thiếu thông tin cần thiết để tạo đơn hàng:", { book, user, giaSachGiam });
+                setOrderErrorMessage("Có lỗi xảy ra, vui lòng thử lại.");
+                return;
+            }
+
+            const newOrder = await orderService.createInstantOrder(
+                user.id,
+                book.id,
+                quantity,
+                giaSachGiam,
+                paymentMethod,
+                user.address
+            );
+            const orderId = newOrder.id;
+            if (orderId) {
+                // Điều hướng sang trang Confirm với orderId trên URL path
+                navigate(`/confirm/${orderId}`);
+           } else {
+               console.error("API không trả về ID đơn hàng:", newOrder);
+               setOrderErrorMessage("Không thể lấy được mã đơn hàng sau khi tạo. Vui lòng liên hệ hỗ trợ.");
+           }
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            console.error("Lỗi khi đặt hàng:", error);
+            setOrderErrorMessage("Đã có lỗi xảy ra khi đặt hàng. Vui lòng thử lại sau.");
+        } finally {
+            setIsPlacingOrder(false);
+        }
+    };
+
     return (
         <div className="max-w-7xl mx-auto p-4 min-h-screen">
             <div className="flex flex-col lg:flex-row gap-6">
@@ -148,19 +251,19 @@ export default function PromotionsGrid() {
                                 <div className="flex justify-between items-start ml-2">
                                     <div className="flex gap-4">
                                         <img
-                                            src="https://product.hstatic.net/200000504927/product/chat-gpt-thuc-chien_c08d8e80da304e83bc464b4853e282fc.jpg"
-                                            alt="Chat GPT Thực Chiến"
-                                            className="w-8 h-13"
+                                            src={book.images[0]?.large_url || "https://via.placeholder.com/80x120"}
+                                            alt={book.name}
+                                            className="w-10 h-12"
                                         />
                                         <div>
-                                            <p className="text-gray-500 text-[15px]">Chat GPT Thực Chiến</p>
-                                            <p className="text-gray-500 text-[15px]" >SL: x1</p>
+                                            <p className="text-gray-500 text-[15px]">{book.name}</p>
+                                            <p className="text-gray-500 text-[15px]" >SL: x{quantity}</p>
                                         </div>
                                     </div>
                                     <div className="flex flex-col items-end mt-5 mr-80">
                                         <div className="flex items-center gap-1">
-                                            <p className="line-through text-gray-500 text-[13px]">169.000 ₫</p>
-                                            <p className="text-red-500 text-xm">110.000 ₫</p>
+                                            <p className="line-through text-gray-500 text-[13px]">{book.original_price?.toLocaleString('vi-VN')} ₫</p>
+                                            <p className="text-red-500 text-xm">{book.current_seller?.price?.toLocaleString('vi-VN')} ₫</p>
                                         </div>
                                     </div>
                                 </div>
@@ -181,7 +284,7 @@ export default function PromotionsGrid() {
 
                         <div className="space-y-4 mt-6">
                             <label className="flex items-center gap-3 cursor-pointer text-[15px]">
-                                <input type="radio" name="payment" defaultChecked className="form-radio text-blue-500 scale-125" />
+                                <input type="radio" name="payment" onChange={handlePaymentMethodChange} defaultChecked className="form-radio text-blue-500 scale-125" />
                                 <img
                                     src="https://salt.tikicdn.com/ts/upload/92/b2/78/1b3b9cda5208b323eb9ec56b84c7eb87.png"
                                     alt="Thanh toán tiền mặt"
@@ -191,7 +294,7 @@ export default function PromotionsGrid() {
                             </label>
 
                             <label className="flex items-center gap-3 cursor-pointer text-[15px]">
-                                <input type="radio" name="payment" className="form-radio text-blue-500 scale-125" />
+                                <input type="radio" name="payment" onChange={handlePaymentMethodChange} className="form-radio text-blue-500 scale-125" />
                                 <img src="https://salt.tikicdn.com/ts/upload/5f/f9/75/d7ac8660aae903818dd7da8e4772e145.png" alt="Viettel Money" className="w-9 h-9" />
                                 <span className="text-gray-800">Viettel Money</span>
                             </label>
@@ -242,11 +345,27 @@ export default function PromotionsGrid() {
                             <span className="text-gray-500 ">Giao tới</span>
                             <button className="text-blue-600 hover:underline text-[15px]">Thay đổi</button>
                         </div>
-                        <p className="font-semibold text-gray-800 text-[15px]">Vũ Anh Tú<span className="ml-2 text-[15px]">0942438693</span></p>
-                        <p className="text-gray-500 mt-1 text-[15px]">
-                            <span className="bg-orange-100 text-orange-600 text-xs px-2 py-0.5 rounded mr-1">Văn phòng</span>
-                            số 17 Duy Tân, Phường Dịch Vọng, Quận Cầu Giấy, Hà Nội
-                        </p>
+                        {user ? (
+                            <>
+                                <p className="font-semibold text-gray-800 text-[15px]">{user.name}
+                                    {user.phone && <span className="ml-2 text-[15px]">{user.phone}</span>}
+                                </p>
+                                {user.address && (
+                                    <p className="text-gray-500 mt-1 text-[15px]">
+                                        {user.address.street && (
+                                            <span className="bg-orange-100 text-orange-600 text-xs px-2 py-0.5 rounded mr-1">
+                                                {user.address.district}
+                                            </span>
+                                        )}
+                                        {user.address.street && `${user.address.street}, `}
+                                        {user.address.district && `${user.address.district}, `}
+                                        {user.address.city}
+                                    </p>
+                                )}
+                            </>
+                        ) : (
+                            <p className="text-gray-500 mt-1 text-[15px]">Không có thông tin người dùng.</p>
+                        )}
                     </div>
 
                     {/* ==== Khuyến mãi ==== */}
@@ -279,7 +398,7 @@ export default function PromotionsGrid() {
                         <div className="px-4 pt-4">
                             <div className="font-semibold text-lg">Đơn hàng</div>
                             <div className="text-sm text-gray-500 mt-1">
-                                1 sản phẩm. <span className="text-blue-500 cursor-pointer">Xem thông tin ▼</span>
+                                {quantity} sản phẩm. <span className="text-blue-500 cursor-pointer">Xem thông tin ▼</span>
                             </div>
                         </div>
 
@@ -289,22 +408,24 @@ export default function PromotionsGrid() {
                         <div className="space-y-2 text-sm px-4">
                             <div className="flex justify-between text-gray-800">
                                 <span>Tổng tiền hàng</span>
-                                <span>169.000đ</span>
+                                <span>{tongTienHang.toLocaleString('vi-VN')}đ</span>
                             </div>
                             <div className="flex justify-between text-gray-800">
                                 <span>Phí vận chuyển</span>
-                                <span>25.000đ</span>
+                                <span>{shippingFee.toLocaleString('vi-VN')}đ</span>
                             </div>
                             <div className="flex justify-between text-gray-600">
                                 <span>Giảm giá trực tiếp</span>
-                                <span className="text-green-600">-59.000đ</span>
+                                <span className="text-green-600">
+                                    -{(giaGiam * quantity).toLocaleString('vi-VN')}đ
+                                </span>
                             </div>
                             <div className="flex justify-between text-gray-600">
                                 <span className="flex items-center gap-1">
                                     Giảm giá vận chuyển
                                     <span className="text-gray-400 cursor-pointer">ⓘ</span>
                                 </span>
-                                <span className="text-green-600">-25.000đ</span>
+                                <span className="text-green-600">-{shippingFee.toLocaleString('vi-VN')}đ</span> {/* Bạn có thể làm động phần này */}
                             </div>
                         </div>
 
@@ -313,9 +434,11 @@ export default function PromotionsGrid() {
                         {/* Tổng thanh toán */}
                         <div className="flex justify-between items-center px-4 mb-1">
                             <span className="font-semibold text-base">Tổng tiền thanh toán</span>
-                            <span className="text-red-600 text-xl font-bold">110.000 đ</span>
+                            <span className="text-red-600 text-xl font-bold">{tongTienThanhToan.toLocaleString('vi-VN')} đ</span>
                         </div>
-                        <div className="text-green-600 text-right text-sm mb-3 px-4">Tiết kiệm 84.000 đ</div>
+                        <div className="text-green-600 text-right text-sm mb-3 px-4">
+                            Tiết kiệm {phanTietKiem.toLocaleString('vi-VN')} đ
+                        </div>
 
                         {/* Ghi chú */}
                         <p className="text-xs text-gray-500 mb-4 text-right px-4">
@@ -324,9 +447,14 @@ export default function PromotionsGrid() {
 
                         {/* Nút đặt hàng */}
                         <div className="px-4 pb-4">
-                            <button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded text-base font-medium">
-                                Đặt hàng
+                            <button
+                                onClick={handlePlaceOrder}
+                                className={`w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded text-base font-medium ${isPlacingOrder ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                disabled={isPlacingOrder}
+                            >
+                                {isPlacingOrder ? 'Đang đặt hàng...' : 'Đặt hàng'}
                             </button>
+                            {orderErrorMessage && <p className="text-red-500 text-sm mt-2">{orderErrorMessage}</p>}
                         </div>
                     </div>
                 </div>

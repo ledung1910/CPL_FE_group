@@ -1,34 +1,45 @@
-import React, { useState } from "react";
-import { FaInfoCircle, FaTimes, FaSearch, FaSort, FaEdit, FaSave } from "react-icons/fa";
-
-type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-
-interface Order {
-    id: number;
-    customer: string;
-    total: number;
-    status: OrderStatus;
-}
+import React, { useState, useEffect } from "react";
+import { FaTimes, FaSearch, FaSort, FaEdit, FaSave } from "react-icons/fa";
+import orderService from "../../../api/order.service";
+import userService from "../../../api/user.service";
+import { Order } from "../../../../interfaces";
 
 const OrderManagement = () => {
-    const [orders, setOrders] = useState<Order[]>([
-        { id: 101, customer: "Nguyễn Văn A", total: 500000, status: "pending" },
-        { id: 102, customer: "Trần Thị B", total: 750000, status: "processing" },
-        { id: 103, customer: "Lê Văn C", total: 1200000, status: "shipped" },
-    ]);
-
+    const [orders, setOrders] = useState<Order[]>([]);
+    const [users, setUsers] = useState<{ [key: number]: string }>({});
     const [searchTerm, setSearchTerm] = useState("");
     const [sortConfig, setSortConfig] = useState<{ key: string, direction: "asc" | "desc" } | null>(null);
-    const [editingOrderId, setEditingOrderId] = useState<number | null>(null);
-    const [newStatus, setNewStatus] = useState<OrderStatus>("pending");
+    const [editingOrderId, setEditingOrderId] = useState<string | null>(null);
+    const [newStatus, setNewStatus] = useState<Order['status']>("pending");
 
-    const statusColors: Record<OrderStatus, string> = {
+    const statusColors: Record<Order['status'], string> = {
         pending: "bg-yellow-400",
         processing: "bg-blue-500",
         shipped: "bg-purple-500",
         delivered: "bg-green-500",
         cancelled: "bg-red-500",
     };
+
+    useEffect(() => {
+        // Fetch orders and users
+        const fetchOrdersAndUsers = async () => {
+            try {
+                const ordersData = await orderService.getOrders();
+                const usersData = await userService.getAllUsers();
+                const userMap = usersData.reduce((acc, user) => {
+                    acc[user.id] = user.name;
+                    return acc;
+                }, {} as { [key: number]: string });
+
+                setUsers(userMap);
+                setOrders(ordersData);
+            } catch (error) {
+                console.log("Error fetching data:", error);
+            }
+        };
+
+        fetchOrdersAndUsers();
+    }, []);
 
     const handleSort = (key: string) => {
         let direction: "asc" | "desc" = "asc";
@@ -38,7 +49,7 @@ const OrderManagement = () => {
 
         const sortedOrders = [...orders].sort((a, b) => {
             if (key === "total") {
-                return direction === "asc" ? a.total - b.total : b.total - a.total;
+                return direction === "asc" ? a.total_amount - b.total_amount : b.total_amount - a.total_amount;
             } else {
                 return direction === "asc"
                     ? String(a[key as keyof Order]).localeCompare(String(b[key as keyof Order]))
@@ -50,17 +61,26 @@ const OrderManagement = () => {
         setSortConfig({ key, direction });
     };
 
-    const handleStartEdit = (orderId: number, currentStatus: OrderStatus) => {
+    const handleStartEdit = (orderId: string, currentStatus: Order['status']) => {
         setEditingOrderId(orderId);
         setNewStatus(currentStatus);
     };
 
-    const handleSaveStatus = () => {
+    const handleSaveStatus = async () => {
         if (editingOrderId !== null) {
-            const updated = orders.map(order =>
-                order.id === editingOrderId ? { ...order, status: newStatus } : order
-            );
-            setOrders(updated);
+            await orderService.updateOrderStatus(editingOrderId, newStatus);
+            const currentTimeISO = new Date().toISOString();
+            const updatedOrders = orders.map((order) => {
+                if (order.id === editingOrderId) {
+                    return {
+                        ...order,
+                        status: newStatus,
+                        updated_at: currentTimeISO
+                    };
+                }
+                return order;
+            });
+            setOrders(updatedOrders);
             setEditingOrderId(null);
         }
     };
@@ -89,23 +109,28 @@ const OrderManagement = () => {
                             <th className="px-4 py-3 cursor-pointer" onClick={() => handleSort("customer")}>Khách hàng <FaSort className="inline" /></th>
                             <th className="px-4 py-3 cursor-pointer" onClick={() => handleSort("total")}>Tổng tiền <FaSort className="inline" /></th>
                             <th className="px-4 py-3 cursor-pointer" onClick={() => handleSort("status")}>Trạng thái <FaSort className="inline" /></th>
+                            <th className="px-4 py-3 cursor-pointer" onClick={() => handleSort("created_at")}>Tạo lúc <FaSort className="inline" /></th>
+                            <th className="px-4 py-3 cursor-pointer" onClick={() => handleSort("updated_at")}>Cập nhật lúc <FaSort className="inline" /></th>
                             <th className="px-4 py-3">Hành động</th>
                         </tr>
                     </thead>
                     <tbody className="bg-gray-800 text-gray-200">
                         {orders
-                            .filter(order => order.customer.toLowerCase().includes(searchTerm.toLowerCase()))
+                            .filter(order => {
+                                const userName = users[order.user_id];
+                                return userName && userName.toLowerCase().includes(searchTerm.toLowerCase());
+                            })
                             .map((order) => (
                                 <tr key={order.id} className="text-center border-b border-gray-700 hover:bg-gray-700">
                                     <td className="px-4 py-3">{order.id}</td>
-                                    <td className="px-4 py-3">{order.customer}</td>
-                                    <td className="px-4 py-3">{order.total.toLocaleString()}đ</td>
+                                    <td className="px-4 py-3">{users[order.user_id]}</td>
+                                    <td className="px-4 py-3">{order.total_amount.toLocaleString()}đ</td>
                                     <td className="px-4 py-3">
                                         {editingOrderId === order.id ? (
                                             <select
                                                 title="Status"
                                                 value={newStatus}
-                                                onChange={(e) => setNewStatus(e.target.value as OrderStatus)}
+                                                onChange={(e) => setNewStatus(e.target.value as Order['status'])}
                                                 className="px-3 py-2 rounded-md bg-gray-700 text-white border border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
                                             >
                                                 <option value="pending">🕒 Pending</option>
@@ -120,11 +145,9 @@ const OrderManagement = () => {
                                             </span>
                                         )}
                                     </td>
-
+                                    <td className="px-4 py-3">{order.created_at ? new Date(order.created_at).toLocaleString('vi-VN') : 'N/A'}</td>
+                                    <td className="px-4 py-3">{order.updated_at ? new Date(order.updated_at).toLocaleString('vi-VN') : 'Chưa cập nhật'}</td>
                                     <td className="px-4 py-3 flex justify-center items-center gap-2 flex-wrap">
-                                        <button className="bg-blue-500 px-3 py-2 rounded-md hover:bg-blue-600 transition-all flex items-center gap-1 text-sm">
-                                            <FaInfoCircle /> Chi tiết
-                                        </button>
                                         <button className="bg-red-500 px-3 py-2 rounded-md hover:bg-red-600 transition-all flex items-center gap-1 text-sm">
                                             <FaTimes /> Hủy
                                         </button>

@@ -31,6 +31,10 @@ const RegisterPopup: React.FC<RegisterPopupProps> = ({ isOpen, onClose, onSwitch
   }, [isOpen]);
 
   const handleRegister = async () => {
+    if (!fullName || !phone || !email || !password || !confirmPassword) {
+      setError('Vui lòng điền đầy đủ thông tin vào các trường');
+      return;
+    }
     if (password !== confirmPassword) {
       setError('Mật khẩu và xác nhận mật khẩu không khớp');
       return;
@@ -44,6 +48,11 @@ const RegisterPopup: React.FC<RegisterPopupProps> = ({ isOpen, onClose, onSwitch
       setError(err.message || 'Đăng ký thất bại');
     }
   };
+   const handleKeyDown = (event: React.KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        handleRegister();
+      }
+    };
 
   if (!isOpen) return null;
 
@@ -65,41 +74,51 @@ const RegisterPopup: React.FC<RegisterPopupProps> = ({ isOpen, onClose, onSwitch
             type="text"
             placeholder="Họ và tên"
             value={fullName}
+            onKeyDown={handleKeyDown}
             onChange={(e) => setFullName(e.target.value)}
             className="w-full mt-4 p-2 border-b border-gray-300"
+            required
           />
           <input
             type="text"
             placeholder="Số điện thoại"
             value={phone}
+            onKeyDown={handleKeyDown}
             onChange={(e) => setPhone(e.target.value)}
             className="w-full mt-4 p-2 border-b border-gray-300"
+            required
           />
           <input
             type="email"
             placeholder="Email"
             value={email}
+            onKeyDown={handleKeyDown}
             onChange={(e) => setEmail(e.target.value)}
             className="w-full mt-4 p-2 border-b border-gray-300"
+            required
           />
           <input
             type="password"
             placeholder="Mật khẩu"
             value={password}
+            onKeyDown={handleKeyDown}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full mt-4 p-2 border-b border-gray-300"
+            required
           />
           <input
             type="password"
             placeholder="Xác nhận mật khẩu"
             value={confirmPassword}
+            onKeyDown={handleKeyDown}
             onChange={(e) => setConfirmPassword(e.target.value)}
             className="w-full mt-4 p-2 border-b border-gray-300"
+            required
           />
 
           {error && <p className="text-red-500 mt-2">{error}</p>}
 
-          <button onClick={handleRegister}
+          <button onKeyDown={handleKeyDown} onClick={handleRegister}
             className="w-full mt-6 p-3 bg-red-500 text-white rounded-sm hover:bg-red-600">
             Đăng ký
           </button>

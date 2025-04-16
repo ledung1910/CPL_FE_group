@@ -26,6 +26,10 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
   }, [isOpen]);
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      setError('Vui lòng điền đầy đủ email và mật khẩu.');
+      return;
+    }
     setError('');
     try {
       await login(email, password, "User");
@@ -38,6 +42,12 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
       } else {
         setError(message);
       }
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      handleLogin();
     }
   };
 
@@ -64,6 +74,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
             placeholder="abc@email.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            onKeyDown={handleKeyDown}
             className={`w-full border-b p-2 mt-4 ${
               error ? 'border-red-500' : 'border-gray-300'
             } focus:outline-none`}
@@ -75,6 +86,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
               placeholder="Mật khẩu"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={handleKeyDown}
               className={`w-full border-b p-2 mt-4 ${
                 error ? 'border-red-500' : 'border-gray-300'
               } focus:outline-none`}
@@ -90,6 +102,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
           {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
 
           <button
+            onKeyDown={handleKeyDown}
             onClick={handleLogin}
             className="mt-6 w-full rounded-md bg-red-500 p-3 text-white transition hover:bg-red-600"
           >

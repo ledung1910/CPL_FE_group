@@ -65,16 +65,23 @@ export interface Address {
 
 export interface Order {
     id: string;
-    user_id: string;
+    user_id: number;
     items: OrderItem[];
     total_amount: number;
     status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
     created_at: string;
+    updated_at?: string;
     payment_method: string;
     shipping_address: Address;
 }
 
 export interface OrderItem {
+    book_id: string;
+    quantity: number;
+    price: number;
+}
+
+export interface CartItem {
     book_id: string;
     quantity: number;
     price: number;
