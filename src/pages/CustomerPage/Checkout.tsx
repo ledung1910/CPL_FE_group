@@ -89,7 +89,7 @@ export default function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const [orderErrorMessage, setOrderErrorMessage] = useState<string | null>(null);
-  const shippingFee = 25000; 
+  const shippingFee = 25000;
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -99,15 +99,18 @@ export default function Checkout() {
       if (cartItemsFromState && cartItemsFromState.length > 0) {
         itemsToFetch = cartItemsFromState;
       } else if (singleBookId) {
-        const singleQuantity = singleQuantityParam ? parseInt(singleQuantityParam, 10): 1;
+        const singleQuantity = singleQuantityParam ? parseInt(singleQuantityParam, 10) : 1;
         if (!isNaN(singleQuantity) && singleQuantity > 0) {
-          itemsToFetch = [{ book_id: singleBookId, quantity: singleQuantity, price: 0 },];
+          itemsToFetch = [{ book_id: singleBookId, quantity: singleQuantity, price: 0 }];
+          console.log("Fetching single book");
         } else {
           setError("Số lượng sách không hợp lệ.");
           setLoading(false);
-          return;
+          return
         }
-    } if (itemsToFetch.length > 0) {
+      }
+
+      if (itemsToFetch.length > 0) {
         try {
           const detailedItemsPromises = itemsToFetch.map(async (item) => {
             const bookData = await getBookById(item.book_id);
@@ -115,32 +118,39 @@ export default function Checkout() {
           });
           const itemsWithDetails = await Promise.all(detailedItemsPromises);
           setOrderItemsWithDetails(itemsWithDetails);
+          console.log("Book details fetched successfully");
         } catch (err) {
           setError(err instanceof Error ? err.message : "Lỗi khi lấy thông tin sách");
+          console.error("Error fetching book details:", err);
+        } finally {
+          setLoading(false);
         }
       } else if (
         !singleBookId &&
         (!cartItemsFromState || cartItemsFromState.length === 0)
-      )setLoading(false);
+      ) {
+        setLoading(false);
+      }
     };
-
     fetchOrderDetails();
   }, [cartItemsFromState, singleBookId, singleQuantityParam]);
-  if (loading) {return <div>Đang tải thông tin đơn hàng...</div>;}
-  if (error) {return <div>Lỗi: {error}</div>;}
+
+
+  if (loading) { return <div>Đang tải thông tin đơn hàng...</div>; }
+  if (error) { return <div>Lỗi: {error}</div>; }
   if (orderItemsWithDetails.length === 0 && !loading) {
     return <div>Không có sản phẩm nào trong đơn hàng.</div>;
   }
 
   const totalItemPrice = orderItemsWithDetails.reduce(
-    (sum, item) =>sum + (item.book?.current_seller?.price || 0) * item.quantity,0
+    (sum, item) => sum + (item.book?.current_seller?.price || 0) * item.quantity, 0
   );
 
   const totalOriginalPrice = orderItemsWithDetails.reduce(
-    (sum, item) => sum + (item.book?.original_price || 0) * item.quantity,0
+    (sum, item) => sum + (item.book?.original_price || 0) * item.quantity, 0
   );
   const itemDiscount = totalOriginalPrice - totalItemPrice;
-  const totalQuantity = orderItemsWithDetails.reduce((sum, item) => sum + item.quantity,0
+  const totalQuantity = orderItemsWithDetails.reduce((sum, item) => sum + item.quantity, 0
   );
   const shippingDiscount = shippingFee;
   const totalPaymentAmount = totalItemPrice + shippingFee - shippingDiscount;
@@ -156,7 +166,7 @@ export default function Checkout() {
       setOrderErrorMessage("Bạn cần đăng nhập để đặt hàng.");
       return;
     }
-    if (!user.address || !user.address.street ||!user.address.city ||!user.address.district) {
+    if (!user.address || !user.address.street || !user.address.city || !user.address.district) {
       setOrderErrorMessage(
         "Vui lòng cập nhật địa chỉ giao hàng đầy đủ trước khi đặt hàng."
       );
@@ -201,7 +211,7 @@ export default function Checkout() {
         user_id: user.id,
         items: orderItems,
         total_amount: finalTotalAmount,
-        status: "pending", 
+        status: "pending",
         payment_method: paymentMethod,
         shipping_address: shippingAddress,
       };
@@ -282,7 +292,7 @@ export default function Checkout() {
                   className="w-5 h-5 mr-1"
                 />
                 <span>
-                  Gói: Giao siêu tốc 2h 
+                  Gói: Giao siêu tốc 2h
                 </span>
               </div>
               <div className="border border-gray-200 rounded-lg p-4 pt-6">
@@ -324,7 +334,7 @@ export default function Checkout() {
                         >
                           <div className="flex gap-3">
                             <img
-                              src={ item.book.images[0]?.large_url || "https://via.placeholder.com/60x60" }
+                              src={item.book.images[0]?.large_url || "https://via.placeholder.com/60x60"}
                               alt={item.book.name}
                               className="w-16 h-16 object-contain rounded border border-gray-200"
                             />
@@ -347,7 +357,7 @@ export default function Checkout() {
                             </p>
                             {item.book.original_price &&
                               item.book.original_price >
-                                (item.book.current_seller?.price || 0) && (
+                              (item.book.current_seller?.price || 0) && (
                                 <p className="line-through text-gray-500 text-xs mt-0.5">
                                   {item.book.original_price?.toLocaleString(
                                     "vi-VN"
@@ -394,7 +404,7 @@ export default function Checkout() {
                   name="payment"
                   value="cash"
                   onChange={handlePaymentMethodChange}
-                  checked={paymentMethod === "cash"} 
+                  checked={paymentMethod === "cash"}
                   className="form-radio text-blue-600 h-5 w-5 border-gray-300 focus:ring-blue-500"
                 />
                 <img
@@ -410,7 +420,7 @@ export default function Checkout() {
                 <input
                   type="radio"
                   name="payment"
-                  value="viettelpay" 
+                  value="viettelpay"
                   onChange={handlePaymentMethodChange}
                   checked={paymentMethod === "viettelpay"}
                   className="form-radio text-blue-600 h-5 w-5 border-gray-300 focus:ring-blue-500"
@@ -455,10 +465,9 @@ export default function Checkout() {
                     <div className="flex flex-col items-end gap-1">
                       <img
                         src={promo.logo}
-                        alt={`${promo.desc} logo`} 
-                        className={`object-contain ${
-                          promo.desc === "TikiCARD" ? "w-9 h-8" : "w-16 h-auto max-h-8"
-                        }`} 
+                        alt={`${promo.desc} logo`}
+                        className={`object-contain ${promo.desc === "TikiCARD" ? "w-9 h-8" : "w-16 h-auto max-h-8"
+                          }`}
                       />
                       <span
                         className="text-gray-400 cursor-help text-sm"
@@ -533,7 +542,7 @@ export default function Checkout() {
                 strokeWidth={2}
               >
                 <path
-                  strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"/>
+                  strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
             </button>
           </div>
@@ -596,9 +605,8 @@ export default function Checkout() {
             <div className="px-4 pb-4">
               <button
                 onClick={handlePlaceOrder}
-                className={`w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg text-base font-semibold transition duration-150 ease-in-out ${
-                  isPlacingOrder ? "opacity-70 cursor-not-allowed" : ""
-                }`}
+                className={`w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg text-base font-semibold transition duration-150 ease-in-out ${isPlacingOrder ? "opacity-70 cursor-not-allowed" : ""
+                  }`}
                 disabled={isPlacingOrder || orderItemsWithDetails.length === 0} // Disable if no items or placing order
               >
                 {isPlacingOrder ? (

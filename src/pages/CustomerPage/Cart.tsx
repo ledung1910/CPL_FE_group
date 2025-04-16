@@ -58,9 +58,9 @@ const CartPage = () => {
 
   const navigate = useNavigate();
 
-const handleCheckout = () => {
-  navigate('/checkout', { state: { cartItems } });
-};
+  const handleCheckout = () => {
+    navigate('/checkout', { state: { cartItems } });
+  };
 
   return (
     <div className="bg-gray-100">
@@ -147,7 +147,7 @@ const handleCheckout = () => {
               (Đã bao gồm VAT nếu có)
             </p>
             <button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg font-medium"
-            onClick={handleCheckout}>
+              onClick={handleCheckout}>
               Mua Hàng ({cartItems.length})
             </button>
           </div>
