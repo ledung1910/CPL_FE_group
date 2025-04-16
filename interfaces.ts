@@ -81,12 +81,6 @@ export interface OrderItem {
     price: number;
 }
 
-export interface CartItem {
-    book_id: string;
-    quantity: number;
-    price: number;
-}
-
 export interface ApiResponse {
     books: Book[];
     categories?: Category[];

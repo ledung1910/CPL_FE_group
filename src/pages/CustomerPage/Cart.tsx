@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 import { cartService } from "../../api/cart.service";
 import { getBookById } from "../../api/book.service";
-import { CartItem } from "../../../interfaces";
+import { OrderItem } from "../../../interfaces";
+import { useNavigate } from "react-router-dom";
 
 interface BookDetails {
   name: string;
@@ -11,7 +12,7 @@ interface BookDetails {
 }
 
 const CartPage = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<OrderItem[]>([]);
   const [bookDetails, setBookDetails] = useState<Record<string, BookDetails>>({}); // Store book details by id
 
   useEffect(() => {
@@ -54,6 +55,12 @@ const CartPage = () => {
   };
 
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  const navigate = useNavigate();
+
+const handleCheckout = () => {
+  navigate('/checkout', { state: { cartItems } });
+};
 
   return (
     <div className="bg-gray-100">
@@ -139,7 +146,8 @@ const CartPage = () => {
             <p className="text-xs text-gray-500 mb-4">
               (Đã bao gồm VAT nếu có)
             </p>
-            <button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg font-medium">
+            <button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg font-medium"
+            onClick={handleCheckout}>
               Mua Hàng ({cartItems.length})
             </button>
           </div>

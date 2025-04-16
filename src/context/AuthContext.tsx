@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import userService from "../api/user.service";
 import { User } from "../../interfaces";
+import { cartService } from "../api/cart.service";
 
 interface AuthContextProps {
   user: User | null;
@@ -88,6 +89,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.removeItem("customer_accessToken");
       localStorage.removeItem("customer_userId");
       localStorage.removeItem("customer_role");
+      cartService.clearCart();
     }
 
     setUser(null);

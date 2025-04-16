@@ -7,7 +7,7 @@ import logo from "../../assets/logo.png";
 import HeaderMobile from "./HeaderMobile";
 import { cartService } from "../../api/cart.service";
 
-const AccountDropdown = ({ onClose }: { onClose: () => void }) => {
+const AccountDropdown = ({ onClose, setCartCount }: { onClose: () => void, setCartCount: React.Dispatch<React.SetStateAction<number>> }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -27,6 +27,7 @@ const AccountDropdown = ({ onClose }: { onClose: () => void }) => {
         onClick={() => {
           if (user?.role) {
             logout(user.role);
+            setCartCount(0);  // This will reset the cart count when logging out
             onClose();
             navigate("/");
           }
@@ -102,7 +103,8 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
   const [isRegisterOpen, setRegisterOpen] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [cartCount, setCartCount] = useState(cartService.getCartCount());
-  
+  const navigate = useNavigate();
+
   useEffect(() => {
     const handleCartUpdate = () => {
       setCartCount(cartService.getCartCount());
@@ -110,7 +112,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
 
     // Lắng nghe sự kiện custom thay vì sự kiện storage
     window.addEventListener("cartUpdated", handleCartUpdate);
-    
+
     // Cập nhật lần đầu khi component mount
     handleCartUpdate();
 
@@ -219,7 +221,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
                   {user.name}
                 </button>
                 {isDropdownOpen && (
-                  <AccountDropdown onClose={() => setDropdownOpen(false)} />
+                  <AccountDropdown onClose={() => setDropdownOpen(false)} setCartCount={setCartCount}/>
                 )}
               </div>
             ) : (
@@ -239,7 +241,18 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
 
 
           {/* Giỏ hàng */}
-          <Link to="/cart" className="hover:text-blue-600 relative">
+          <button
+            onClick={() => {
+              if (user) {
+                // Đã đăng nhập thì cho chuyển đến trang giỏ hàng
+                navigate("/cart");
+              } else {
+                // Nếu chưa đăng nhập thì mở popup đăng nhập
+                setLoginOpen(true);
+              }
+            }}
+            className="hover:text-blue-600 relative"
+          >
             <div className="relative">
               <img
                 src="https://salt.tikicdn.com/ts/upload/51/e2/92/8ca7e2cc5ede8c09e34d1beb50267f4f.png"
@@ -250,7 +263,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
                 {cartCount} {/* Hiển thị số lượng giỏ hàng */}
               </span>
             </div>
-          </Link>
+          </button>
         </div>
       </div>
 
