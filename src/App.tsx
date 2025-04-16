@@ -16,7 +16,8 @@ import ManagementPage from "./pages/AdminPage/Bill/BillList";
 
 //Customer Page
 import HomePage from "./pages/CustomerPage/Homepage";
-import OrderManagement from "./pages/CustomerPage/OrderTracking";
+import OrderList from "./pages/CustomerPage/OrderList";
+import OrderDetail from "./pages/CustomerPage/OrderTracking";
 import UserProfile from "./pages/CustomerPage/UserProfile";
 import OrderConfirmation from "./pages/CustomerPage/ConfirmPage";
 import Checkout from "./pages/CustomerPage/Checkout";
@@ -56,10 +57,18 @@ const App = () => {
             <Route path="/detail/:id" element={<BookDetail />} />
             <Route path="/cart" element={<Cart />} />
             <Route
-              path="/order_tracking"
+              path="/orders"
               element={
                 <PrivateRoute requiredRole="User">
-                  <OrderManagement />
+                  <OrderList />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/orders/:id"
+              element={
+                <PrivateRoute requiredRole="User">
+                  <OrderDetail />
                 </PrivateRoute>
               }
             />
