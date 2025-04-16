@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import LoginPopup from "../../pages/CustomerPage/Login";
 import RegisterPopup from "../../pages/CustomerPage/Register";
 import logo from "../../assets/logo.png";
+import HeaderMobile from "./HeaderMobile";
 import { cartService } from "../../api/cart.service";
 
 const AccountDropdown = ({ onClose, setCartCount }: { onClose: () => void, setCartCount: React.Dispatch<React.SetStateAction<number>> }) => {
@@ -68,6 +69,7 @@ const Commitments = () => {
     },
   ];
 
+
   return (
     <div className="flex items-center text-blue-900 gap-3 p-4 border-t border-b border-gray-300">
       <div className="text-lg font-semibold ml-7">Cam kết:</div>
@@ -88,9 +90,11 @@ const Commitments = () => {
   );
 };
 
+
 type HeaderProps = {
   onSearch: (keyword: string) => void;
 };
+
 
 const Header: React.FC<HeaderProps> = ({ onSearch }) => {
   const { user } = useAuth();
@@ -122,15 +126,22 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
     if (keyword) onSearch(keyword);
   };
 
+
   return (
+    
+   
     <div>
-      <div className="flex items-center justify-between p-4 bg-white sticky top-0 z-50">
+      {/* Giao diện Mobile */}
+      <HeaderMobile />
+      <div className="hidden md:block">
+      <div className=" flex items-center justify-between p-4 bg-white sticky top-0 z-50">
         {/* Logo */}
         <div className="ml-6">
           <button onClick={() => (window.location.href = "/")}>
             <img src={logo} alt="Logo" className="h-[90px] w-[110px]" />
           </button>
         </div>
+
 
         {/* Search */}
         <div className="flex-1 flex flex-col justify-center items-start ml-10">
@@ -156,6 +167,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
             </button>
           </div>
 
+
           {/* Keywords */}
           <div className="flex gap-3 mt-2 text-gray-700 text-sm cursor-pointer">
             {[
@@ -177,6 +189,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
           </div>
         </div>
 
+
         {/* Menu phải */}
         <div className="flex items-center space-x-6 mb-10 pr-10">
           <Link
@@ -190,6 +203,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
             />
             Trang chủ
           </Link>
+
 
           {/* Tài khoản */}
           <div className="relative pr-6">
@@ -225,6 +239,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
             )}
           </div>
 
+
           {/* Giỏ hàng */}
           <button
             onClick={() => {
@@ -252,8 +267,10 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
         </div>
       </div>
 
+
       {/* Cam kết */}
       <Commitments />
+
 
       {/* Popup đăng nhập / đăng ký */}
       <LoginPopup
@@ -273,7 +290,9 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
         }}
       />
     </div>
+    </div>
   );
 };
+
 
 export default Header;
