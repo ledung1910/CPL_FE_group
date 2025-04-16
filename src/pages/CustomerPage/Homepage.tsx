@@ -5,6 +5,7 @@ import { useOutletContext, useSearchParams } from "react-router-dom";
 import SidebarHomepage from "../../shared/component/SidebarHomepage";
 import { Category } from "../../../interfaces";
 import { getRealCategories } from "../../api/book.service";
+import HomePageMobile from "./HomePageMobile";
 
 const topProducts = [
   {
@@ -80,9 +81,18 @@ const HomePage = () => {
       setCategoryId(matched?.id ?? 0);
     }
   }, [categoryName, categories]);
+
+
+  
+
   return (
     <>
+    <div className="block md:hidden">
+      <HomePageMobile />
+    </div>
+    <div className="hidden md:block">
       <div className="bg-gray-100 mt-4">
+        
         {/* Breadcrumb */}
         <div className="pointer flex items-center space-x-1 text-gray-500 text-sm ml-10 mb-4">
           <span>Trang chủ</span>
@@ -448,6 +458,7 @@ const HomePage = () => {
             ))}
           </div>
         </div>
+      </div>
       </div>
     </>
   );

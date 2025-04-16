@@ -76,14 +76,12 @@ const ProductDetail = () => {
       console.error(err);
     }
   };
-
   const handleBuyNow = async () => {
     if (!user) {
         toast.warning("Bạn cần đăng nhập để mua sản phẩm này.");
         setLoginOpen(true);
         return;
     }
-
     if (!product) {
         toast.error("Sản phẩm không tồn tại.");
         return;
