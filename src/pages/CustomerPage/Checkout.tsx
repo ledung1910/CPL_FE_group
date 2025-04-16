@@ -68,13 +68,13 @@ const promotions = [
 export default function PromotionsGrid() {
     return (
         <div className="max-w-7xl mx-auto p-4 min-h-screen">
-            <div className="flex flex-col lg:flex-row gap-6">
+            <div className="flex flex-col lg:flex-row gap-6 flex-wrap">
                 {/* ==== Cột trái ==== */}
                 <div className="w-full lg:w-3/4 space-y-6">
                     {/* ==== Hình thức giao hàng ==== */}
                     <div className="bg-white rounded p-4">
                         <h2 className="text-xl font-semibold mb-4">Chọn hình thức giao hàng</h2>
-                        <div className="relative bg-blue-50 border border-blue-200 rounded-xl p-4 w-110">
+                        <div className="relative bg-blue-50 border border-blue-200 rounded-xl p-4 w-full max-w-full">
                             <div className="space-y-3">
                                 <label className="flex items-center cursor-pointer">
                                     <input
@@ -114,9 +114,9 @@ export default function PromotionsGrid() {
                         </div>
 
                         {/* Phần chi tiết sản phẩm */}
-                        <div className="relative mt-13">
+                        <div className="relative mt-8">
                             {/* Tiêu đề nằm đè lên viền */}
-                            <div className="absolute -top-3 left-4 bg-white px-2 flex items-center text-green-600">
+                            <div className="absolute -top-3 left-4 bg-white px-2 flex items-center text-green-600 text-sm">
                                 <img
                                     src="https://salt.tikicdn.com/ts/upload/ad/b7/93/7094a85d0b6d299f30ed89b03511deb9.png"
                                     alt="Gói giao hàng"
@@ -128,8 +128,8 @@ export default function PromotionsGrid() {
                             {/* Box có viền */}
                             <div className="border border-gray-200 rounded-2xl p-4 pt-6">
                                 {/* Dòng giao hàng và phí */}
-                                <div className="flex justify-between items-center mb-2 text-[13px]">
-                                    <div className="flex items-center gap-1">
+                                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 text-sm">
+                                    <div className="flex items-center gap-2 mb-2 sm:mb-0">
                                         <img
                                             src="https://salt.tikicdn.com/ts/tka/a8/31/b6/802e2c99dcce64c67aa2648edb15dd25.png"
                                             alt="NOW"
@@ -145,23 +145,23 @@ export default function PromotionsGrid() {
                                 </div>
 
                                 {/* Dòng sản phẩm */}
-                                <div className="flex justify-between items-start ml-2">
+                                <div className="flex flex-col sm:flex-row justify-between gap-4">
                                     <div className="flex gap-4">
                                         <img
                                             src="https://product.hstatic.net/200000504927/product/chat-gpt-thuc-chien_c08d8e80da304e83bc464b4853e282fc.jpg"
                                             alt="Chat GPT Thực Chiến"
-                                            className="w-8 h-13"
+                                            className="w-16 h-20 object-cover"
                                         />
                                         <div>
                                             <p className="text-gray-500 text-[15px]">Chat GPT Thực Chiến</p>
                                             <p className="text-gray-500 text-[15px]" >SL: x1</p>
                                         </div>
                                     </div>
-                                    <div className="flex flex-col items-end mt-5 mr-80">
-                                        <div className="flex items-center gap-1">
-                                            <p className="line-through text-gray-500 text-[13px]">169.000 ₫</p>
-                                            <p className="text-red-500 text-xm">110.000 ₫</p>
-                                        </div>
+                                    <div className="flex flex-col items-end">
+                                        <p className="line-through text-gray-500 text-sm">
+                                            169.000 ₫
+                                        </p>
+                                        <p className="text-red-500 text-base">110.000 ₫</p>
                                     </div>
                                 </div>
                             </div>
@@ -171,7 +171,7 @@ export default function PromotionsGrid() {
                         <button className="flex items-center mt-4 ml-2 gap-2 hover:underline text-black">
                             <FontAwesomeIcon icon={faTicket} className="text-blue-500" />
                             Thêm mã khuyến mãi của Shop
-                            <span className="text-gray-400 text-3xl">{'>'}</span>
+                            <span className="text-gray-400 text-3xl">{">"}</span>
                         </button>
                     </div>
 
@@ -183,9 +183,9 @@ export default function PromotionsGrid() {
                             <label className="flex items-center gap-3 cursor-pointer text-[15px]">
                                 <input type="radio" name="payment" defaultChecked className="form-radio text-blue-500 scale-125" />
                                 <img
-                                    src="https://salt.tikicdn.com/ts/upload/92/b2/78/1b3b9cda5208b323eb9ec56b84c7eb87.png"
-                                    alt="Thanh toán tiền mặt"
-                                    className="w-9 h-9 object-contain"
+                                    src="https://salt.tikicdn.com/ts/upload/icon-payment-method.svg"
+                                    alt="icon"
+                                    className="w-6 h-6"
                                 />
                                 <span className="text-gray-800">Thanh toán tiền mặt</span>
                             </label>
@@ -198,7 +198,7 @@ export default function PromotionsGrid() {
                         </div>
 
                         {/* Ưu đãi thanh toán thẻ */}
-                        <div className="bg-[#f5f5fa] p-4 mt-4 w-190">
+                        <div className="bg-[#f5f5fa] p-4 mt-4 w-190 hidden sm:block">
                             <div className="flex items-center text-[15px] gap-2 text-blue-700 font-medium mb-4">
                                 <img
                                     src="https://frontend.tikicdn.com/_desktop-next/static/img/icons/checkout/icons-promotion-outline.svg"

@@ -1,6 +1,6 @@
 const Banner = () => {
   return (
-    <div className="relative w-full">
+    <div className="relative w-full hidden sm:block">
       <div className="bg-green-100 p-2 flex items-center justify-center gap-2">
         <div className="text-green-600 text-center">
           Freeship đơn từ 45k, giảm nhiều hơn cùng
