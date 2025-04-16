@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import SidebarProfile from "../../shared/component/SideBarProfile";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import orderService from "../../api/order.service";
 import { getBookById } from "../../api/book.service";
 import { useAuth } from "../../context/AuthContext";
@@ -22,6 +22,7 @@ export default function OrderDetail() {
     const [error, setError] = useState<string | null>(null);
     const { user } = useAuth();
     const [bookDetailsById, setBookDetailsById] = useState<Record<string, Book>>({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchOrderDetail = async () => {
@@ -89,7 +90,7 @@ export default function OrderDetail() {
 
     return (
         <div className="bg-[#F5F5FA] p-5 pl-15 pr-15 flex">
-            <SidebarProfile />
+            <SidebarProfile orderId={id} />
             {/* Main Content */}
             <div className="w-4/5 rounded-xl mt-12">
                 <div className="flex justify-between items-start pb-4">
@@ -205,7 +206,10 @@ export default function OrderDetail() {
                     </div>
 
                     <div className=" flex">
-                        <div className="text-sm text-blue-600 cursor-pointer hover:text-gray-700 mb-2 mr-3 mt-5">
+                        <div
+                            onClick={() => navigate('/orders')}
+                            className="text-sm text-blue-600 cursor-pointer hover:text-gray-700 mb-2 mr-3 mt-5"
+                        >
                             &laquo; Quay lại đơn hàng của tôi
                         </div>
 
