@@ -374,8 +374,8 @@ const ProductDetail = () => {
                         </p>
                         {product.original_price > product.current_seller?.price && (
                             <>
-                                <span className="bg-red-100 text-red-600 text-sm px-2 py-1 rounded">
-                                    Tiết kiệm {calculateDiscountPercentage()}%
+                                <span className="bg-gray-200 text-black text-xs px-2 py-1 rounded-full">
+                                    {calculateDiscountPercentage()}%
                                 </span>
                                 <span className="text-gray-500 line-through text-lg">
                                     {product.original_price.toLocaleString()}đ

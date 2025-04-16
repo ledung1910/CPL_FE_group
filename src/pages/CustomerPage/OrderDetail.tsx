@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import SidebarProfile from "../../shared/component/SideBarProfile";
 import { useParams } from "react-router-dom";
@@ -38,7 +39,6 @@ export default function OrderDetail() {
                     await Promise.all(promises);
                     setBookDetailsById(bookDetails);
                 }
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (err: any) {
                 setError(err.message || "Lỗi khi tải chi tiết đơn hàng.");
             } finally {
@@ -61,6 +61,31 @@ export default function OrderDetail() {
     if (!order) {
         return <div>Không tìm thấy đơn hàng.</div>;
     }
+
+    const handleCancelOrder = async () => {
+        if (order && (order.status === 'pending' || order.status === 'processing')) {
+            try {
+                setLoading(true);
+                const currentTimeISO = new Date().toISOString();
+                const updatedOrderData = await orderService.updateOrderStatus(order.id, 'cancelled', currentTimeISO);
+                if (updatedOrderData === undefined) {
+                    setOrder({ ...order, status: 'cancelled', updated_at: currentTimeISO });
+                } else if (updatedOrderData) {
+                    setOrder({ ...order, status: 'cancelled', updated_at: currentTimeISO });
+                } else {
+                    setError("Lỗi khi hủy đơn hàng.");
+                }
+            } catch (error: any) {
+                console.error("Lỗi trong catch block:", error);
+                setError(error.message || "Đã có lỗi xảy ra khi hủy đơn hàng.");
+            } finally {
+                setLoading(false);
+            }
+        }
+    };
+
+    const canCancelOrder = order.status === 'pending' || order.status === 'processing';
+
 
     return (
         <div className="bg-[#F5F5FA] p-5 pl-15 pr-15 flex">
@@ -171,9 +196,11 @@ export default function OrderDetail() {
                                 <span className="ml-auto text-xl text-red-500">{order.total_amount.toLocaleString()}₫</span>
                             </div>
 
-                            <button className="w-34 bg-yellow-300 text-black py-1.5 rounded-sm">
-                                Hủy đơn hàng
-                            </button>
+                            {canCancelOrder && (
+                                <button onClick={handleCancelOrder} className="w-34 bg-yellow-300 text-black py-1.5 rounded-sm">
+                                    Hủy đơn hàng
+                                </button>
+                            )}
                         </div>
                     </div>
 

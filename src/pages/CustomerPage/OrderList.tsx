@@ -6,11 +6,18 @@ import { Order } from "../../../interfaces";
 import { useNavigate } from 'react-router-dom';
 
 const statusLabels: Record<Order['status'], string> = {
-    pending: 'Đang chờ giải quyết' ,
+    pending: 'Đang chờ giải quyết',
     processing: 'Đang xử lý',
     shipping: 'Đang vận chuyển',
     delivered: 'Đã giao',
     cancelled: 'Đã huỷ'
+};
+const statusColors: Record<Order['status'], string> = {
+    pending: "bg-yellow-400",
+    processing: "bg-blue-500",
+    shipping: "bg-purple-500",
+    delivered: "bg-green-500",
+    cancelled: "bg-red-500",
 };
 
 const UserOrdersPage: React.FC = () => {
@@ -46,7 +53,7 @@ const UserOrdersPage: React.FC = () => {
         console.log("Navigating to order:", orderId);
         navigate(`/orders/${orderId}`);
     };
-    
+
 
     if (loading) {
         return <div>Đang tải đơn hàng...</div>;
@@ -79,7 +86,8 @@ const UserOrdersPage: React.FC = () => {
                                         <td className="py-2 px-4 text-center border-b">{order.id}</td>
                                         <td className="py-2 px-4 text-center border-b">{new Date(order.created_at).toLocaleDateString()}</td>
                                         <td className="py-2 px-4 text-center border-b">{order.total_amount.toLocaleString()} VNĐ</td>
-                                        <td className="py-2 px-4 text-center border-b">{statusLabels[order.status] || order.status}</td>
+                                        <td className="py-2 px-4 text-center border-b"><span className={`px-3 py-1 rounded-full text-white text-sm ${statusColors[order.status]}`}> {statusLabels[order.status] || order.status} </span>
+                                        </td>
                                         <td className="py-2 px-4 text-center border-b">
                                             <button onClick={() => handleViewDetails(order.id)} className="py-2 px-4 rounded-md bg-orange-500 hover:bg-orange-600 ">Xem chi tiết</button>
                                         </td>

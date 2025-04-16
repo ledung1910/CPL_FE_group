@@ -19,26 +19,27 @@ const OrderManagement = () => {
         delivered: "bg-green-500",
         cancelled: "bg-red-500",
     };
+    const fetchOrdersAndUsers = async () => {
+        try {
+            const ordersData = await orderService.getOrders();
+            const usersData = await userService.getAllUsers();
+            const userMap = usersData.reduce((acc, user) => {
+                acc[user.id] = user.name;
+                return acc;
+            }, {} as { [key: number]: string });
 
+            setUsers(userMap);
+            setOrders(ordersData);
+        } catch (error) {
+            console.log("Error fetching data:", error);
+        }
+    };
     useEffect(() => {
-        // Fetch orders and users
-        const fetchOrdersAndUsers = async () => {
-            try {
-                const ordersData = await orderService.getOrders();
-                const usersData = await userService.getAllUsers();
-                const userMap = usersData.reduce((acc, user) => {
-                    acc[user.id] = user.name;
-                    return acc;
-                }, {} as { [key: number]: string });
-
-                setUsers(userMap);
-                setOrders(ordersData);
-            } catch (error) {
-                console.log("Error fetching data:", error);
-            }
-        };
-
         fetchOrdersAndUsers();
+        const intervalId = setInterval(() => {
+            fetchOrdersAndUsers();
+        }, 5000);
+        return () => clearInterval(intervalId);
     }, []);
 
     const handleSort = (key: string) => {
@@ -68,8 +69,8 @@ const OrderManagement = () => {
 
     const handleSaveStatus = async () => {
         if (editingOrderId !== null) {
-            await orderService.updateOrderStatus(editingOrderId, newStatus);
             const currentTimeISO = new Date().toISOString();
+            await orderService.updateOrderStatus(editingOrderId, newStatus, currentTimeISO); // Truyền thêm currentTimeISO
             const updatedOrders = orders.map((order) => {
                 if (order.id === editingOrderId) {
                     return {
@@ -137,7 +138,6 @@ const OrderManagement = () => {
                                                 <option value="processing">🔧 Processing</option>
                                                 <option value="shipping">🚚 Shipping</option>
                                                 <option value="delivered">✅ Delivered</option>
-                                                <option value="cancelled">❌ Cancelled</option>
                                             </select>
                                         ) : (
                                             <span className={`px-3 py-1 rounded-full text-white text-sm ${statusColors[order.status]}`}>
@@ -156,12 +156,14 @@ const OrderManagement = () => {
                                                 <FaSave /> Lưu
                                             </button>
                                         ) : (
-                                            <button
-                                                onClick={() => handleStartEdit(order.id, order.status)}
-                                                className="bg-yellow-400 text-black px-3 py-2 rounded-md hover:bg-yellow-500 transition-all flex items-center gap-1 text-sm"
-                                            >
-                                                <FaEdit /> Cập nhật
-                                            </button>
+                                            order.status !== 'cancelled' && (
+                                                <button
+                                                    onClick={() => handleStartEdit(order.id, order.status)}
+                                                    className="bg-yellow-400 text-black px-3 py-2 rounded-md hover:bg-yellow-500 transition-all flex items-center gap-1 text-sm"
+                                                >
+                                                    <FaEdit /> Cập nhật
+                                                </button>
+                                            )
                                         )}
                                     </td>
                                 </tr>

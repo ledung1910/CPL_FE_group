@@ -29,7 +29,7 @@ const CartPage = () => {
         details[item.book_id] = {
           name: book.name,
           image: book.images[0]?.large_url || "",
-          price: book.original_price,
+          price: book.current_seller.price,
         };
       }
 

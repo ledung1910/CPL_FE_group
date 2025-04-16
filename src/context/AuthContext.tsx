@@ -1,7 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 import userService from "../api/user.service";
-import { User } from "../../interfaces";
 import { cartService } from "../api/cart.service";
+import { User } from "../../interfaces";
 
 interface AuthContextProps {
   user: User | null;
@@ -17,18 +21,51 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
 
+  const INACTIVITY_LIMIT = 15 * 60 * 1000; // 15 phút
+  let inactivityTimer: ReturnType<typeof setTimeout>;
+
+  // Reset timer khi có tương tác
+  const resetInactivityTimer = () => {
+    clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(() => {
+      if (user?.role === "User") {
+        toast.warning("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+        logout("User");
+        navigate("/");
+      }
+    }, INACTIVITY_LIMIT);
+  };
+
+  // Theo dõi tương tác người dùng
+  useEffect(() => {
+    if (user?.role === "User") {
+      const events = ["mousemove", "keydown", "scroll", "click"];
+      events.forEach((event) => window.addEventListener(event, resetInactivityTimer));
+      resetInactivityTimer();
+
+      return () => {
+        events.forEach((event) => window.removeEventListener(event, resetInactivityTimer));
+        clearTimeout(inactivityTimer);
+      };
+    }
+  }, [user]);
+
+  // Lấy thông tin user nếu đã đăng nhập
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const userId = localStorage.getItem("customer_userId");
         if (!userId) return;
+
         const profile = await userService.getProfile(Number(userId));
         const role = profile.role ?? "User";
+
         localStorage.setItem("customer_role", role);
         setUser({ ...profile, role });
       } catch (error) {
-        console.log(error);
+        console.log("Lỗi lấy thông tin user:", error);
         setUser(null);
       } finally {
         setLoading(false);
@@ -60,7 +97,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       setUser({ ...user, role: userRole });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error.response?.status === 401 || error.response?.status === 400) {
         throw new Error("Sai email hoặc mật khẩu. Vui lòng thử lại.");
