@@ -7,7 +7,7 @@ const SidebarProfile = () => {
   
   const breadcrumbMap: { [key: string]: string } = {
     "/user_profile": "Tài khoản",
-    "/order_tracking": "Đơn hàng",
+    "/orders": "Đơn hàng",
     "/notifications": "Thông báo",
   };
   const currentPath = location.pathname;
@@ -49,10 +49,10 @@ const SidebarProfile = () => {
           active={isActive("/notifications")}
         />
         <SidebarLink
-          to="/order_tracking"
+          to="/orders"
           icon="/src/images/order.png"
           label="Quản lý đơn hàng"
-          active={isActive("/order_tracking")}
+          active={isActive("/orders")}
         />
       </div>
     </div>

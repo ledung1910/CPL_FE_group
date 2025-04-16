@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaTimes, FaSearch, FaSort, FaEdit, FaSave } from "react-icons/fa";
+import { FaSearch, FaSort, FaEdit, FaSave } from "react-icons/fa";
 import orderService from "../../../api/order.service";
 import userService from "../../../api/user.service";
 import { Order } from "../../../../interfaces";
@@ -15,7 +15,7 @@ const OrderManagement = () => {
     const statusColors: Record<Order['status'], string> = {
         pending: "bg-yellow-400",
         processing: "bg-blue-500",
-        shipped: "bg-purple-500",
+        shipping: "bg-purple-500",
         delivered: "bg-green-500",
         cancelled: "bg-red-500",
     };
@@ -135,7 +135,7 @@ const OrderManagement = () => {
                                             >
                                                 <option value="pending">🕒 Pending</option>
                                                 <option value="processing">🔧 Processing</option>
-                                                <option value="shipped">🚚 Shipped</option>
+                                                <option value="shipping">🚚 Shipping</option>
                                                 <option value="delivered">✅ Delivered</option>
                                                 <option value="cancelled">❌ Cancelled</option>
                                             </select>
@@ -148,9 +148,6 @@ const OrderManagement = () => {
                                     <td className="px-4 py-3">{order.created_at ? new Date(order.created_at).toLocaleString('vi-VN') : 'N/A'}</td>
                                     <td className="px-4 py-3">{order.updated_at ? new Date(order.updated_at).toLocaleString('vi-VN') : 'Chưa cập nhật'}</td>
                                     <td className="px-4 py-3 flex justify-center items-center gap-2 flex-wrap">
-                                        <button className="bg-red-500 px-3 py-2 rounded-md hover:bg-red-600 transition-all flex items-center gap-1 text-sm">
-                                            <FaTimes /> Hủy
-                                        </button>
                                         {editingOrderId === order.id ? (
                                             <button
                                                 onClick={handleSaveStatus}
