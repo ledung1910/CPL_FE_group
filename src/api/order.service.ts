@@ -1,5 +1,5 @@
 import { Order, OrderItem, Address } from "../../interfaces";
-import { post, get } from "./request";
+import { post, get, patch } from "./request";
 
 const ORDER_BASE_URL = "/orders";
 
@@ -27,7 +27,7 @@ const orderService = {
         };
 
         const payload: Omit<Order, "id" | "created_at"> = {
-            user_id: userId.toString(),
+            user_id: userId,
             items: [orderItem],
             total_amount: quantity * price,
             status: 'pending',
@@ -35,16 +35,22 @@ const orderService = {
             shipping_address: shippingAddress
         };
 
-        return orderService.createOrder(payload); // Thay this bằng orderService
+        return orderService.createOrder(payload);
     },
 
     getOrdersByUser: async (userId: number): Promise<Order[]> => {
         return await get<Order[]>(`${ORDER_BASE_URL}?user_id=${userId}`);
     },
+    getOrders: async (): Promise<Order[]> => {
+        return await get<Order[]>(ORDER_BASE_URL);
+    },
 
     getOrderById: async (id: string): Promise<Order> => {
         return await get<Order>(`${ORDER_BASE_URL}/${id}`);
     },
+    updateOrderStatus: async (id: string, status: Order['status'] ): Promise<{ status: Order['status'] }> => {
+        return await patch<{ status: Order['status'] }>(`/orders/${id}`, { status });
+    }
 };
 
 export default orderService;

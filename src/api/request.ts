@@ -10,3 +10,7 @@ export const post = async <T>(url: string, data?: unknown, config?: AxiosRequest
     const response = await apiClient.post(url, data, config);
     return response as T;
 };
+export const patch = async <T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> => {
+    const response = await apiClient.patch(url, data, config);
+    return response.data as T;
+};
