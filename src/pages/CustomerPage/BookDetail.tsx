@@ -1,11 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faChevronRight,
-    faChevronLeft,
-    faStar,
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight, faChevronLeft, faStar } from "@fortawesome/free-solid-svg-icons";
 import { Book } from "../../../interfaces";
 import usePagination from "../../hooks/usePagination";
 import { getBooks, getBookById } from "../../api/book.service";
