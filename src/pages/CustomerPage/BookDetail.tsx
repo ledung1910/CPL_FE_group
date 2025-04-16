@@ -548,5 +548,5 @@ const ProductDetail = () => {
         </div>
     );
 };
-
+// end 
 export default ProductDetail;
