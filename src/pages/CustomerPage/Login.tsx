@@ -98,7 +98,6 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-blue-600"
             >
-              {showPassword ? 'Ẩn' : 'Hiện'}
             </button>
           </div>
 
