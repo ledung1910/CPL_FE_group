@@ -70,17 +70,20 @@ const ProductDetail = () => {
   };
 
   const handleBuyNow = () => {
+  
     if (!user) {
       setLoginOpen(true);
       return;
     }
 
     if (product) {
+      
       const orderItem = {
         id: product.id,
         quantity,
       };
       localStorage.setItem("latestOrder", JSON.stringify(orderItem));
+      
       navigate("/checkout");
     }
   };

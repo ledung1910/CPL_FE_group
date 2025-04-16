@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import LoginPopup from "../../pages/CustomerPage/Login";
 import RegisterPopup from "../../pages/CustomerPage/Register";
 import logo from "../../assets/logo.png";
+import HeaderMobile from "./HeaderMobile";
 
 const AccountDropdown = ({ onClose }: { onClose: () => void }) => {
   const { user, logout } = useAuth();
@@ -102,8 +103,12 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
   };
 
   return (
+    
     <div>
-      <div className="flex items-center justify-between p-4 bg-white sticky top-0 z-50">
+      {/* Giao diện Mobile */}
+      <HeaderMobile />
+      <div className="hidden md:block">
+      <div className=" flex items-center justify-between p-4 bg-white sticky top-0 z-50">
         {/* Logo */}
         <div className="ml-6">
           <button
@@ -246,6 +251,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
           setLoginOpen(true);
         }}
       />
+    </div>
     </div>
   );
 };
