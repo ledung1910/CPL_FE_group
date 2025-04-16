@@ -1,6 +1,6 @@
 const Footer = () => {
     return (
-        <footer className="bg-gray-200 py-5 border-t border-gray-200 text-sm text-gray-800 px-4">
+        <footer className="hidden sm:block bg-gray-200 py-5 border-t border-gray-200 text-sm text-gray-800 px-4">
             <div className="ml-8">
                 <div className="mb-3">
                     Bằng việc tiến hành Đặt Mua, bạn đồng ý với các Điều kiện Giao dịch chung:

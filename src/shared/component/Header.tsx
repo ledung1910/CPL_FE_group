@@ -39,6 +39,7 @@ const AccountDropdown = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
+
 const Commitments = () => {
   const commitments = [
     {
@@ -67,6 +68,7 @@ const Commitments = () => {
     },
   ];
 
+
   return (
     <div className="flex items-center text-blue-900 gap-3 p-4 border-t border-b border-gray-300">
       <div className="text-lg font-semibold ml-7">Cam kết:</div>
@@ -87,9 +89,11 @@ const Commitments = () => {
   );
 };
 
+
 type HeaderProps = {
   onSearch: (keyword: string) => void;
 };
+
 
 const Header: React.FC<HeaderProps> = ({ onSearch }) => {
   const { user } = useAuth();
@@ -120,8 +124,10 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
     if (keyword) onSearch(keyword);
   };
 
+
   return (
     
+   
     <div>
       {/* Giao diện Mobile */}
       <HeaderMobile />
@@ -133,6 +139,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
             <img src={logo} alt="Logo" className="h-[90px] w-[110px]" />
           </button>
         </div>
+
 
         {/* Search */}
         <div className="flex-1 flex flex-col justify-center items-start ml-10">
@@ -158,6 +165,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
             </button>
           </div>
 
+
           {/* Keywords */}
           <div className="flex gap-3 mt-2 text-gray-700 text-sm cursor-pointer">
             {[
@@ -179,6 +187,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
           </div>
         </div>
 
+
         {/* Menu phải */}
         <div className="flex items-center space-x-6 mb-10 pr-10">
           <Link
@@ -192,6 +201,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
             />
             Trang chủ
           </Link>
+
 
           {/* Tài khoản */}
           <div className="relative pr-6">
@@ -227,6 +237,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
             )}
           </div>
 
+
           {/* Giỏ hàng */}
           <Link to="/cart" className="hover:text-blue-600 relative">
             <div className="relative">
@@ -243,8 +254,10 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
         </div>
       </div>
 
+
       {/* Cam kết */}
       <Commitments />
+
 
       {/* Popup đăng nhập / đăng ký */}
       <LoginPopup
@@ -267,5 +280,6 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
     </div>
   );
 };
+
 
 export default Header;
