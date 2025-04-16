@@ -239,12 +239,8 @@ export default function Checkout() {
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="w-full lg:w-3/4 space-y-6">
           <div className="bg-white rounded-lg shadow p-4">
-            {" "}
-            <h2 className="text-xl font-semibold mb-4 text-gray-800">
-              Chọn hình thức giao hàng
-            </h2>
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">Chọn hình thức giao hàng</h2>
             <div className="relative bg-sky-50 border border-sky-200 rounded-lg p-4 mb-12">
-              {" "}
               <div className="space-y-3">
                 <label className="flex items-center cursor-pointer group">
                   <input
@@ -371,8 +367,8 @@ export default function Checkout() {
                   )}
                 </div>
                 <hr className="my-3 border-t border-gray-200" />{" "}
-                <button className="flex items-center text-sm gap-2 text-blue-600 hover:text-blue-700">
-                  <FontAwesomeIcon icon={faTicket} />
+                <button className="flex items-center text-sm gap-2">
+                  <FontAwesomeIcon icon={faTicket} className="text-blue-600" />
                   Thêm mã khuyến mãi của Shop
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -397,42 +393,21 @@ export default function Checkout() {
               Chọn hình thức thanh toán
             </h2>
 
-            <div className="space-y-4">
-              <label className="flex items-center gap-3 cursor-pointer p-3 border rounded-lg hover:border-blue-500 group">
-                <input
-                  type="radio"
-                  name="payment"
-                  value="cash"
-                  onChange={handlePaymentMethodChange}
-                  checked={paymentMethod === "cash"}
-                  className="form-radio text-blue-600 h-5 w-5 border-gray-300 focus:ring-blue-500"
-                />
+            <div className="space-y-4 mt-6">
+              <label className="flex items-center gap-3 cursor-pointer text-[15px]">
+                <input type="radio" name="payment" onChange={handlePaymentMethodChange} defaultChecked className="form-radio text-blue-500 scale-125" />
                 <img
                   src="https://salt.tikicdn.com/ts/upload/92/b2/78/1b3b9cda5208b323eb9ec56b84c7eb87.png"
                   alt="Thanh toán tiền mặt"
-                  className="w-8 h-8 object-contain"
+                  className="w-9 h-9 object-contain"
                 />
-                <span className="text-gray-800 text-sm group-hover:text-blue-700">
-                  Thanh toán tiền mặt khi nhận hàng
-                </span>
+                <span className="text-gray-800">Thanh toán tiền mặt</span>
               </label>
-              <label className="flex items-center gap-3 cursor-pointer p-3 border rounded-lg hover:border-blue-500 group">
-                <input
-                  type="radio"
-                  name="payment"
-                  value="viettelpay"
-                  onChange={handlePaymentMethodChange}
-                  checked={paymentMethod === "viettelpay"}
-                  className="form-radio text-blue-600 h-5 w-5 border-gray-300 focus:ring-blue-500"
-                />
-                <img
-                  src="https://salt.tikicdn.com/ts/upload/5f/f9/75/d7ac8660aae903818dd7da8e4772e145.png"
-                  alt="Viettel Money"
-                  className="w-8 h-8"
-                />
-                <span className="text-gray-800 text-sm group-hover:text-blue-700">
-                  Viettel Money
-                </span>
+
+              <label className="flex items-center gap-3 cursor-pointer text-[15px]">
+                <input type="radio" name="payment" onChange={handlePaymentMethodChange} className="form-radio text-blue-500 scale-125" />
+                <img src="https://salt.tikicdn.com/ts/upload/5f/f9/75/d7ac8660aae903818dd7da8e4772e145.png" alt="Viettel Money" className="w-9 h-9" />
+                <span className="text-gray-800">Viettel Money</span>
               </label>
             </div>
             <div className="bg-gray-50 p-4 mt-6 rounded-md border border-gray-200">
@@ -492,12 +467,21 @@ export default function Checkout() {
             </div>
             {user ? (
               <>
-                <div className="flex justify-between items-center text-sm font-semibold text-gray-800">
-                  <span>{user.name}</span>
-                  {user.phone && <span>{user.phone}</span>}
-                </div>
+                <p className="font-semibold text-gray-800 text-[15px]">
+                  {user.name}
+                  {user.phone && (
+                    <span className="ml-2 text-[15px] border-l-2 border-gray-300 pl-2">
+                      {user.phone}
+                    </span>
+                  )}
+                </p>
                 {user.address && (
-                  <p className="text-gray-600 mt-1 text-sm leading-relaxed">
+                  <p className="text-gray-500 mt-1 text-[15px]">
+                    {user.address.street && (
+                      <span className="bg-orange-100 text-orange-600 text-xs px-2 py-0.5 rounded mr-1">
+                        {user.address.district}
+                      </span>
+                    )}
                     {user.address.street && `${user.address.street}, `}
                     {user.address.district && `${user.address.district}, `}
                     {user.address.city}
@@ -505,9 +489,7 @@ export default function Checkout() {
                 )}
               </>
             ) : (
-              <p className="text-gray-500 mt-1 text-sm">
-                Vui lòng đăng nhập để xem địa chỉ.
-              </p>
+              <p className="text-gray-500 mt-1 text-[15px]">Không có thông tin người dùng.</p>
             )}
           </div>
           <div className="bg-white rounded-lg shadow p-4">
@@ -551,7 +533,7 @@ export default function Checkout() {
             <div className="px-4 pt-4 pb-2">
               <h3 className="font-semibold text-lg text-gray-800">Đơn hàng</h3>
               <div className="text-sm text-gray-500 mt-1">
-                {totalQuantity} sản phẩm.{" "}
+                {totalQuantity} sản phẩm. <span className="text-blue-500 cursor-pointer">Xem thông tin ▼</span>
               </div>
             </div>
             <hr className="my-2 border-t border-gray-200" />
@@ -599,8 +581,8 @@ export default function Checkout() {
                 Tiết kiệm {totalSavings.toLocaleString("vi-VN")} ₫
               </div>
             )}
-            <p className="text-xs text-gray-500 mb-4 text-center px-4">
-              (Đã bao gồm VAT nếu có)
+            <p className="text-xs text-gray-500 mb-4 text-right px-4">
+              (Giá này đã bao gồm thuế GTGT, phí đóng gói, phí vận chuyển và các chi phí phát sinh khác)
             </p>
             <div className="px-4 pb-4">
               <button
