@@ -169,11 +169,11 @@ const OrderConfirmation = () => {
 
   return (
     <div className="min-h-screen bg-[#f5f5fa] py-8 px-4">
-      <div className="max-w-[1000px] mx-auto flex gap-4">
+      <div className="max-w-[1000px] mx-auto flex flex-col lg:flex-row gap-4">
         {/* Left Section */}
         <div className="flex-1 bg-white rounded-[8px] overflow-hidden relative min-h-[500px]">
           {/* Banner */}
-          <div className="h-[120px] bg-gradient-to-r from-[#00b5f1] to-[#005bea] relative flex items-start px-4 pt-6">
+          <div className="h-[120px] sm:h-[150px] bg-gradient-to-r from-[#00b5f1] to-[#005bea] relative flex items-start px-4 pt-6">
             {/* Banner Confetti Overlay */}
             <img
               src="/src/images/banner.png"
@@ -188,13 +188,13 @@ const OrderConfirmation = () => {
             />
 
             {/* Text content */}
-            <div className="relative z-20 flex items-center h-full pl-[180px]">
+            <div className="relative z-20 flex items-center h-full pl-[120px] sm:pl-[180px]">
               <div className="text-white">
-                <h1 className="text-[22px] font-semibold leading-tight">
+                <h1 className="text-[18px] sm:text-[22px] font-semibold leading-tight">
                   Yay, đặt hàng thành công!
                 </h1>
                 {order.payment_method === "cash" ? (
-                  <p className="mt-[4px] text-[14px] md:text-[16px]">
+                  <p className="mt-[4px] text-[14px] sm:text-[16px]">
                     Chuẩn bị tiền mặt{" "}
                     <span className="font-bold">
                       {formatCurrency(order.total_amount)}
@@ -213,7 +213,7 @@ const OrderConfirmation = () => {
           </div>
 
           {/* Info Rows */}
-          <div className="pt-6 pb-8 px-6 pl-[200px]">
+          <div className="pt-6 pb-8 px-4 sm:px-6 lg:px-8 pl-[120px] sm:pl-[200px]">
             <div className="flex justify-between text-sm text-[#808089] mb-4">
               <span>Phương thức thanh toán</span>
               <span className="text-[#27272a] font-medium">
@@ -242,15 +242,15 @@ const OrderConfirmation = () => {
         </div>
 
         {/* Right Section */}
-        <div className="w-[300px] bg-white rounded-[8px] p-4 text-sm shadow-sm h-fit">
+        <div className="w-full lg:w-[300px] bg-white rounded-[8px] p-4 text-sm shadow-sm h-fit">
           {/* Mã đơn hàng */}
-          <div className="flex justify-between items-center border-b border-gray-200 pb-2 mb-2">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-gray-200 pb-2 mb-2">
             <span className="font-medium text-[#27272a]">
               Mã đơn hàng: {orderId}
             </span>
             <Link
               to={`/user/orders/${order.id}`}
-              className="text-blue-600 rounded font-medium text-sm"
+              className="text-blue-600 rounded font-medium text-sm mt-2 sm:mt-0"
             >
               Xem đơn hàng
             </Link>
@@ -275,13 +275,13 @@ const OrderConfirmation = () => {
                 return (
                   <div
                     key={item.book_id}
-                    className="flex items-start gap-3 mb-3 pb-3 border-b last:border-b-0 border-gray-200"
+                    className="flex items-start gap-2 sm:gap-3 mb-3 pb-3 border-b last:border-b-0 border-gray-200"
                   >
                     {" "}
                     <img
                       src={imageUrl}
                       alt={bookName}
-                      className="w-[50px] h-auto max-h-[75px] object-contain flex-shrink-0" 
+                      className="w-[50px] h-auto max-h-[75px] object-contain flex-shrink-0"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.onerror = null;

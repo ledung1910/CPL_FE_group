@@ -27,7 +27,7 @@ const SidebarProfile: React.FC<SidebarProfileProps> = ({ orderId }) => {
     if (!user) return null;
 
     return (
-        <div className="w-1/5 rounded-xl">
+        <div className="hidden md:block w-full md:w-1/5 rounded-xl">
             <p className="text-gray-500 text-base mb-2">
                 <Link to="/" className="hover:underline">Trang chủ</Link> &gt;{" "}
                 {currentPath.startsWith("/orders/") && currentPath !== "/orders" && orderId ? (
