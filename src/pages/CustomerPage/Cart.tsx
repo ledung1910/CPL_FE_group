@@ -59,6 +59,7 @@ const CartPage = () => {
   const navigate = useNavigate();
 
   const handleCheckout = () => {
+    cartService.clearCart();
     navigate('/checkout', { state: { cartItems } });
   };
 
