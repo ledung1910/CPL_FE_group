@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 import { cartService } from "../../api/cart.service";
 import { getBookById } from "../../api/book.service";
 import { OrderItem } from "../../../interfaces";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface BookDetails {
   name: string;
@@ -19,11 +21,9 @@ const CartPage = () => {
     const storedCart = cartService.getCart();
     setCartItems(storedCart);
 
-    // Load book details for each book in the cart
     const fetchBookDetails = async () => {
       const details: Record<string, BookDetails> = {};
 
-      // Fetch book details for each item in the cart
       for (const item of storedCart) {
         const book = await getBookById(item.book_id);
         details[item.book_id] = {
@@ -59,6 +59,12 @@ const CartPage = () => {
   const navigate = useNavigate();
 
   const handleCheckout = () => {
+    if (cartItems.length === 0) {
+      toast.warn("Giỏ hàng của bạn đang trống!");
+      return;
+    }
+    cartService.clearCart();
+    window.dispatchEvent(new Event("cartUpdated"));
     navigate('/checkout', { state: { cartItems } });
   };
 
