@@ -48,22 +48,27 @@ const RegisterPopup: React.FC<RegisterPopupProps> = ({ isOpen, onClose, onSwitch
       setError(err.message || 'Đăng ký thất bại');
     }
   };
-   const handleKeyDown = (event: React.KeyboardEvent) => {
-      if (event.key === 'Enter') {
-        handleRegister();
-      }
-    };
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      handleRegister();
+    }
+  };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="relative flex w-[780px] overflow-hidden rounded-2xl bg-white shadow-2xl">
-        <button className="absolute right-4 top-4 text-2xl text-gray-500 hover:text-gray-700"
-          onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+      <div className="relative flex flex-col md:flex-row w-full max-w-xl md:max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl">
+        {/* Nút đóng */}
+        <button
+          className="absolute right-4 top-4 text-2xl text-gray-500 hover:text-gray-700"
+          onClick={onClose}
+        >
           <IoClose />
         </button>
-        <div className="w-2/3 p-6">
+
+        {/* Form đăng ký */}
+        <div className="w-full md:w-2/3 p-6">
           <button onClick={onSwitchToLogin} className="text-gray-500 mb-4">
             <ArrowLeft size={24} />
           </button>
@@ -118,20 +123,24 @@ const RegisterPopup: React.FC<RegisterPopupProps> = ({ isOpen, onClose, onSwitch
 
           {error && <p className="text-red-500 mt-2">{error}</p>}
 
-          <button onKeyDown={handleKeyDown} onClick={handleRegister}
-            className="w-full mt-6 p-3 bg-red-500 text-white rounded-sm hover:bg-red-600">
+          <button
+            onKeyDown={handleKeyDown}
+            onClick={handleRegister}
+            className="w-full mt-6 p-3 bg-red-500 text-white rounded-sm hover:bg-red-600"
+          >
             Đăng ký
           </button>
         </div>
 
-        <div className="w-1/3 bg-blue-100 flex flex-col items-center justify-center text-center p-4">
+        {/* Phần ảnh (ẩn trên mobile) */}
+        <div className="hidden md:flex w-1/3 flex-col items-center justify-center bg-blue-100 p-6 text-center">
           <img
             src="https://salt.tikicdn.com/ts/upload/df/48/21/b4d225f471fe06887284e1341751b36e.png"
             alt="Tiki Bot"
-            className="w-40 h-40 mb-3"
+            className="mb-4 h-36 w-36"
           />
-          <p className="text-blue-600 font-semibold text-xl">Mua sắm tại Tiki</p>
-          <p className="text-blue-600">Siêu ưu đãi mỗi ngày</p>
+          <p className="text-lg font-semibold text-blue-600">Mua sắm tại Tiki</p>
+          <p className="text-sm text-blue-600">Siêu ưu đãi mỗi ngày</p>
         </div>
       </div>
     </div>

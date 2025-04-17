@@ -55,7 +55,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="relative flex w-full max-w-3xl flex-col md:flex-row overflow-hidden rounded-2xl bg-white shadow-2xl">
+      <div className="relative w-full max-w-md md:max-w-3xl flex flex-col md:flex-row overflow-hidden rounded-2xl bg-white shadow-2xl">
         {/* Close button */}
         <button
           onClick={onClose}
@@ -77,9 +77,8 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             onKeyDown={handleKeyDown}
-            className={`w-full border-b p-2 mt-4 ${
-              error ? 'border-red-500' : 'border-gray-300'
-            } focus:outline-none`}
+            className={`w-full border-b p-2 mt-4 ${error ? 'border-red-500' : 'border-gray-300'
+              } focus:outline-none`}
           />
 
           <div className="relative mb-2">
@@ -89,9 +88,8 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               onKeyDown={handleKeyDown}
-              className={`w-full border-b p-2 mt-4 ${
-                error ? 'border-red-500' : 'border-gray-300'
-              } focus:outline-none`}
+              className={`w-full border-b p-2 mt-4 ${error ? 'border-red-500' : 'border-gray-300'
+                } focus:outline-none`}
             />
             <button
               type="button"
