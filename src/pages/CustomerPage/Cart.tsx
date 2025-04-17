@@ -64,7 +64,6 @@ const CartPage = () => {
       return;
     }
     cartService.clearCart();
-    window.dispatchEvent(new Event("cartUpdated"));
     navigate('/checkout', { state: { cartItems } });
   };
 

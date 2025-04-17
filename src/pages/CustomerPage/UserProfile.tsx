@@ -83,7 +83,8 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="bg-[#F5F5FA] p-5 pl-15 pr-15 flex">
+    <div className="bg-[#F5F5FA] p-5 pl-15 pr-15 flex flex-col md:flex-row gap-5">
+
       <SidebarProfile />
 
       <div className="flex-1">
