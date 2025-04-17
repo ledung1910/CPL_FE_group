@@ -6,6 +6,7 @@ import { getBookById } from "../../api/book.service";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import orderService from "../../api/order.service";
+import { cartService } from "../../api/cart.service";
 
 interface CartItemWithDetails {
   book: Book | null;
@@ -218,8 +219,12 @@ export default function Checkout() {
 
       const newOrder = await orderService.createOrder(orderPayload);
       if (newOrder && newOrder.id) {
-        navigate(`/confirm/${newOrder.id}`);
-      } else {
+        cartService.clearCart();
+        navigate("/", { replace: true });
+        setTimeout(() => {
+          navigate(`/confirm/${newOrder.id}`);
+        }, 0);
+      }else {
         console.error("API did not return an order ID:", newOrder);
         setOrderErrorMessage("Không thể tạo đơn hàng. Vui lòng thử lại hoặc liên hệ hỗ trợ.");
       }
