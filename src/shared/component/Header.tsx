@@ -291,7 +291,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
 
   return (
     <div>
-      <div className="block md:hidden bg-blue-500 text-white p-4 flex items-center justify-between">
+      <div className="md:hidden bg-blue-500 text-white p-4 flex items-center justify-between">
         <button className="mr-4" onClick={() => navigate(-1)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -344,7 +344,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
         </Link>
 
       </div>
-      <div className="block md:hidden bg-[#FFF0B3] rounded-md mx-4 my-2 px-4 py-2 flex items-center justify-between">
+      <div className="md:hidden bg-[#FFF0B3] rounded-md mx-4 my-2 px-4 py-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -10,9 +10,7 @@ const formatCurrency = (amount: number | undefined): string => {
   return amount.toLocaleString("vi-VN") + " ₫";
 };
 
-const calculateAndFormatDeliveryDate = (
-  isoString: string | undefined
-): string => {
+const calculateAndFormatDeliveryDate = (isoString: string | undefined): string => {
   if (!isoString) return "Dự kiến sớm nhất";
   try {
     const orderDate = new Date(isoString);

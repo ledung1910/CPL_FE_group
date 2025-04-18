@@ -278,7 +278,6 @@ const ProductDetail = () => {
 
     return (
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 py-4 px-4">
-            {/* Phần ảnh */}
             <div className="col-span-12 sm:col-span-6 lg:col-span-3 w-full flex flex-col items-center">
                 <div className="bg-white p-4 rounded-lg w-full">
                     <img
@@ -329,7 +328,6 @@ const ProductDetail = () => {
                 </div>
             </div>
 
-            {/* Phần thông tin sản phẩm */}
             <div className="col-span-12 sm:col-span-6 lg:col-span-6 flex flex-col gap-4">
                 <div className="rounded-lg p-4 bg-white">
                     <span className="font-semibold">Tác giả: </span>
@@ -360,7 +358,7 @@ const ProductDetail = () => {
                         </p>
                         {product.original_price > product.current_seller?.price && (
                             <>
-                                <span className="bg-gray-200 text-black text-xs px-2 py-1 rounded-full">
+                                <span className="bg-gray-200 text-black text-xs px-2 py-1 mb-0.5 rounded-full">
                                     {calculateDiscountPercentage()}%
                                 </span>
                                 <span className="text-gray-500 line-through text-lg">
