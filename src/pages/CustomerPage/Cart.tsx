@@ -15,7 +15,9 @@ interface BookDetails {
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState<OrderItem[]>([]);
-  const [bookDetails, setBookDetails] = useState<Record<string, BookDetails>>({}); // Store book details by id
+  const [bookDetails, setBookDetails] = useState<Record<string, BookDetails>>({});
+  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedCart = cartService.getCart();
@@ -52,10 +54,6 @@ const CartPage = () => {
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
-  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-  const navigate = useNavigate();
-
   const handleCheckout = () => {
     if (cartItems.length === 0) {
       toast.warn("Giỏ hàng của bạn đang trống!");
@@ -71,13 +69,11 @@ const CartPage = () => {
         <h1 className="text-xl font-semibold mb-4">GIỎ HÀNG</h1>
 
         <div className="flex flex-col lg:flex-row gap-6">
-          {/* Cart Items */}
           <div className="flex-1 bg-white rounded-lg shadow-sm p-4 space-y-4">
             {cartItems.length === 0 ? (
               <p>Giỏ hàng của bạn đang trống.</p>
             ) : (
               <>
-                {/* Header for large screens */}
                 <div className="hidden lg:flex items-center font-medium text-sm text-gray-600 py-2 mb-5">
                   <div className="flex items-center space-x-2 w-1/2">
                     <input type="checkbox" className="h-4 w-4" defaultChecked />
@@ -98,7 +94,6 @@ const CartPage = () => {
                       key={item.book_id}
                       className="flex flex-col lg:flex-row items-start lg:items-center py-4 border-t text-sm"
                     >
-                      {/* Book info */}
                       <div className="flex items-start space-x-3 w-full lg:w-1/2 mb-2 lg:mb-0">
                         <input type="checkbox" className="h-4 w-4 mt-1" defaultChecked />
                         <img
@@ -120,7 +115,6 @@ const CartPage = () => {
                         </div>
                       </div>
 
-                      {/* Desktop layout */}
                       <div className="hidden lg:block w-1/6 text-right">
                         {details.price.toLocaleString()}₫
                       </div>
@@ -153,7 +147,6 @@ const CartPage = () => {
             )}
           </div>
 
-          {/* Total Summary */}
           <div className="w-full lg:w-1/5 bg-white rounded-lg shadow-sm p-4 h-fit">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium">Tổng tiền hàng</span>

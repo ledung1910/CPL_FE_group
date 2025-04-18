@@ -7,7 +7,7 @@ const Sidebar: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
+    logout("Admin");
     navigate("/");
   };
 
@@ -25,7 +25,6 @@ const Sidebar: React.FC = () => {
         <SidebarItem to="/admin/bills" icon={<FaMoneyBill />} text="Bills" />
       </nav>
 
-      {/* Nút Logout */}
       <button
         onClick={handleLogout}
         className="flex items-center gap-3 p-4 text-red-600 hover:bg-red-100 transition-all border-t border-gray-200"

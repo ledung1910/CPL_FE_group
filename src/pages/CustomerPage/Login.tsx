@@ -10,7 +10,6 @@ interface LoginPopupProps {
 
 const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegister }) => {
   const { login } = useAuth();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -56,7 +55,6 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/40 px-4">
       <div className="relative w-full max-w-md md:max-w-3xl flex flex-col md:flex-row overflow-hidden rounded-2xl bg-white shadow-2xl">
-        {/* Close button */}
         <button
           onClick={onClose}
           className="absolute right-4 top-4 text-2xl text-gray-500 hover:text-gray-700"
@@ -64,7 +62,6 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
           <IoClose />
         </button>
 
-        {/* Login form */}
         <div className="flex w-full md:w-2/3 flex-col justify-center p-6 sm:p-8">
           <h2 className="text-xl sm:text-2xl font-bold mb-2">Đăng nhập bằng email</h2>
           <p className="mb-6 text-sm sm:text-base text-gray-500">
@@ -129,7 +126,6 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
           </div>
         </div>
 
-        {/* Right image section - ẩn trên mobile */}
         <div className="hidden md:flex w-1/3 flex-col items-center justify-center bg-blue-100 p-6 text-center">
           <img
             src="https://salt.tikicdn.com/ts/upload/df/48/21/b4d225f471fe06887284e1341751b36e.png"

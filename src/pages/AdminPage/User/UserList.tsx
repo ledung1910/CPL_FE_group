@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSearch, FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 import userService from "../../../api/user.service";
 import { User } from "../../../../interfaces";
@@ -7,10 +7,7 @@ import { User } from "../../../../interfaces";
 const UserManagement = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortConfig, setSortConfig] = useState<{
-    key: keyof User;
-    direction: "asc" | "desc";
-  } | null>(null);
+  const [sortConfig, setSortConfig] = useState<{ key: keyof User; direction: "asc" | "desc"; } | null>(null);
 
   const fetchUsers = async () => {
     try {
@@ -59,7 +56,7 @@ const UserManagement = () => {
       <h2 className="text-2xl font-semibold mb-6 text-center">
         👤 Quản lý Người Dùng
       </h2>
-      {/* Thanh tìm kiếm */}
+
       <div className="mb-4 flex items-center gap-2 bg-gray-800 p-3 rounded-md shadow-md">
         <FaSearch className="text-gray-400" />
         <input

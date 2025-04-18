@@ -3,7 +3,6 @@ import { useAuth } from '../../context/AuthContext';
 import { ArrowLeft } from "lucide-react";
 import { IoClose } from 'react-icons/io5';
 
-
 interface RegisterPopupProps {
   isOpen: boolean;
   onClose: () => void;
@@ -39,7 +38,6 @@ const RegisterPopup: React.FC<RegisterPopupProps> = ({ isOpen, onClose, onSwitch
       setError('Mật khẩu và xác nhận mật khẩu không khớp');
       return;
     }
-
     try {
       await register(fullName, email, password, phone);
       onClose();
@@ -59,7 +57,6 @@ const RegisterPopup: React.FC<RegisterPopupProps> = ({ isOpen, onClose, onSwitch
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/40 p-4">
       <div className="relative flex flex-col md:flex-row w-full max-w-xl md:max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl">
-        {/* Nút đóng */}
         <button
           className="absolute right-4 top-4 text-2xl text-gray-500 hover:text-gray-700"
           onClick={onClose}
@@ -67,7 +64,6 @@ const RegisterPopup: React.FC<RegisterPopupProps> = ({ isOpen, onClose, onSwitch
           <IoClose />
         </button>
 
-        {/* Form đăng ký */}
         <div className="w-full md:w-2/3 p-6">
           <button onClick={onSwitchToLogin} className="text-gray-500 mb-4">
             <ArrowLeft size={24} />
@@ -132,7 +128,6 @@ const RegisterPopup: React.FC<RegisterPopupProps> = ({ isOpen, onClose, onSwitch
           </button>
         </div>
 
-        {/* Phần ảnh (ẩn trên mobile) */}
         <div className="hidden md:flex w-1/3 flex-col items-center justify-center bg-blue-100 p-6 text-center">
           <img
             src="https://salt.tikicdn.com/ts/upload/df/48/21/b4d225f471fe06887284e1341751b36e.png"

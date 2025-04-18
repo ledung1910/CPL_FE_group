@@ -111,7 +111,6 @@ const BookItem: React.FC<{ book: Book }> = ({ book }) => {
         )}
       </div>
 
-      {/* Giao hàng - đẩy xuống đáy bằng mt-auto */}
       <div className="mt-auto px-4">
         <div className="py-1 px-1 text-sm text-gray-500 flex items-center gap-2 border-t border-gray-300 bg-white rounded font-medium">
           {book.is_ship_now ? (

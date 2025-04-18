@@ -256,7 +256,7 @@ const Dashboard = () => {
     <div className="p-8 bg-gray-900 text-white min-h-screen">
       <h1 className="text-3xl font-bold mb-8 text-center">📊 Dashboard</h1>
 
-      {/* PHẦN TRÊN: PIE CHART + CHART KHÁC (sau này) */}
+      {/* PHẦN TRÊN: PIE CHART + CHART KHÁC */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         {/* PIE CHART - BÊN TRÁI */}
         <div className="bg-gray-800 p-4 rounded-lg shadow-lg">
@@ -271,7 +271,7 @@ const Dashboard = () => {
                 maintainAspectRatio: false,
                 plugins: {
                   legend: {
-                    position: "right", // 👈 CHÚ THÍCH BÊN PHẢI
+                    position: "right",
                     labels: {
                       color: "#fff",
                     },
@@ -300,13 +300,12 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* BÊN PHẢI (ĐỂ TRỐNG CHO BIỂU ĐỒ KHÁC) */}
+        {/* BÊN PHẢI */}
         <div className="bg-gray-800 p-4 rounded-lg shadow-lg flex flex-col justify-center">
           <h2 className="text-lg font-semibold mb-4 text-center">
             Doanh thu và Lợi nhuận (Đã giao hàng)
           </h2>
           <div className="flex justify-around mb-4">
-            {/* Lựa chọn Năm */}
             <div>
               <label htmlFor="year" className="block text-sm font-medium text-gray-300">Năm:</label>
               <select
@@ -322,7 +321,6 @@ const Dashboard = () => {
               </select>
             </div>
 
-            {/* Lựa chọn Tháng */}
             <div>
               <label htmlFor="month" className="block text-sm font-medium text-gray-300">Tháng:</label>
               <select
@@ -339,7 +337,6 @@ const Dashboard = () => {
               </select>
             </div>
 
-            {/* Lựa chọn Ngày */}
             <div>
               <label htmlFor="day" className="block text-sm font-medium text-gray-300">Ngày:</label>
               <select
@@ -427,14 +424,13 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* PHẦN DƯỚI: DÀNH CHO CHART SỐ LƯỢNG ĐƠN HÀNG THEO THÁNG */}
+      {/* PHẦN DƯỚI */}
 
       <div className="bg-gray-800 p-4 rounded-lg shadow-lg min-h-[300px] flex flex-col">
         <h2 className="text-lg font-semibold mb-4 text-center">
           Số lượng đơn hàng theo tháng
         </h2>
         <div className="flex justify-around mb-4">
-          {/* Lựa chọn Năm cho Monthly Chart */}
           <div>
             <label htmlFor="monthlyYear" className="block text-sm font-medium text-gray-300">Năm:</label>
             <select
@@ -449,7 +445,6 @@ const Dashboard = () => {
             </select>
           </div>
 
-          {/* Lựa chọn Tháng cho Monthly Chart */}
           <div>
             <label htmlFor="monthlyMonth" className="block text-sm font-medium text-gray-300">Tháng:</label>
             <select

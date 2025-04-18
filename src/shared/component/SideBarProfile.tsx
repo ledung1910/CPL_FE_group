@@ -17,7 +17,6 @@ const SidebarProfile: React.FC<SidebarProfileProps> = ({ orderId }) => {
     const currentPath = location.pathname;
     let breadcrumbLabel = breadcrumbMap[currentPath] || "Tài khoản";
 
-    // Kiểm tra nếu đang ở trang chi tiết đơn hàng
     if (currentPath.startsWith("/orders/") && currentPath !== "/orders" && orderId) {
         breadcrumbLabel = `Đơn hàng số ${orderId}`;
     }

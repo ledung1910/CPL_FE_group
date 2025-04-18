@@ -2,7 +2,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
 import userService from "../api/user.service";
 import { cartService } from "../api/cart.service";
 import { User } from "../../interfaces";
@@ -23,10 +22,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
-  const INACTIVITY_LIMIT = 15 * 60 * 1000; // 15 phút
+  const INACTIVITY_LIMIT = 15 * 60 * 1000;
   let inactivityTimer: ReturnType<typeof setTimeout>;
 
-  // Reset timer khi có tương tác
   const resetInactivityTimer = () => {
     clearTimeout(inactivityTimer);
     inactivityTimer = setTimeout(() => {
@@ -38,7 +36,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, INACTIVITY_LIMIT);
   };
 
-  // Theo dõi tương tác người dùng
   useEffect(() => {
     if (user?.role === "User") {
       const events = ["mousemove", "keydown", "scroll", "click"];
@@ -52,7 +49,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [user]);
 
-  // Lấy thông tin user nếu đã đăng nhập
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -127,7 +123,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.removeItem("customer_role");
       cartService.clearCart();
     }
-
     setUser(null);
   };
 

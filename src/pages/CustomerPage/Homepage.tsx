@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { FaStar, FaBars, FaSearch, FaShoppingCart, FaArrowLeft, FaFilter } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { FaStar, FaFilter } from "react-icons/fa";
 import BookShow from "../../shared/component/Bookshow";
-import { useOutletContext, useSearchParams, useNavigate } from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 import SidebarHomepage from "../../shared/component/SidebarHomepage";
 import { Category } from "../../../interfaces";
 import { getRealCategories } from "../../api/book.service";
@@ -60,7 +60,6 @@ const HomePage = () => {
   const { keyword: desktopKeyword } = useOutletContext<{ keyword: string }>();
   const [searchParams] = useSearchParams();
   const categoryName = searchParams.get("category") || "";
-  const [mobileSearchKeyword, setMobileSearchKeyword] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
   const [categoryId, setCategoryId] = useState<number>(0);
 
@@ -116,9 +115,6 @@ const HomePage = () => {
     <>
       {/* Mobile View */}
       <div className="md:hidden bg-gray-100">
-
-        {/* Mobile Filters */}
-        {/* SORT SECTION */}
         <div className="bg-white px-3 py-2 mt-4 flex justify-center items-center border-b text-sm text-gray-800 font-normal gap-x-2">
           {[
             { label: "Phổ biến", value: "Phổ biến" },
@@ -129,11 +125,10 @@ const HomePage = () => {
           ].map((sort, index, arr) => (
             <React.Fragment key={sort.value}>
               <button
-                className={`px-1 py-0.5 ${
-                  isSortActive(sort.value)
+                className={`px-1 py-0.5 ${isSortActive(sort.value)
                     ? "text-blue-600 font-medium"
                     : "text-gray-800"
-                }`}
+                  }`}
                 onClick={() => {
                   handleMobileSort(sort.value);
                   if (sort.value === "Phổ biến") resetToDefault();
@@ -146,7 +141,6 @@ const HomePage = () => {
           ))}
         </div>
 
-        {/* FILTER SECTION */}
         <div className="bg-white px-3 py-2 flex justify-center items-center gap-4 overflow-x-auto  text-sm">
           <button className="flex items-center gap-1 text-gray-800">
             <FaFilter className="text-lg" />
@@ -154,39 +148,35 @@ const HomePage = () => {
           </button>
 
           <button
-            className={`px-3 py-1 rounded-full font-semibold text-xs ${
-              isFilterActive(filters.shipNow)
+            className={`px-3 py-1 rounded-full font-semibold text-xs ${isFilterActive(filters.shipNow)
                 ? "bg-red-500 text-white shadow"
                 : "bg-red-100 text-red-500"
-            }`}
+              }`}
             onClick={() => handleMobileFilter("shipNow")}
           >
             NOW
           </button>
 
           <button
-            className={`px-3 py-1 rounded-full font-semibold text-xs flex items-center gap-1 ${
-              isFilterActive(filters.topDeal)
+            className={`px-3 py-1 rounded-full font-semibold text-xs flex items-center gap-1 ${isFilterActive(filters.topDeal)
                 ? "bg-red-500 text-white shadow"
                 : "bg-red-100 text-red-500"
-            }`}
+              }`}
             onClick={() => handleMobileFilter("topDeal")}
           >
             <span className="text-[13px]">👍</span> TOP DEAL
           </button>
 
           <button
-            className={`px-3 py-1 rounded-full font-semibold text-xs ${
-              isFilterActive(filters.freeshipExtra)
+            className={`px-3 py-1 rounded-full font-semibold text-xs ${isFilterActive(filters.freeshipExtra)
                 ? "bg-blue-600 text-white shadow"
                 : "bg-blue-100 text-blue-600"
-            }`}
+              }`}
             onClick={() => handleMobileFilter("freeshipExtra")}
           >
             FREESHIP XTRA
           </button>
         </div>
-        {/* BookShow Component for Mobile */}
         <div className="mt-2 ml-4 mr-4">
           <BookShow
             filters={filters}
@@ -196,36 +186,28 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Desktop View */}
       <div className="hidden md:block">
         <div className="bg-gray-100 mt-4">
-          {/* Breadcrumb */}
           <div className="pointer flex items-center space-x-1 text-gray-500 text-sm ml-10 mb-4">
             <span>Trang chủ</span>
             <span>{">"}</span>
             <span className="text-black font-medium">Nhà Sách Tiki</span>
           </div>
           <div className="flex items-start">
-            {/* Sidebar */}
             <SidebarHomepage />
             <div className="w-3/4 pl-4">
               <div className="title bg-white p-4 text-3xl">
                 <span>Nhà sách Tiki</span>
               </div>
-              {/* Slide */}
               <div className="slide">
                 <div className="flex">
                   <div className="flex w-full bg-white p-3 rounded-lg mt-4 mr-4">
-                    {/* Hình ảnh bên trái */}
                     <div className="w-1/3 relative flex items-center justify-center">
-                      {/* Ảnh mờ phía sau */}
                       <img
                         src="https://salt.tikicdn.com/cache/w200/ts/tka/1c/a1/00/32b0e70d3c6db98a03f300e89480bc72.png"
                         alt="1980books"
                         className="w-full blur-md"
                       />
-
-                      {/* Ảnh nhỏ phía trước (ở giữa) */}
                       <img
                         src="https://salt.tikicdn.com/cache/w200/ts/tka/1c/a1/00/32b0e70d3c6db98a03f300e89480bc72.png"
                         alt="1980books"
@@ -233,14 +215,11 @@ const HomePage = () => {
                       />
                     </div>
 
-                    {/* Nội dung bên phải */}
                     <div className="w-2/3 flex flex-col justify-start pl-4">
-                      {/* Tiêu đề */}
                       <span className="text-lg font-bold text-gray-800 mt-2">
                         Top Sách Bán Chạy
                       </span>
 
-                      {/* Tài trợ bởi */}
                       <div className="text-sm text-gray-600 mt-1">
                         Tài trợ bởi{" "}
                         <strong className="text-gray-900">
@@ -253,7 +232,6 @@ const HomePage = () => {
                           className="inline-block w-4 h-4 translate-y-[-2px]"
                         />
                       </div>
-                      {/* Danh sách sản phẩm */}
                       <div className="img-container flex gap-4 mt-8">
                         {[
                           {
@@ -284,16 +262,13 @@ const HomePage = () => {
                     </div>
                   </div>
                   <div className="flex w-full bg-white p-3 rounded-lg mt-4">
-                    {/* Hình ảnh bên trái */}
                     <div className="w-1/3 relative flex items-center justify-center">
-                      {/* Ảnh mờ phía sau */}
                       <img
                         src="https://salt.tikicdn.com/cache/w200/ts/tka/1c/a1/00/32b0e70d3c6db98a03f300e89480bc72.png"
                         alt="1980books"
                         className="w-full blur-md opacity-90"
                       />
 
-                      {/* Ảnh nhỏ phía trước (ở giữa) */}
                       <img
                         src="https://salt.tikicdn.com/cache/w200/ts/tka/1c/a1/00/32b0e70d3c6db98a03f300e89480bc72.png"
                         alt="1980books"
@@ -301,14 +276,11 @@ const HomePage = () => {
                       />
                     </div>
 
-                    {/* Nội dung bên phải */}
                     <div className="w-2/3 flex flex-col justify-start pl-4">
-                      {/* Tiêu đề */}
                       <span className="text-lg font-bold text-gray-800 mt-2">
                         Top Sách Bán Chạy
                       </span>
 
-                      {/* Tài trợ bởi */}
                       <div className="text-sm text-gray-600 mt-1">
                         Tài trợ bởi{" "}
                         <strong className="text-gray-900">
@@ -321,7 +293,6 @@ const HomePage = () => {
                           className="inline-block w-4 h-4 translate-y-[-2px]"
                         />
                       </div>
-                      {/* Danh sách sản phẩm */}
                       <div className="img-container flex gap-4 mt-8">
                         {[
                           {
@@ -386,7 +357,7 @@ const HomePage = () => {
                   </div>
                 </div>
               </div>
-              {/* Khám phá theo danh mục */}
+
               <div className="bg-white p-4 rounded-lg mt-4">
                 <h2 className="text-lg font-semibold mb-4">
                   Khám phá theo danh mục
@@ -422,11 +393,9 @@ const HomePage = () => {
                 </div>
               </div>
 
-              {/* Tất cả sản phẩm */}
               <div className="bg-white p-4 rounded-lg mt-6">
                 <h2 className="text-lg font-semibold mb-4">Tất cả sản phẩm</h2>
                 <div className="flex items-center space-x-4">
-                  {/* Giao siêu tốc 2H */}
                   <label className="flex items-center space-x-2 pr-4 border-r border-gray-300">
                     <input
                       type="checkbox"
@@ -442,7 +411,6 @@ const HomePage = () => {
                     <span>Giao siêu tốc 2H</span>
                   </label>
 
-                  {/* Siêu rẻ */}
                   <label className="flex items-center space-x-2 pr-4 border-r border-gray-300">
                     <input
                       type="checkbox"
@@ -458,7 +426,6 @@ const HomePage = () => {
                     <span>Siêu rẻ</span>
                   </label>
 
-                  {/* Freeship */}
                   <label className="flex items-center space-x-2 pr-4 border-r border-gray-300">
                     <input
                       type="checkbox"
@@ -474,7 +441,6 @@ const HomePage = () => {
                     <span>Freeship</span>
                   </label>
 
-                  {/* Rating */}
                   <label className="flex items-center space-x-2">
                     <input
                       type="checkbox"
@@ -518,24 +484,20 @@ const HomePage = () => {
             </div>
           </div>
           <div className="bg-white p-6 mb-6 mt-8 m-10">
-            {/* Tiêu đề */}
             <h2 className="text-lg font-semibold text-gray-800 mb-3">
               Tìm Kiếm Liên Quan
             </h2>
           </div>
           <div className="bg-white rounded-lg p-6 m-10">
-            {/* Phụ đề */}
             <h2 className="text-lg font-semibold text-gray-700 mb-3">
               Top Bán Chạy Sản Phẩm Nhà Sách Tiki
             </h2>
-            {/* Danh sách sản phẩm */}
             <div>
               {topProducts.map((product, index) => (
                 <div
                   key={index}
                   className="flex justify-between items-center py-1"
                 >
-                  {/* Tên sản phẩm với số thứ tự */}
                   <div className="flex items-center">
                     <span className="text-gray-500 font-medium w-6">
                       {index + 1}.
@@ -545,7 +507,6 @@ const HomePage = () => {
                     </p>
                   </div>
 
-                  {/* Giá sản phẩm */}
                   <p className="text-gray-800 text-sm font-medium">
                     {product.price}
                   </p>

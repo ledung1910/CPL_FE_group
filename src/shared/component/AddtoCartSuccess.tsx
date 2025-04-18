@@ -8,7 +8,7 @@ type AddToCartSuccessPopupProps = {
 const AddToCartSuccessPopup: React.FC<AddToCartSuccessPopupProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (isOpen) {
-      const timer = setTimeout(onClose, 2000); // Tự động đóng sau 2s
+      const timer = setTimeout(onClose, 2000);
       return () => clearTimeout(timer);
     }
   }, [isOpen, onClose]);

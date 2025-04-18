@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import BookForm from "./ProductForm";
 import { FaTimes, FaEdit, FaTrash, FaSearch, FaSort } from "react-icons/fa";
 import { getBooks, createBook, updateBook, deleteBook } from "../../../api/book.service";
 import { Book } from "../../../../interfaces";
+import BookForm from "./ProductForm";
 
 const BookList = () => {
   const [books, setBooks] = useState<Book[]>([]);
@@ -79,15 +79,15 @@ const BookList = () => {
     setIsModalOpen(true);
   };
 
-const handleAddOrUpdateBook = async (bookData: Book | Omit<Book, "id">) => {
-  if ("id" in bookData) {
-    await updateBook(bookData.id, bookData);
-  } else {
-    await createBook(bookData);
-  }
-  setIsModalOpen(false);
-  fetchBooks();
-};
+  const handleAddOrUpdateBook = async (bookData: Book | Omit<Book, "id">) => {
+    if ("id" in bookData) {
+      await updateBook(bookData.id, bookData);
+    } else {
+      await createBook(bookData);
+    }
+    setIsModalOpen(false);
+    fetchBooks();
+  };
 
 
   if (isLoading) {
@@ -116,7 +116,6 @@ const handleAddOrUpdateBook = async (bookData: Book | Omit<Book, "id">) => {
     <div className="p-6 flex flex-col bg-gray-900 text-white min-h-screen">
       <h2 className="text-2xl font-semibold mb-4 text-center">📚 Quản lý Sách</h2>
 
-      {/* Search & Sort */}
       <div className="flex justify-between items-center mb-6">
         <div className="flex gap-3 items-center">
           <div className="flex items-center bg-gray-800 p-2 rounded-md w-64">
@@ -158,7 +157,6 @@ const handleAddOrUpdateBook = async (bookData: Book | Omit<Book, "id">) => {
         </button>
       </div>
 
-      {/* Modal Form */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="w-full max-w-2xl bg-gray-800 rounded-lg p-6 relative">
@@ -177,7 +175,6 @@ const handleAddOrUpdateBook = async (bookData: Book | Omit<Book, "id">) => {
         </div>
       )}
 
-      {/* Book Table */}
       <div className="flex-1 mt-6 overflow-x-auto">
         <table className="w-full border-collapse shadow-lg rounded-lg overflow-hidden">
           <thead className="bg-gray-700 text-white">

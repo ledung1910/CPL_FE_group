@@ -46,13 +46,6 @@ const getAllUsers = async (): Promise<User[]> => {
   return await apiClient.get("/users");
 };
 
-const userService = {
-  login,
-  register,
-  getProfile,
-  logout,
-  getAllUsers,
-  updateUser,
-};
+const userService = { login, register, getProfile, logout, getAllUsers, updateUser };
 
 export default userService;

@@ -52,9 +52,7 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
     fetchCategories();
   }, []);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setBook((prev) => ({
       ...prev,
@@ -97,7 +95,7 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
       }
     }
   };
-  
+
   const handleRemoveImage = (index: number) => {
     const newImages = [...images];
     newImages.splice(index, 1);
@@ -185,7 +183,6 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
               />
             </div>
 
-            {/* Category */}
             <div className="flex flex-col">
               <label className="text-sm font-medium mb-1">Category</label>
               <select
@@ -201,7 +198,7 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
                 ))}
               </select>
             </div>
-            {/* Description */}
+
             <div className="flex flex-col">
               <label className="text-sm font-medium mb-1">Description</label>
               <textarea
@@ -212,7 +209,7 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
                 className="bg-gray-800 border border-gray-700 p-2 rounded h-28"
               />
             </div>
-            {/* Rating */}
+
             <div className="flex flex-col">
               <label className="text-sm font-medium mb-1">Rating Average</label>
               <input
@@ -262,8 +259,6 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
               </div>
             </div>
 
-
-            {/* Checkbox */}
             <div className="grid grid-cols-2 gap-4">
               <div className="flex items-center gap-2">
                 <input
@@ -318,8 +313,6 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
               </div>
             </div>
 
-
-            {/* Upload image */}
             <div className="flex flex-col">
               <label className="text-sm font-medium mb-2">Upload Image</label>
               <div className="flex flex-col items-start">
@@ -342,33 +335,30 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
                 <div className="flex flex-wrap gap-4 mt-3">
                   {images.map((img, index) => (
                     img.large_url && (
-                    <div key={index} className="relative w-24 h-24">
-                      <img
-                        src={img.large_url}
-                        alt={`Preview ${index + 1}`}
-                        className="w-full h-full object-cover rounded-lg border border-gray-700"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveImage(index)}
-                        className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hover:bg-red-700"
-                        title="Remove Image"
-                      >
-                        ×
-                      </button>
-                    </div>
+                      <div key={index} className="relative w-24 h-24">
+                        <img
+                          src={img.large_url}
+                          alt={`Preview ${index + 1}`}
+                          className="w-full h-full object-cover rounded-lg border border-gray-700"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveImage(index)}
+                          className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hover:bg-red-700"
+                          title="Remove Image"
+                        >
+                          ×
+                        </button>
+                      </div>
                     )
                   ))}
                 </div>
-
                 {images.length === 0 && (
                   <p className="text-red-500 text-sm mt-1">Vui lòng chọn ít nhất một ảnh.</p>
                 )}
               </div>
             </div>
 
-
-            {/* Specification group + attributes */}
             <div>
               <label className="text-sm font-medium block mb-2">Specifications</label>
               <div className="space-y-6">
@@ -465,7 +455,6 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
               </div>
             </div>
 
-            {/* Submit + Cancel */}
             <div className="flex gap-4 p-4">
               <button
                 type="submit"

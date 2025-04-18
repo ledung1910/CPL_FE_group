@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SidebarProfile from "../../shared/component/SideBarProfile";
 import { useParams, useNavigate } from "react-router-dom";
 import orderService from "../../api/order.service";
@@ -84,14 +84,10 @@ export default function OrderDetail() {
             }
         }
     };
-
     const canCancelOrder = order.status === 'pending' || order.status === 'processing';
-
-
     return (
         <div className="bg-[#F5F5FA] p-5 md:pl-15 md:pr-15 flex flex-col md:flex-row gap-4">
             <SidebarProfile orderId={id} />
-            {/* Main Content */}
             <div className="w-full md:w-4/5 rounded-xl mt-3 md:mt-12">
                 <div className="flex justify-between items-start pb-4">
                     <h2 className="text-xl mb-1 text-gray-700">Chi tiết đơn hàng #{order.id} - <span className="text-black font-normal ">{statusLabels[order.status] || order.status}</span></h2>
@@ -132,7 +128,6 @@ export default function OrderDetail() {
                 </div>
 
                 <div className="min-h-screen">
-                    {/* Bảng sản phẩm */}
                     <div className="bg-white overflow-x-auto">
                         <table className="min-w-[800px] w-full text-sm text-left">
                             <thead>
@@ -178,7 +173,6 @@ export default function OrderDetail() {
                         </table>
                     </div>
 
-                    {/* Tổng cộng */}
                     <div className="flex justify-end mt-0.5 bg-white">
                         <div className="w-full md:w-1/3 mr-4 mt-5 text-right">
                             <div className="flex justify-between text-sm mb-2">
@@ -206,7 +200,6 @@ export default function OrderDetail() {
                         </div>
                     </div>
 
-                    {/* Nút quay lại và theo dõi */}
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center m-4">
                         <div className="flex items-center gap-2">
                             <span

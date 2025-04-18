@@ -10,7 +10,6 @@ const Header = () => {
         </Link>
       </div>
 
-      {/* Thanh toán bên phải */}
       <div className="flex-1 flex flex-col justify-center items-start ml-10 pl-10 border-l-2 border-blue-400">
         <h1 className="text-3xl font-medium text-blue-400">Thanh toán</h1>
       </div>

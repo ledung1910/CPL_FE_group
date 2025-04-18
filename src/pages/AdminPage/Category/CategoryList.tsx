@@ -1,24 +1,18 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FaEdit, FaTrash, FaSave, FaPlus, FaSearch } from "react-icons/fa";
-// import { getCategories } from "../../../api/book.service";
 import { Category } from "../../../../interfaces";
-import {
-    getRealCategories,
-    createCategory,
-    updateCategory,
-    deleteCategory
-} from "../../../api/book.service";
+import { getRealCategories, createCategory, updateCategory, deleteCategory } from "../../../api/book.service";
 
 const CategoryManagement = () => {
     const [categories, setCategories] = useState<Category[]>([]);
     const [newCategory, setNewCategory] = useState("");
-    const [editingId, setEditingId] = useState<number  | null>(null);
+    const [editingId, setEditingId] = useState<number | null>(null);
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const data = await getRealCategories(); // dùng API mới
+                const data = await getRealCategories();
                 setCategories(data);
             } catch (error) {
                 console.error("Lỗi khi lấy danh mục:", error);
@@ -31,27 +25,22 @@ const CategoryManagement = () => {
         if (newCategory.trim() === "") return;
 
         if (editingId !== null) {
-            // Cập nhật
             await updateCategory(editingId, { name: newCategory });
             const updated = await getRealCategories();
             setCategories(updated);
             setEditingId(null);
         } else {
-            // Tạo mới với id là số tăng dần
             const maxId = categories.reduce((max, cat) => {
                 const numId = cat.id;
                 return isNaN(numId) ? max : Math.max(max, numId);
             }, 0);
             const newId = maxId + 1;
-
             await createCategory({ id: newId, name: newCategory });
             const updated = await getRealCategories();
             setCategories(updated);
         }
-
         setNewCategory("");
     };
-
 
     const editCategory = (id: number) => {
         const cat = categories.find(c => c.id === id);
@@ -84,7 +73,7 @@ const CategoryManagement = () => {
         }
         setCategories(sorted);
     };
-    
+
 
     const filteredCategories = categories.filter(cat =>
         cat.name.toLowerCase().includes(searchTerm.toLowerCase())

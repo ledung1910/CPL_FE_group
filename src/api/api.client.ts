@@ -5,7 +5,7 @@ const apiClient = axios.create({
     timeout: 10000,
     headers: {
         "Content-Type": "application/json",
-      },
+    },
 });
 apiClient.interceptors.request.use(function (config) {
     const token = localStorage.getItem("accessToken");

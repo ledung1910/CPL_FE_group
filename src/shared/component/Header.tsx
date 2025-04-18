@@ -6,7 +6,7 @@ import RegisterPopup from "../../pages/CustomerPage/Register";
 import logo from "../../assets/logo.png";
 import { cartService } from "../../api/cart.service";
 import { useSearch } from "../../hooks/useSearch";
-import { FaShoppingCart , FaBars} from "react-icons/fa";
+import { FaShoppingCart, FaBars } from "react-icons/fa";
 
 const AccountDropdown = ({ onClose, setCartCount }: { onClose: () => void, setCartCount: React.Dispatch<React.SetStateAction<number>> }) => {
   const { user, logout } = useAuth();
@@ -35,7 +35,7 @@ const AccountDropdown = ({ onClose, setCartCount }: { onClose: () => void, setCa
         onClick={() => {
           if (user?.role) {
             logout(user.role);
-            setCartCount(0);  // This will reset the cart count when logging out
+            setCartCount(0);
             onClose();
             navigate("/");
           }
@@ -85,9 +85,8 @@ const Commitments = () => {
         {commitments.map((item, index) => (
           <div
             key={index}
-            className={`flex gap-2 px-3 items-center text-sm font-medium text-gray-800 ${
-              index !== commitments.length - 1 ? "border-r border-gray-300" : ""
-            }`}
+            className={`flex gap-2 px-3 items-center text-sm font-medium text-gray-800 ${index !== commitments.length - 1 ? "border-r border-gray-300" : ""
+              }`}
           >
             <img src={item.img} alt={`icon-${index}`} className="w-5 h-5" />
             <span>{item.text}</span>
@@ -97,14 +96,14 @@ const Commitments = () => {
     </div>
   );
 };
-const MobileNav = ({ 
-  isOpen, 
-  onClose, 
+const MobileNav = ({
+  isOpen,
+  onClose,
   onOpenLogin,
   onOpenRegister
-}: { 
-  isOpen: boolean; 
-  onClose: () => void; 
+}: {
+  isOpen: boolean;
+  onClose: () => void;
   onOpenLogin: () => void;
   onOpenRegister: () => void;
 }) => {
@@ -123,9 +122,8 @@ const MobileNav = ({
 
   return (
     <div
-      className={`block md:hidden fixed top-0 left-0 h-full w-64 bg-white shadow-md z-50 transform transition-transform duration-300 ${
-        isOpen ? "translate-x-0" : "-translate-x-full"
-      }`}
+      className={`block md:hidden fixed top-0 left-0 h-full w-64 bg-white shadow-md z-50 transform transition-transform duration-300 ${isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
     >
       <div className="p-4 border-b flex justify-between items-center">
         <img src={logo} alt="Logo" className="h-10 w-auto" />
@@ -146,7 +144,7 @@ const MobileNav = ({
           </svg>
         </button>
       </div>
-      
+
       <div className="overflow-y-auto h-[calc(100%-60px)]">
         {/* Main Navigation */}
         <div className="p-4 space-y-2">
@@ -163,7 +161,7 @@ const MobileNav = ({
           {user ? (
             <>
               <div className="flex items-center px-4 py-2">
-              
+
                 <div className="ml-3">
                   <p className="text-sm font-medium text-gray-700">{user.name}</p>
                   <p className="text-xs text-gray-500">{user.email}</p>
@@ -221,28 +219,28 @@ const MobileNav = ({
           )}
         </div>
         {/* Cart */}
-          <div className="border-t border-gray-200 p-4">
-            <Link
-              to="/cart"
-              className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
-              onClick={onClose}
-            ><img
-            src="https://salt.tikicdn.com/ts/upload/51/e2/92/8ca7e2cc5ede8c09e34d1beb50267f4f.png"
-            alt="cart"
-            className="w-8 h-8"
-          />
-              <div className="relative">
+        <div className="border-t border-gray-200 p-4">
+          <Link
+            to="/cart"
+            className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded"
+            onClick={onClose}
+          ><img
+              src="https://salt.tikicdn.com/ts/upload/51/e2/92/8ca7e2cc5ede8c09e34d1beb50267f4f.png"
+              alt="cart"
+              className="w-8 h-8"
+            />
+            <div className="relative">
 
-              
-                {cartCount > 0 && (
-                  <span className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-[#FF424F] text-white text-xs font-semibold min-w-[16px] h-[16px] flex items-center justify-center rounded-full">
-                    {cartCount}
-                  </span>
-                )}
-              </div>
-              <span className="ml-3">Giỏ hàng</span>
-            </Link>
-          </div>
+
+              {cartCount > 0 && (
+                <span className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-[#FF424F] text-white text-xs font-semibold min-w-[16px] h-[16px] flex items-center justify-center rounded-full">
+                  {cartCount}
+                </span>
+              )}
+            </div>
+            <span className="ml-3">Giỏ hàng</span>
+          </Link>
+        </div>
 
       </div>
     </div>
@@ -263,7 +261,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
   const [cartCount, setCartCount] = useState(cartService.getCartCount());
   const { searchTerm, setSearchTerm, handleSearch } = useSearch(onSearch);
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
- 
+
 
   useEffect(() => {
     const handleCartUpdate = () => {
@@ -293,7 +291,6 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
 
   return (
     <div>
-      {/* Mobile Interface */}
       <div className="block md:hidden bg-blue-500 text-white p-4 flex items-center justify-between">
         <button className="mr-4" onClick={() => navigate(-1)}>
           <svg
@@ -312,7 +309,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
           </svg>
         </button>
         <button className="mr-4" onClick={openMobileNav}>
-          <FaBars/>
+          <FaBars />
         </button>
         <div className="flex-1 bg-white text-gray-700 rounded-md flex items-center">
           <svg
@@ -335,60 +332,54 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
             className="flex-1 border-none outline-none p-2 text-sm"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            // onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           />
         </div>
         <Link to="/cart" className="relative ml-4">
-        <FaShoppingCart/>
-         
-            <span className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-[#FF424F] text-white text-xs font-semibold min-w-[16px] h-[16px] flex items-center justify-center rounded-full">
-              {cartCount}
-            </span>
-         
+          <FaShoppingCart />
+
+          <span className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-[#FF424F] text-white text-xs font-semibold min-w-[16px] h-[16px] flex items-center justify-center rounded-full">
+            {cartCount}
+          </span>
+
         </Link>
-        
+
       </div>
-      {/* Banner 30 ngày – Mobile */}
       <div className="block md:hidden bg-[#FFF0B3] rounded-md mx-4 my-2 px-4 py-2 flex items-center justify-between">
-  <div className="flex items-center gap-2">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-5 h-5 text-blue-600"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={1.5}
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M20.25 7.5v9.75a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V7.5m16.5 0L12 3 3.75 7.5m16.5 0L12 12m-8.25-4.5L12 12"
-      />
-    </svg>
-    <span className="text-sm">
-      <span className="text-blue-600 font-semibold">30 NGÀY</span>{" "}
-      <span className="text-black font-medium">đổi ý & miễn phí trả hàng</span>
-    </span>
-  </div>
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="w-4 h-4 text-gray-500"
-    fill="none"
-    viewBox="0 0 24 24"
-    strokeWidth={2}
-    stroke="currentColor"
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-  </svg>
-</div>
+        <div className="flex items-center gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-5 h-5 text-blue-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M20.25 7.5v9.75a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V7.5m16.5 0L12 3 3.75 7.5m16.5 0L12 12m-8.25-4.5L12 12"
+            />
+          </svg>
+          <span className="text-sm">
+            <span className="text-blue-600 font-semibold">30 NGÀY</span>{" "}
+            <span className="text-black font-medium">đổi ý & miễn phí trả hàng</span>
+          </span>
+        </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-4 h-4 text-gray-500"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={2}
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </div>
 
-
-
-
-      {/* Mobile Navigation Menu */}
-      <MobileNav 
-        isOpen={isMobileNavOpen} 
-        onClose={closeMobileNav} 
+      <MobileNav
+        isOpen={isMobileNavOpen}
+        onClose={closeMobileNav}
         onOpenLogin={handleOpenLogin}
         onOpenRegister={() => {
           setLoginOpen(false);
@@ -396,32 +387,29 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
         }}
       />
       <LoginPopup
-          isOpen={isLoginOpen}
-          onClose={() => setLoginOpen(false)}
-          onSwitchToRegister={() => {
-            setLoginOpen(false);
-            setRegisterOpen(true);
-          }}
-        />
-        <RegisterPopup
-          isOpen={isRegisterOpen}
-          onClose={() => setRegisterOpen(false)}
-          onSwitchToLogin={() => {
-            setRegisterOpen(false);
-            setLoginOpen(true);
-          }}
-        />
-      {/* Desktop Interface */}
+        isOpen={isLoginOpen}
+        onClose={() => setLoginOpen(false)}
+        onSwitchToRegister={() => {
+          setLoginOpen(false);
+          setRegisterOpen(true);
+        }}
+      />
+      <RegisterPopup
+        isOpen={isRegisterOpen}
+        onClose={() => setRegisterOpen(false)}
+        onSwitchToLogin={() => {
+          setRegisterOpen(false);
+          setLoginOpen(true);
+        }}
+      />
       <div className="hidden md:block">
         <div className="flex items-center justify-between p-4 bg-white sticky top-0 z-50">
-          {/* Logo */}
           <div className="ml-6">
             <button onClick={() => (window.location.href = "/")}>
               <img src={logo} alt="Logo" className="h-[90px] w-[110px]" />
             </button>
           </div>
 
-          {/* Search */}
           <div className="flex-1 flex flex-col justify-center items-start ml-10">
             <div className="flex items-center w-full max-w-[900px] border border-gray-300 rounded-lg bg-white p-2">
               <img
@@ -445,7 +433,6 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
               </button>
             </div>
 
-            {/* Keywords */}
             <div className="flex gap-3 mt-2 text-gray-700 text-sm cursor-pointer">
               {[
                 "Điện gia dụng",
@@ -466,7 +453,6 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
             </div>
           </div>
 
-          {/* Right Menu */}
           <div className="flex items-center space-x-6 mb-10 pr-10">
             <Link
               to="/"
@@ -480,7 +466,6 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
               Trang chủ
             </Link>
 
-            {/* Account */}
             <div className="relative pr-6">
               {user ? (
                 <div className="relative">
@@ -496,7 +481,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
                     {user.name}
                   </button>
                   {isDropdownOpen && (
-                    <AccountDropdown onClose={() => setDropdownOpen(false)} setCartCount = {setCartCount} />
+                    <AccountDropdown onClose={() => setDropdownOpen(false)} setCartCount={setCartCount} />
                   )}
                 </div>
               ) : (
@@ -514,7 +499,6 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
               )}
             </div>
 
-            {/* Cart */}
             <Link to="/cart" className="hover:text-blue-600 relative">
               <div className="relative">
                 <img

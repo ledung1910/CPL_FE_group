@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef} from "react";
+import { useState, useEffect, useRef } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight, faChevronLeft, faStar } from "@fortawesome/free-solid-svg-icons";
@@ -16,21 +16,21 @@ import AddToCartSuccessPopup from "../../shared/component/AddtoCartSuccess";
 
 
 const ProductDetail = () => {
-  const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<Book | null>(null);
-  const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [selectedImage, setSelectedImage] = useState<string>("");
-  const [expanded, setExpanded] = useState(false);
-  const [quantity, setQuantity] = useState(1);
-  const [showPopup, setShowPopup] = useState(false);
-  const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
-  const { user } = useAuth();
-  const [isLoginOpen, setLoginOpen] = useState(false);
-  const [isRegisterOpen, setRegisterOpen] = useState(false);
-  const navigate = useNavigate();
-  const [isLoading] = useState(false);
+    const { id } = useParams<{ id: string }>();
+    const [product, setProduct] = useState<Book | null>(null);
+    const [books, setBooks] = useState<Book[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [selectedImage, setSelectedImage] = useState<string>("");
+    const [expanded, setExpanded] = useState(false);
+    const [quantity, setQuantity] = useState(1);
+    const [showPopup, setShowPopup] = useState(false);
+    const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
+    const { user } = useAuth();
+    const [isLoginOpen, setLoginOpen] = useState(false);
+    const [isRegisterOpen, setRegisterOpen] = useState(false);
+    const navigate = useNavigate();
+    const [isLoading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -52,90 +52,79 @@ const ProductDetail = () => {
                 setLoading(false);
             }
         };
-
         fetchData();
     }, [id]);
 
-  const handleAddToCart = () => {
-    if (!user) {
-      setLoginOpen(true);
-      return;
-    }
-    if (!product) return;
-
-    try {
-      cartService.addToCart({
-        id: product.id,
-        list_price: product.current_seller.price,
-        quantity: quantity,
-      });
-      
-      window.dispatchEvent(new Event("cartUpdated"));
-      setShowPopup(true);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  const handleBuyNow = async () => {
-    if (!user) {
-        toast.warning("Bạn cần đăng nhập để mua sản phẩm này.");
-        setLoginOpen(true);
-        return;
-    }
-    if (!product) {
-        toast.error("Sản phẩm không tồn tại.");
-        return;
-    }
-
-    if (quantity <= 0) {
-        toast.warning("Vui lòng chọn số lượng lớn hơn 0.");
-        return;
-    }
-
-    if (!user.address || !user.address.street || !user.address.city || !user.address.district) {
-        toast.warning("Vui lòng cập nhật đầy đủ địa chỉ giao hàng trước khi đặt hàng.");
-        return;
-    }
-
-    try {
-        const checkoutData = {
-            bookId: product.id,
-            quantity: quantity,
-            price: product.current_seller.price * quantity,
-        };
-
-        // Chuyển hướng đến trang Checkout với dữ liệu qua URLSearchParams
-        const searchParams = new URLSearchParams();
-        for (const key in checkoutData) {
-            searchParams.append(key, checkoutData[key as keyof typeof checkoutData].toString());
+    const handleAddToCart = () => {
+        if (!user) {
+            setLoginOpen(true);
+            return;
         }
-        navigate(`/checkout?${searchParams.toString()}`);
+        if (!product) return;
+        try {
+            cartService.addToCart({
+                id: product.id,
+                list_price: product.current_seller.price,
+                quantity: quantity,
+            });
+            window.dispatchEvent(new Event("cartUpdated"));
+            setShowPopup(true);
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
-    } catch (error) {
-        console.error("Lỗi khi xử lý mua ngay:", error);
-        toast.error("Đã có lỗi xảy ra. Vui lòng thử lại!");
-    }
-};
+    const handleBuyNow = async () => {
+        if (!user) {
+            toast.warning("Bạn cần đăng nhập để mua sản phẩm này.");
+            setLoginOpen(true);
+            return;
+        }
+        if (!product) {
+            toast.error("Sản phẩm không tồn tại.");
+            return;
+        }
 
-  const relatedBooks = product
-    ? books.filter(
-        (book) =>
-          book.id !== product.id && book.categories.id === product.categories.id
-      )
-    : [];
+        if (quantity <= 0) {
+            toast.warning("Vui lòng chọn số lượng lớn hơn 0.");
+            return;
+        }
 
-  const topDeals = books.filter(
-    (book) => book.current_seller?.is_best_store && book.id !== product?.id
-  );
+        if (!user.address || !user.address.street || !user.address.city || !user.address.district) {
+            toast.warning("Vui lòng cập nhật đầy đủ địa chỉ giao hàng trước khi đặt hàng.");
+            return;
+        }
 
-  const {
-    currentItems: relatedItems,
-    next: nextRelated,
-    prev: prevRelated,
-    goToPage: goToRelatedPage,
-    currentPage: currentRelatedPage,
-    totalPages: totalRelatedPages,
-  } = usePagination(relatedBooks, 4);
+        try {
+            const checkoutData = {
+                bookId: product.id,
+                quantity: quantity,
+                price: product.current_seller.price * quantity,
+            };
+
+            const searchParams = new URLSearchParams();
+            for (const key in checkoutData) {
+                searchParams.append(key, checkoutData[key as keyof typeof checkoutData].toString());
+            }
+            navigate(`/checkout?${searchParams.toString()}`);
+
+        } catch (error) {
+            console.error("Lỗi khi xử lý mua ngay:", error);
+            toast.error("Đã có lỗi xảy ra. Vui lòng thử lại!");
+        }
+    };
+
+    const relatedBooks = product ? books.filter((book) => book.id !== product.id && book.categories.id === product.categories.id) : [];
+    const topDeals = books.filter((book) => book.current_seller?.is_best_store && book.id !== product?.id);
+
+    const {
+        currentItems: relatedItems,
+        next: nextRelated,
+        prev: prevRelated,
+        goToPage: goToRelatedPage,
+        currentPage: currentRelatedPage,
+        totalPages: totalRelatedPages,
+    } = usePagination(relatedBooks, 4);
 
     const {
         currentItems: topDealItems,
@@ -146,15 +135,15 @@ const ProductDetail = () => {
         totalPages: totalTopDealPages,
     } = usePagination(topDeals, 4);
 
-  const calculateDiscountPercentage = () => {
-    if (!product || product.original_price <= product.current_seller.price)
-      return 0;
-    return Math.round(
-      ((product.original_price - product.current_seller.price) /
-        product.original_price) *
-        100
-    );
-  };
+    const calculateDiscountPercentage = () => {
+        if (!product || product.original_price <= product.current_seller.price)
+            return 0;
+        return Math.round(
+            ((product.original_price - product.current_seller.price) /
+                product.original_price) *
+            100
+        );
+    };
 
     const handleViewMore = () => {
         console.log("Xem thêm sản phẩm");
@@ -245,29 +234,28 @@ const ProductDetail = () => {
                 )}
             </div>
 
-      {totalPages > 1 && items.length > 0 && (
-        <div className="flex justify-center items-center mt-6 gap-1.5">
-          {[...Array(totalPages)].map((_, index) => (
-            <button
-              key={index}
-              onClick={() =>
-                title.includes("Top Deals")
-                  ? goToTopDealPage(index)
-                  : goToRelatedPage(index)
-              }
-              className={`w-6 h-1.5 rounded-full transition-all duration-300 ${
-                (title.includes("Top Deals")
-                  ? currentTopDealPage
-                  : currentRelatedPage) === index
-                  ? "bg-blue-500 w-8"
-                  : "bg-gray-300"
-              }`}
-            />
-          ))}
+            {totalPages > 1 && items.length > 0 && (
+                <div className="flex justify-center items-center mt-6 gap-1.5">
+                    {[...Array(totalPages)].map((_, index) => (
+                        <button
+                            key={index}
+                            onClick={() =>
+                                title.includes("Top Deals")
+                                    ? goToTopDealPage(index)
+                                    : goToRelatedPage(index)
+                            }
+                            className={`w-6 h-1.5 rounded-full transition-all duration-300 ${(title.includes("Top Deals")
+                                ? currentTopDealPage
+                                : currentRelatedPage) === index
+                                ? "bg-blue-500 w-8"
+                                : "bg-gray-300"
+                                }`}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 
     if (loading)
         return (
@@ -307,11 +295,10 @@ const ProductDetail = () => {
                                 }}
                                 src={img.large_url}
                                 alt={`Ảnh ${index + 1}`}
-                                className={`w-16 h-20 object-cover rounded-lg border-2 flex-shrink-0 transition-transform duration-300 transform cursor-pointer ${
-                  selectedImage === img.large_url
-                                      ? "border-blue-500"
-                                      : "border-gray-300"
-                                  }`}
+                                className={`w-16 h-20 object-cover rounded-lg border-2 flex-shrink-0 transition-transform duration-300 transform cursor-pointer ${selectedImage === img.large_url
+                                    ? "border-blue-500"
+                                    : "border-gray-300"
+                                    }`}
                                 onClick={() => {
                                     setSelectedImage(img.large_url);
                                     imageRefs.current[index]?.scrollIntoView({
@@ -358,11 +345,10 @@ const ProductDetail = () => {
                             <FontAwesomeIcon
                                 key={i}
                                 icon={faStar}
-                                className={`${
-                  i < Math.floor(product.rating_average || 0)
-                                      ? "text-yellow-400"
-                                      : "text-gray-300"
-                                  } w-4 h-4`}
+                                className={`${i < Math.floor(product.rating_average || 0)
+                                    ? "text-yellow-400"
+                                    : "text-gray-300"
+                                    } w-4 h-4`}
                             />
                         ))}
                     </div>
@@ -414,9 +400,8 @@ const ProductDetail = () => {
                     <h2 className="text-lg font-semibold mb-2">Mô tả sản phẩm</h2>
                     <div className="relative">
                         <div
-                            className={`text-gray-600 transition-all ${
-                expanded ? "line-clamp-none" : "line-clamp-3"
-                              }`}
+                            className={`text-gray-600 transition-all ${expanded ? "line-clamp-none" : "line-clamp-3"
+                                }`}
                             dangerouslySetInnerHTML={{ __html: product.description }}
                         />
                         {!expanded && (
@@ -542,31 +527,31 @@ const ProductDetail = () => {
                     </p>
                 </div>
 
-        <button
-          onClick={handleBuyNow}
-          disabled={isLoading}
-          className={`w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg mt-4 text-lg font-semibold transition-colors ${isLoading ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
-        >
-          {isLoading ? (
-            <span className="flex items-center justify-center"> Đang xử lý... </span>
-          ) : (
-            'Mua ngay'
-          )}
-        </button>
+                <button
+                    onClick={handleBuyNow}
+                    disabled={isLoading}
+                    className={`w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg mt-4 text-lg font-semibold transition-colors ${isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                        }`}
+                >
+                    {isLoading ? (
+                        <span className="flex items-center justify-center"> Đang xử lý... </span>
+                    ) : (
+                        'Mua ngay'
+                    )}
+                </button>
 
-        <div>
-          <AddToCartSuccessPopup
-            isOpen={showPopup}
-            onClose={() => setShowPopup(false)}
-          />
-          <button
-            onClick={handleAddToCart}
-            className="w-full border border-blue-500 text-blue-500 hover:bg-blue-50 py-3 rounded-lg mt-2 text-lg font-semibold transition-colors"
-          >
-            Thêm vào giỏ
-          </button>
-        </div>
+                <div>
+                    <AddToCartSuccessPopup
+                        isOpen={showPopup}
+                        onClose={() => setShowPopup(false)}
+                    />
+                    <button
+                        onClick={handleAddToCart}
+                        className="w-full border border-blue-500 text-blue-500 hover:bg-blue-50 py-3 rounded-lg mt-2 text-lg font-semibold transition-colors"
+                    >
+                        Thêm vào giỏ
+                    </button>
+                </div>
 
                 {!user && (
                     <>

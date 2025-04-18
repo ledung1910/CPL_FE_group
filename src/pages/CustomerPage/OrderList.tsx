@@ -54,7 +54,6 @@ const UserOrdersPage: React.FC = () => {
         navigate(`/orders/${orderId}`);
     };
 
-
     if (loading) {
         return <div>Đang tải đơn hàng...</div>;
     }

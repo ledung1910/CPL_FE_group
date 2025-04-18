@@ -90,7 +90,6 @@ export default function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const [orderErrorMessage, setOrderErrorMessage] = useState<string | null>(null);
-  const shippingFee = 25000;
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -136,12 +135,9 @@ export default function Checkout() {
     fetchOrderDetails();
   }, [cartItemsFromState, singleBookId, singleQuantityParam]);
 
-
   if (loading) { return <div>Đang tải thông tin đơn hàng...</div>; }
   if (error) { return <div>Lỗi: {error}</div>; }
-  if (orderItemsWithDetails.length === 0 && !loading) {
-    return <div>Không có sản phẩm nào trong đơn hàng.</div>;
-  }
+  if (orderItemsWithDetails.length === 0 && !loading) { return <div>Không có sản phẩm nào trong đơn hàng.</div>; }
 
   const totalItemPrice = orderItemsWithDetails.reduce(
     (sum, item) => sum + (item.book?.current_seller?.price || 0) * item.quantity, 0
@@ -150,9 +146,10 @@ export default function Checkout() {
   const totalOriginalPrice = orderItemsWithDetails.reduce(
     (sum, item) => sum + (item.book?.original_price || 0) * item.quantity, 0
   );
+
+  const shippingFee = 25000;
   const itemDiscount = totalOriginalPrice - totalItemPrice;
-  const totalQuantity = orderItemsWithDetails.reduce((sum, item) => sum + item.quantity, 0
-  );
+  const totalQuantity = orderItemsWithDetails.reduce((sum, item) => sum + item.quantity, 0);
   const shippingDiscount = shippingFee;
   const totalPaymentAmount = totalItemPrice + shippingFee - shippingDiscount;
   const totalSavings = itemDiscount + shippingDiscount;
@@ -224,7 +221,7 @@ export default function Checkout() {
         setTimeout(() => {
           navigate(`/confirm/${newOrder.id}`);
         }, 0);
-      }else {
+      } else {
         console.error("API did not return an order ID:", newOrder);
         setOrderErrorMessage("Không thể tạo đơn hàng. Vui lòng thử lại hoặc liên hệ hỗ trợ.");
       }

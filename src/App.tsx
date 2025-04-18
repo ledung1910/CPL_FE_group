@@ -7,6 +7,7 @@ import OrderLayout from "./shared/layouts/OrderLayout";
 import ConfirmLayout from "./shared/layouts/ConfirmLayout";
 
 // Admin Pages
+import AdminLogin from "./pages/AdminPage/AdminLogin";
 import AdminPage from "./pages/AdminPage/Dashboard";
 import ProductAdminPage from "./pages/AdminPage/Product/ProductList";
 import BookDetail from "./pages/CustomerPage/BookDetail";
@@ -21,12 +22,11 @@ import OrderDetail from "./pages/CustomerPage/OrderDetail";
 import UserProfile from "./pages/CustomerPage/UserProfile";
 import OrderConfirmation from "./pages/CustomerPage/ConfirmPage";
 import Checkout from "./pages/CustomerPage/Checkout";
+import Cart from "./pages/CustomerPage/Cart";
 
 // Components
 import ScrollToTop from "./shared/component/ScrollToTop";
-import AdminLogin from "./pages/AdminPage/AdminLogin";
 import PrivateRoute from "./shared/component/PrivateRoute";
-import Cart from "./pages/CustomerPage/Cart";
 
 // CSS & Toast
 import { ToastContainer } from "react-toastify";

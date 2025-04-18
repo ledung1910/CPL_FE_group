@@ -1,22 +1,13 @@
-import { useState } from "react";
 import Sidebar from "../component/Sidebar";
 import { Outlet } from "react-router-dom";
 
 const AdminLayout = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
   return (
-    <main className="flex bg-gray-900">
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <div
-        className={`transition-all duration-300 flex-grow p-4 ${
-          isSidebarOpen ? "ml-64" : "ml-16"
-        }`}
-      >
+    <main className="flex bg-gray-900 h-screen overflow-hidden">
+      <div className="w-1/6 flex-shrink-0">
+        <Sidebar />
+      </div>
+      <div className="flex-grow p-4 overflow-y-auto">
         <Outlet />
       </div>
     </main>

@@ -24,14 +24,7 @@ const usePagination = <T,>(items: T[], itemsPerPage: number) => {
         setCurrentPage(page);
     };
 
-    return {
-        currentPage,
-        totalPages,
-        currentItems,
-        next,
-        prev,
-        goToPage
-    };
+    return {currentPage, totalPages, currentItems, next, prev, goToPage};
 };
 
 export default usePagination;

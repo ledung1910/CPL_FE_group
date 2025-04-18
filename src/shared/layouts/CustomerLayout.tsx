@@ -7,7 +7,6 @@ import Footer from "../component/Footer";
 const CustomerLayout = () => {
   const [keyword, setKeyword] = useState("");
   const location = useLocation();
-
   const isBookDetailPage = location.pathname.startsWith("/detail/");
 
   return (
@@ -17,8 +16,6 @@ const CustomerLayout = () => {
       <main className="flex-grow bg-gray-100">
         <Outlet context={{ keyword }} />
       </main>
-
-      {/* Footer ẩn khi ở trang BookDetail và màn hình nhỏ */}
       <div className={`${isBookDetailPage ? 'hidden md:block' : ''}`}>
         <Footer />
       </div>

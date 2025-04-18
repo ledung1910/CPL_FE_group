@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FaSearch, FaSort, FaEdit, FaSave } from "react-icons/fa";
 import orderService from "../../../api/order.service";
 import userService from "../../../api/user.service";
@@ -70,7 +70,7 @@ const OrderManagement = () => {
     const handleSaveStatus = async () => {
         if (editingOrderId !== null) {
             const currentTimeISO = new Date().toISOString();
-            await orderService.updateOrderStatus(editingOrderId, newStatus, currentTimeISO); // Truyền thêm currentTimeISO
+            await orderService.updateOrderStatus(editingOrderId, newStatus, currentTimeISO);
             const updatedOrders = orders.map((order) => {
                 if (order.id === editingOrderId) {
                     return {
@@ -90,7 +90,6 @@ const OrderManagement = () => {
         <div className="p-6 mt-10 bg-gray-900 text-white min-h-screen">
             <h2 className="text-2xl font-semibold mb-6 text-center">📦 Quản lý Đơn Hàng</h2>
 
-            {/* Tìm kiếm */}
             <div className="relative w-1/3 mb-4">
                 <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
@@ -101,7 +100,6 @@ const OrderManagement = () => {
                 />
             </div>
 
-            {/* Bảng đơn hàng */}
             <div className="overflow-x-auto">
                 <table className="w-full border-collapse shadow-lg rounded-lg overflow-hidden">
                     <thead className="bg-gray-700 text-white">

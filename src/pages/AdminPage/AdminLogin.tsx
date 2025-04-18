@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 const AdminLogin = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -20,7 +19,7 @@ const AdminLogin = () => {
         return;
       }
       navigate("/admin");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message || "Đăng nhập thất bại.");
     }

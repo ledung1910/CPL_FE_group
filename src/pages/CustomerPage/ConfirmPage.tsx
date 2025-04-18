@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Order } from "../../../interfaces";
 import orderService from "../../api/order.service";
@@ -86,14 +86,10 @@ const OrderConfirmation = () => {
           const results = await Promise.all(bookPromises);
           const detailsMap: Record<string, Book> = {};
           results.forEach((book) => {
-            if (book) {
-              // Chỉ thêm vào map nếu fetch thành công
-              detailsMap[book.id] = book;
-            }
+            if (book) {detailsMap[book.id] = book;}
           });
-          setBookDetails(detailsMap); // Lưu chi tiết sách vào state
+          setBookDetails(detailsMap);
         }
-        // --- KẾT THÚC FETCH CHI TIẾT SÁCH ---
       } catch (err) {
         console.error("Lỗi khi lấy chi tiết đơn hàng:", err);
         setError(
@@ -101,10 +97,10 @@ const OrderConfirmation = () => {
             ? err.message
             : "Không thể tải thông tin đơn hàng. Vui lòng thử lại."
         );
-        setOrder(null); // Reset order nếu có lỗi
+        setOrder(null);
       } finally {
-        setLoading(false); // Kết thúc loading đơn hàng
-        setLoadingBooks(false); // Kết thúc loading sách
+        setLoading(false);
+        setLoadingBooks(false);
       }
     };
 
@@ -170,24 +166,19 @@ const OrderConfirmation = () => {
   return (
     <div className="min-h-screen bg-[#f5f5fa] py-8 px-4">
       <div className="max-w-[1000px] mx-auto flex flex-col lg:flex-row gap-4">
-        {/* Left Section */}
         <div className="flex-1 bg-white rounded-[8px] overflow-hidden relative min-h-[500px]">
-          {/* Banner */}
           <div className="h-[120px] sm:h-[150px] bg-gradient-to-r from-[#00b5f1] to-[#005bea] relative flex items-start px-4 pt-6">
-            {/* Banner Confetti Overlay */}
             <img
               src="/src/images/banner.png"
               alt="Confetti"
               className="absolute inset-0 w-full h-full object-cover z-0"
             />
-            {/* Mascot Image */}
             <img
               src="/src/images/tiki_ninja.png"
               alt="Tiki Mascot"
               className="absolute left-4 top-[60px] w-[140px] h-[140px] object-contain z-10"
             />
 
-            {/* Text content */}
             <div className="relative z-20 flex items-center h-full pl-[120px] sm:pl-[180px]">
               <div className="text-white">
                 <h1 className="text-[18px] sm:text-[22px] font-semibold leading-tight">
@@ -212,7 +203,6 @@ const OrderConfirmation = () => {
             </div>
           </div>
 
-          {/* Info Rows */}
           <div className="pt-6 pb-8 px-4 sm:px-6 lg:px-8 pl-[120px] sm:pl-[200px]">
             <div className="flex justify-between text-sm text-[#808089] mb-4">
               <span>Phương thức thanh toán</span>
@@ -241,9 +231,7 @@ const OrderConfirmation = () => {
           </div>
         </div>
 
-        {/* Right Section */}
         <div className="w-full lg:w-[300px] bg-white rounded-[8px] p-4 text-sm shadow-sm h-fit">
-          {/* Mã đơn hàng */}
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center border-b border-gray-200 pb-2 mb-2">
             <span className="font-medium text-[#27272a]">
               Mã đơn hàng: {orderId}
@@ -256,10 +244,8 @@ const OrderConfirmation = () => {
             </Link>
           </div>
 
-          {/* Ngày giao hàng */}
           <p className="text-sm mt-2 font-medium">{deliveryDateString}</p>
 
-          {/* Sản phẩm */}
           <div className="mt-4">
             {loadingBooks && (
               <p className="text-xs text-gray-500 animate-pulse mb-3">

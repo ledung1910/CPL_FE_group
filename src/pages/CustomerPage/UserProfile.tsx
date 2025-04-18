@@ -57,7 +57,6 @@ const UserProfile = () => {
       const updatedUser = await userService.updateUser(user.id, {
         address: formData.address,
       });
-
       console.log("Cập nhật thành công:", updatedUser);
       setUser(updatedUser);
       setEditAddress(false);
@@ -68,7 +67,6 @@ const UserProfile = () => {
   };
 
   const handleCancel = () => {
-    // Khôi phục lại địa chỉ từ user
     if (user) {
       setFormData((prev) => ({
         ...prev,
@@ -84,13 +82,10 @@ const UserProfile = () => {
 
   return (
     <div className="bg-[#F5F5FA] p-5 pl-15 pr-15 flex flex-col md:flex-row gap-5">
-
       <SidebarProfile />
-
       <div className="flex-1">
         <div className="bg-white p-6 rounded-lg shadow border">
           <h2 className="text-xl font-semibold mb-6">Thông tin tài khoản</h2>
-
           <div className="space-y-4">
             <div>
               <label className="block mb-1 font-medium">Họ và tên</label>
@@ -125,7 +120,6 @@ const UserProfile = () => {
               />
             </div>
 
-            {/* Địa chỉ */}
             <div className="mt-6">
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-semibold">Địa chỉ</h3>
