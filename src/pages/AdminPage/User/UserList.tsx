@@ -25,7 +25,7 @@ const UserManagement = () => {
     fetchUsers();
     const intervalId = setInterval(() => {
       fetchUsers();
-    }, 5000);
+    }, 2000);
     return () => clearInterval(intervalId);
   }, []);
 

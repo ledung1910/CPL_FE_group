@@ -25,7 +25,7 @@ const AccountDropdown = ({ onClose, setCartCount }: { onClose: () => void, setCa
         Thông tin tài khoản
       </Link>
       <Link
-        to="/user_orders"
+        to="/orders"
         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         onClick={onClose}
       >
@@ -496,7 +496,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
                     {user.name}
                   </button>
                   {isDropdownOpen && (
-                    <AccountDropdown onClose={() => setDropdownOpen(false)} />
+                    <AccountDropdown onClose={() => setDropdownOpen(false)} setCartCount = {setCartCount} />
                   )}
                 </div>
               ) : (

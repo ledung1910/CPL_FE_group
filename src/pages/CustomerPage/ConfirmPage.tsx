@@ -249,7 +249,7 @@ const OrderConfirmation = () => {
               Mã đơn hàng: {orderId}
             </span>
             <Link
-              to={`/user/orders/${order.id}`}
+              to={`/orders/${order.id}`}
               className="text-blue-600 rounded font-medium text-sm mt-2 sm:mt-0"
             >
               Xem đơn hàng

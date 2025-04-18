@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartData, CategoryScale, LinearScale, BarElement, LineElement, PointElement, TimeScale } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Bar, Pie, Line } from "react-chartjs-2";
@@ -40,15 +40,6 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
-    fetchBooksAndPrepareChart();
-    fetchOrdersAndPrepareFinancialChart();
-  }, [selectedYear, selectedMonth, selectedDay]);
-
-  useEffect(() => {
-    fetchOrdersAndPrepareMonthlyChart();
-  }, [monthlySelectedYear, monthlySelectedMonth]);
-
-  useEffect(() => {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1;
@@ -56,10 +47,9 @@ const Dashboard = () => {
     setMonthlySelectedMonth(currentMonth);
   }, []);
 
-  const fetchBooksAndPrepareChart = async () => {
+  const fetchBooksAndPrepareChart = useCallback(async () => {
     try {
       const allBooks = await getBooks();
-
       const categoryCount: Record<string, number> = {};
       allBooks.forEach((book) => {
         const catName = book.categories?.name || "Không xác định";
@@ -83,16 +73,15 @@ const Dashboard = () => {
     } catch (err) {
       console.error("Lỗi khi tải dữ liệu sách:", err);
     }
-  };
+  }, []);
 
-  const fetchOrdersAndPrepareFinancialChart = async () => {
+  const fetchOrdersAndPrepareFinancialChart = useCallback(async () => {
     try {
       const allOrders: Order[] = await orderService.getOrders();
       let filteredOrders = allOrders.filter(
         (order) => order.status === "delivered"
       );
 
-      // Lọc theo năm
       if (selectedYear !== null) {
         filteredOrders = filteredOrders.filter((order) => {
           if (order.updated_at) {
@@ -103,7 +92,6 @@ const Dashboard = () => {
         });
       }
 
-      // Lọc theo tháng
       if (selectedMonth !== null) {
         filteredOrders = filteredOrders.filter((order) => {
           if (order.updated_at) {
@@ -114,7 +102,6 @@ const Dashboard = () => {
         });
       }
 
-      // Lọc theo ngày
       if (selectedDay !== null) {
         filteredOrders = filteredOrders.filter((order) => {
           if (order.updated_at) {
@@ -158,9 +145,9 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Lỗi khi tải dữ liệu đơn hàng:", error);
     }
-  };
+  }, [selectedYear, selectedMonth, selectedDay]);
 
-  const fetchOrdersAndPrepareMonthlyChart = async () => {
+  const fetchOrdersAndPrepareMonthlyChart = useCallback(async () => {
     try {
       const allOrders: Order[] = await orderService.getOrders();
       let filteredOrders = allOrders;
@@ -213,7 +200,7 @@ const Dashboard = () => {
             displayLabels.push(day.toString());
             displayData.push(data[index]);
           } else {
-            displayLabels.push(''); // Keep the spacing
+            displayLabels.push('');
             displayData.push(data[index]);
           }
         });
@@ -241,8 +228,28 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Lỗi khi tải dữ liệu đơn hàng cho biểu đồ đường:", error);
     }
-  };
+  }, [monthlySelectedYear, monthlySelectedMonth]);
 
+  useEffect(() => {
+    fetchBooksAndPrepareChart();
+    fetchOrdersAndPrepareFinancialChart();
+    fetchOrdersAndPrepareMonthlyChart();
+    const intervalId = setInterval(() => {
+      fetchBooksAndPrepareChart();
+      fetchOrdersAndPrepareFinancialChart();
+      fetchOrdersAndPrepareMonthlyChart();
+    }, 2000);
+    return () => clearInterval(intervalId);
+  }, [
+    selectedYear,
+    selectedMonth,
+    selectedDay,
+    monthlySelectedYear,
+    monthlySelectedMonth,
+    fetchBooksAndPrepareChart,
+    fetchOrdersAndPrepareFinancialChart,
+    fetchOrdersAndPrepareMonthlyChart
+  ]);
 
 
   return (

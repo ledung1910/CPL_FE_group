@@ -89,7 +89,7 @@ export default function OrderDetail() {
 
 
     return (
-        <div className="bg-[#F5F5FA] p-2 md:p-5 flex flex-col md:flex-row">
+        <div className="bg-[#F5F5FA] p-5 md:pl-15 md:pr-15 flex flex-col md:flex-row gap-4">
             <SidebarProfile orderId={id} />
             {/* Main Content */}
             <div className="w-full md:w-4/5 rounded-xl mt-3 md:mt-12">
@@ -199,7 +199,7 @@ export default function OrderDetail() {
                             </div>
 
                             {canCancelOrder && (
-                                <button onClick={handleCancelOrder} className="w-34 bg-yellow-300 text-black py-1.5 rounded-sm">
+                                <button onClick={handleCancelOrder} className="w-34 bg-yellow-300 text-black py-1.5 mb-4 rounded-sm">
                                     Hủy đơn hàng
                                 </button>
                             )}
@@ -207,17 +207,18 @@ export default function OrderDetail() {
                     </div>
 
                     {/* Nút quay lại và theo dõi */}
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center mt-5">
-                        <div
-                            onClick={() => navigate('/orders')}
-                            className="text-sm text-blue-600 cursor-pointer hover:text-gray-700 mb-2 mr-3"
-                        >
-                            &laquo; Quay lại đơn hàng của tôi
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center m-4">
+                        <div className="flex items-center gap-2">
+                            <span
+                                onClick={() => navigate('/orders')}
+                                className="text-sm text-blue-600 cursor-pointer hover:text-gray-700"
+                            >
+                                &laquo; Quay lại đơn hàng của tôi
+                            </span>
+                            <button className="bg-yellow-300 text-black font-semibold py-2 px-3 rounded-sm">
+                                Theo dõi đơn hàng
+                            </button>
                         </div>
-
-                        <button className="w-full md:w-60 bg-yellow-300 text-black font-semibold py-1.5 rounded-sm">
-                            Theo dõi đơn hàng
-                        </button>
                     </div>
                 </div>
             </div>

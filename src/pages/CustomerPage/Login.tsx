@@ -54,7 +54,7 @@ const LoginPopup: React.FC<LoginPopupProps> = ({ isOpen, onClose, onSwitchToRegi
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+    <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/40 px-4">
       <div className="relative w-full max-w-md md:max-w-3xl flex flex-col md:flex-row overflow-hidden rounded-2xl bg-white shadow-2xl">
         {/* Close button */}
         <button
