@@ -156,7 +156,7 @@ const OrderManagement = () => {
                                                 <FaSave /> Lưu
                                             </button>
                                         ) : (
-                                            order.status !== 'cancelled' && (
+                                            order.status !== 'cancelled' && order.status !== 'delivered' && (
                                                 <button
                                                     onClick={() => handleStartEdit(order.id, order.status)}
                                                     className="bg-yellow-400 text-black px-3 py-2 rounded-md hover:bg-yellow-500 transition-all flex items-center gap-1 text-sm"
