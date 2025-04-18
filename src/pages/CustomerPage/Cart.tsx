@@ -23,7 +23,6 @@ const CartPage = () => {
 
     const fetchBookDetails = async () => {
       const details: Record<string, BookDetails> = {};
-
       for (const item of storedCart) {
         const book = await getBookById(item.book_id);
         details[item.book_id] = {
@@ -32,7 +31,6 @@ const CartPage = () => {
           price: book.current_seller.price,
         };
       }
-
       setBookDetails(details);
     };
 
@@ -79,6 +77,7 @@ const CartPage = () => {
               <p>Giỏ hàng của bạn đang trống.</p>
             ) : (
               <>
+                {/* Header for large screens */}
                 <div className="hidden lg:flex items-center font-medium text-sm text-gray-600 py-2 mb-5">
                   <div className="flex items-center space-x-2 w-1/2">
                     <input type="checkbox" className="h-4 w-4" defaultChecked />
@@ -92,11 +91,15 @@ const CartPage = () => {
 
                 {cartItems.map((item, index) => {
                   const details = bookDetails[item.book_id];
-                  if (!details) return null; // Skip rendering if details not loaded yet
+                  if (!details) return null;
 
                   return (
-                    <div key={item.book_id} className="flex items-start lg:items-center py-4 text-sm">
-                      <div className="flex items-start space-x-3 w-1/2">
+                    <div
+                      key={item.book_id}
+                      className="flex flex-col lg:flex-row items-start lg:items-center py-4 border-t text-sm"
+                    >
+                      {/* Book info */}
+                      <div className="flex items-start space-x-3 w-full lg:w-1/2 mb-2 lg:mb-0">
                         <input type="checkbox" className="h-4 w-4 mt-1" defaultChecked />
                         <img
                           src={details.image}
@@ -105,12 +108,24 @@ const CartPage = () => {
                         />
                         <div className="flex flex-col">
                           <h2 className="font-semibold">{details.name}</h2>
+                          <span className="text-gray-500 lg:hidden">
+                            Giá: {details.price.toLocaleString()}₫
+                          </span>
+                          <span className="text-gray-500 lg:hidden">
+                            Số lượng: {item.quantity}
+                          </span>
+                          <span className="text-gray-500 lg:hidden">
+                            Thành tiền: {(details.price * item.quantity).toLocaleString()}₫
+                          </span>
                         </div>
                       </div>
 
-                      <div className="w-1/6 text-right">{details.price.toLocaleString()}₫</div>
+                      {/* Desktop layout */}
+                      <div className="hidden lg:block w-1/6 text-right">
+                        {details.price.toLocaleString()}₫
+                      </div>
 
-                      <div className="w-1/6 flex justify-end ml-auto">
+                      <div className="hidden lg:flex w-1/6 justify-end ml-auto">
                         <div className="flex items-center border rounded w-20 justify-between px-2">
                           <button onClick={() => handleQuantityChange(index, item.quantity - 1)}>
                             <FaMinus size={12} className="text-gray-500" />
@@ -122,11 +137,11 @@ const CartPage = () => {
                         </div>
                       </div>
 
-                      <div className="w-1/6 text-right font-medium">
+                      <div className="hidden lg:block w-1/6 text-right font-medium">
                         {(details.price * item.quantity).toLocaleString()}₫
                       </div>
 
-                      <div className="w-1/6 flex justify-end">
+                      <div className="lg:w-1/6 flex justify-end">
                         <button onClick={() => handleDeleteItem(index)}>
                           <FaTrash className="text-gray-400 hover:text-red-500" />
                         </button>
@@ -148,9 +163,7 @@ const CartPage = () => {
               <span>Tổng tiền thanh toán</span>
               <span>{total.toLocaleString()}₫</span>
             </div>
-            <p className="text-xs text-gray-500 mb-4">
-              (Đã bao gồm VAT nếu có)
-            </p>
+            <p className="text-xs text-gray-500 mb-4">(Đã bao gồm VAT nếu có)</p>
             <button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg font-medium"
               onClick={handleCheckout}>
               Mua Hàng ({cartItems.length})
