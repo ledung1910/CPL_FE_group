@@ -1,17 +1,15 @@
-// cart.service.ts
-
-import { CartItem } from "../../interfaces";
+import { OrderItem } from "../../interfaces";
 
 const CART_KEY = 'cart'; // key để lưu trữ giỏ hàng trong localStorage
 
 // Lấy giỏ hàng từ localStorage
-const getCart = (): CartItem[] => {
+const getCart = (): OrderItem[] => {
   const cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
   return cart;
 };
 
 // Lưu giỏ hàng vào localStorage
-const saveCart = (cart: CartItem[]): void => {
+const saveCart = (cart: OrderItem[]): void => {
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
 };
 

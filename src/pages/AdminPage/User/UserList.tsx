@@ -12,19 +12,23 @@ const UserManagement = () => {
     direction: "asc" | "desc";
   } | null>(null);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const data = await userService.getAllUsers();
-        setUsers(data);
-      } catch (err) {
-        console.error("Lỗi khi lấy danh sách người dùng:", err);
-      }
-    };
+  const fetchUsers = async () => {
+    try {
+      const data = await userService.getAllUsers();
+      setUsers(data);
+    } catch (err) {
+      console.error("Lỗi khi lấy danh sách người dùng:", err);
+    }
+  };
 
+  useEffect(() => {
     fetchUsers();
+    const intervalId = setInterval(() => {
+      fetchUsers();
+    }, 5000);
+    return () => clearInterval(intervalId);
   }, []);
-  
+
   const filteredUsers = users.filter((user) =>
     user.email.toLowerCase().includes(searchQuery.toLowerCase())
   );

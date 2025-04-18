@@ -8,7 +8,7 @@ import { cartService } from "../../api/cart.service";
 import { useSearch } from "../../hooks/useSearch";
 import { FaShoppingCart , FaBars} from "react-icons/fa";
 
-const AccountDropdown = ({ onClose }: { onClose: () => void }) => {
+const AccountDropdown = ({ onClose, setCartCount }: { onClose: () => void, setCartCount: React.Dispatch<React.SetStateAction<number>> }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -35,6 +35,7 @@ const AccountDropdown = ({ onClose }: { onClose: () => void }) => {
         onClick={() => {
           if (user?.role) {
             logout(user.role);
+            setCartCount(0);  // This will reset the cart count when logging out
             onClose();
             navigate("/");
           }
@@ -46,6 +47,7 @@ const AccountDropdown = ({ onClose }: { onClose: () => void }) => {
     </div>
   );
 };
+
 
 const Commitments = () => {
   const commitments = [
@@ -75,6 +77,7 @@ const Commitments = () => {
     },
   ];
 
+
   return (
     <div className="flex items-center text-blue-900 gap-3 p-4 border-t border-b border-gray-300">
       <div className="text-lg font-semibold ml-7">Cam kết:</div>
@@ -94,7 +97,6 @@ const Commitments = () => {
     </div>
   );
 };
-
 const MobileNav = ({ 
   isOpen, 
   onClose, 
@@ -251,6 +253,7 @@ type HeaderProps = {
   onSearch: (keyword: string) => void;
 };
 
+
 const Header: React.FC<HeaderProps> = ({ onSearch }) => {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -261,7 +264,6 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
   const { searchTerm, setSearchTerm, handleSearch } = useSearch(onSearch);
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
  
-  
 
   useEffect(() => {
     const handleCartUpdate = () => {
@@ -287,6 +289,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
   const handleOpenLogin = () => {
     setLoginOpen(true);
   };
+
 
   return (
     <div>

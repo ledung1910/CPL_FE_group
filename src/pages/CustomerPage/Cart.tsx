@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
 import { cartService } from "../../api/cart.service";
 import { getBookById } from "../../api/book.service";
-import { CartItem } from "../../../interfaces";
+import { OrderItem } from "../../../interfaces";
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface BookDetails {
   name: string;
@@ -11,8 +14,8 @@ interface BookDetails {
 }
 
 const CartPage = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [bookDetails, setBookDetails] = useState<Record<string, BookDetails>>({});
+  const [cartItems, setCartItems] = useState<OrderItem[]>([]);
+  const [bookDetails, setBookDetails] = useState<Record<string, BookDetails>>({}); // Store book details by id
 
   useEffect(() => {
     const storedCart = cartService.getCart();
@@ -25,7 +28,7 @@ const CartPage = () => {
         details[item.book_id] = {
           name: book.name,
           image: book.images[0]?.large_url || "",
-          price: book.original_price,
+          price: book.current_seller.price,
         };
       }
       setBookDetails(details);
@@ -50,6 +53,17 @@ const CartPage = () => {
   };
 
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    if (cartItems.length === 0) {
+      toast.warn("Giỏ hàng của bạn đang trống!");
+      return;
+    }
+    cartService.clearCart();
+    navigate('/checkout', { state: { cartItems } });
+  };
 
   return (
     <div className="bg-gray-100">
@@ -150,7 +164,8 @@ const CartPage = () => {
               <span>{total.toLocaleString()}₫</span>
             </div>
             <p className="text-xs text-gray-500 mb-4">(Đã bao gồm VAT nếu có)</p>
-            <button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg font-medium">
+            <button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg font-medium"
+              onClick={handleCheckout}>
               Mua Hàng ({cartItems.length})
             </button>
           </div>

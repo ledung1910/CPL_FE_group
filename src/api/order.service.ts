@@ -48,8 +48,9 @@ const orderService = {
     getOrderById: async (id: string): Promise<Order> => {
         return await get<Order>(`${ORDER_BASE_URL}/${id}`);
     },
-    updateOrderStatus: async (id: string, status: Order['status'] ): Promise<{ status: Order['status'] }> => {
-        return await patch<{ status: Order['status'] }>(`/orders/${id}`, { status });
+    // Trong file order.service.ts
+    updateOrderStatus: async (id: string, status: Order['status'], updated_at: string): Promise<{ status: Order['status'], updated_at: string }> => {
+        return await patch<{ status: Order['status'], updated_at: string }>(`/orders/${id}`, { status, updated_at });
     }
 };
 

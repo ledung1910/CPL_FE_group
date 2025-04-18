@@ -68,7 +68,7 @@ export interface Order {
     user_id: number;
     items: OrderItem[];
     total_amount: number;
-    status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+    status: 'pending' | 'processing' | 'shipping' | 'delivered' | 'cancelled';
     created_at: string;
     updated_at?: string;
     payment_method: string;
@@ -76,12 +76,6 @@ export interface Order {
 }
 
 export interface OrderItem {
-    book_id: string;
-    quantity: number;
-    price: number;
-}
-
-export interface CartItem {
     book_id: string;
     quantity: number;
     price: number;
