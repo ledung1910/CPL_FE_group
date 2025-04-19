@@ -56,7 +56,7 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
     const { name, value } = e.target;
     setBook((prev) => ({
       ...prev,
-      [name]: name === "list_price" || name === "original_price" ? Number(value) : value,
+      [name]: value,
     }));
   };
 
@@ -157,7 +157,12 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
                 type="number"
                 name="original_price" min={0}
                 value={book.original_price}
-                onChange={handleChange}
+                onChange={(e) =>
+                  setBook((prev) => ({
+                    ...prev,
+                    original_price: Number(e.target.value)
+                  }))
+                }
                 className="bg-gray-800 border border-gray-700 p-2 rounded appearance-none"
                 required
               />
@@ -214,10 +219,16 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
               <label className="text-sm font-medium mb-1">Rating Average</label>
               <input
                 title="Rate"
-                type="text" min={0}
+                type="number" min={0} max={5}
+                step="0.1"
                 name="rating_average"
                 value={book.rating_average}
-                onChange={(e) => setBook((prev) => ({ ...prev, rating_average: Number(e.target.value) }))}
+                onChange={(e) => {
+                  const value = parseFloat(e.target.value);
+                  if (!isNaN(value) && value >= 0 && value <= 5) {
+                    setBook((prev) => ({ ...prev, rating_average: value }));
+                  }
+                }}
                 className="bg-gray-800 border border-gray-700 p-2 rounded"
               />
             </div>
@@ -445,7 +456,7 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
                   onClick={() =>
                     setBook((prev) => ({
                       ...prev,
-                      specifications: [...prev.specifications, { name: "", attributes: [] }],
+                      specifications: [...prev.specifications, { name: "Thông tin chung", attributes: [] }],
                     }))
                   }
                   className="mt-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-1 rounded"
