@@ -1,6 +1,6 @@
-import FooterOrder from "../component/FooterOrder";
-import HeaderConfirm from "../component/HeaderConfirm";
-import Banner from "../component/Banner";
+import FooterOrder from "../component/Footer/FooterOrder";
+import HeaderConfirm from "../component/Header/HeaderConfirm";
+import Banner from "../component/Header/Banner";
 import { Outlet } from 'react-router-dom'
 
 const ConfirmLayout = () => {

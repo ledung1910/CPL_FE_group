@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../../context/AuthContext';
 import { ArrowLeft } from "lucide-react";
 import { IoClose } from 'react-icons/io5';
 

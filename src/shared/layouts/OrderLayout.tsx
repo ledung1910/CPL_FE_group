@@ -1,6 +1,6 @@
-import FooterOrder from "../component/FooterOrder";
-import HeaderOrder from "../component/HeaderOrder";
-import Banner from "../component/Banner";
+import FooterOrder from "../component/Footer/FooterOrder";
+import HeaderOrder from "../component/Header/HeaderOrder";
+import Banner from "../component/Header/Banner";
 import { Outlet } from 'react-router-dom'
 
 const OrderLayout = () => {

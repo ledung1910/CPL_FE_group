@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getRealCategories } from "../../api/book.service";
-import { Category } from "../../../interfaces";
+import { getRealCategories } from "../../../api/book.service";
+import { Category } from "../../../../interfaces";
 
 const SidebarHomepage = () => {
   const [categories, setCategories] = useState<Category[]>([]);

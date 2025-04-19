@@ -1,8 +1,8 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { useState } from "react";
-import Banner from "../component/Banner";
-import Header from "../component/Header";
-import Footer from "../component/Footer";
+import Banner from "../component/Header/Banner";
+import Header from "../component/Header/HeaderCustomer";
+import Footer from "../component/Footer/FooterCustomer";
 
 const CustomerLayout = () => {
   const [keyword, setKeyword] = useState("");

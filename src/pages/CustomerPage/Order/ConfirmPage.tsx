@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { Order } from "../../../interfaces";
-import orderService from "../../api/order.service";
-import { Book } from "../../../interfaces";
-import { getBookById } from "../../api/book.service";
+import { Order, Book } from "../../../../interfaces";
+import orderService from "../../../api/order.service";
+import { getBookById } from "../../../api/book.service";
 
 const formatCurrency = (amount: number | undefined): string => {
   if (amount === undefined || amount === null) return "N/A";

@@ -10,23 +10,23 @@ import ConfirmLayout from "./shared/layouts/ConfirmLayout";
 import AdminLogin from "./pages/AdminPage/AdminLogin";
 import AdminPage from "./pages/AdminPage/Dashboard";
 import ProductAdminPage from "./pages/AdminPage/Product/ProductList";
-import BookDetail from "./pages/CustomerPage/BookDetail";
 import UserList from "./pages/AdminPage/User/UserList";
 import CategoryList from "./pages/AdminPage/Category/CategoryList";
 import ManagementPage from "./pages/AdminPage/Bill/BillList";
 
 // Customer Pages
-import HomePage from "./pages/CustomerPage/Homepage";
-import OrderList from "./pages/CustomerPage/OrderList";
-import OrderDetail from "./pages/CustomerPage/OrderDetail";
-import UserProfile from "./pages/CustomerPage/UserProfile";
-import OrderConfirmation from "./pages/CustomerPage/ConfirmPage";
-import Checkout from "./pages/CustomerPage/Checkout";
-import Cart from "./pages/CustomerPage/Cart";
+import HomePage from "./pages/CustomerPage/Product/Homepage";
+import BookDetail from "./pages/CustomerPage/Product/BookDetail";
+import OrderList from "./pages/CustomerPage/Profile/OrderList";
+import OrderDetail from "./pages/CustomerPage/Profile/OrderDetail";
+import UserProfile from "./pages/CustomerPage/Profile/UserProfile";
+import OrderConfirmation from "./pages/CustomerPage/Order/ConfirmPage";
+import Checkout from "./pages/CustomerPage/Order/Checkout";
+import Cart from "./pages/CustomerPage/Order/Cart";
 
 // Components
-import ScrollToTop from "./shared/component/ScrollToTop";
-import PrivateRoute from "./shared/component/PrivateRoute";
+import ScrollToTop from "./shared/component/Provider/ScrollToTop";
+import PrivateRoute from "./shared/component/Provider/PrivateRoute";
 
 // CSS & Toast
 import { ToastContainer } from "react-toastify";

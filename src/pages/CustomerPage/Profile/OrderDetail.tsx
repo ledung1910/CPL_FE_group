@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
-import SidebarProfile from "../../shared/component/SideBarProfile";
+import SidebarProfile from "../../../shared/component/Sidebar/SideBarProfile";
 import { useParams, useNavigate } from "react-router-dom";
-import orderService from "../../api/order.service";
-import { getBookById } from "../../api/book.service";
-import { useAuth } from "../../context/AuthContext";
-import { Order, Book } from "../../../interfaces";
+import orderService from "../../../api/order.service";
+import { getBookById } from "../../../api/book.service";
+import { useAuth } from "../../../context/AuthContext";
+import { Order, Book } from "../../../../interfaces";
 
 const statusLabels: Record<Order['status'], string> = {
     pending: 'Đang chờ giải quyết',

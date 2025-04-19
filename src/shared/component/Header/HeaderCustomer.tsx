@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
-import LoginPopup from "../../pages/CustomerPage/Login";
-import RegisterPopup from "../../pages/CustomerPage/Register";
-import logo from "../../assets/logo.png";
-import { cartService } from "../../api/cart.service";
-import { useSearch } from "../../hooks/useSearch";
+import { useAuth } from "../../../context/AuthContext";
+import LoginPopup from "../../../pages/CustomerPage/Authentication/Login";
+import RegisterPopup from "../../../pages/CustomerPage/Authentication/Register";
+import logo from "../../../images/logo.png";
+import { cartService } from "../../../api/cart.service";
+import { useSearch } from "../../../hooks/useSearch";
 import { FaShoppingCart, FaBars } from "react-icons/fa";
 
 const AccountDropdown = ({ onClose, setCartCount }: { onClose: () => void, setCartCount: React.Dispatch<React.SetStateAction<number>> }) => {

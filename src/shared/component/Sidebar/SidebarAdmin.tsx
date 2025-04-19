@@ -1,6 +1,6 @@
 import { FaHome, FaTable, FaList, FaUser, FaMoneyBill, FaSignOutAlt } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 
 const Sidebar: React.FC = () => {
   const { user, logout } = useAuth();

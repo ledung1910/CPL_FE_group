@@ -2,17 +2,17 @@ import { useState, useEffect, useRef } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight, faChevronLeft, faStar } from "@fortawesome/free-solid-svg-icons";
-import { Book } from "../../../interfaces";
-import usePagination from "../../hooks/usePagination";
-import { getBooks, getBookById } from "../../api/book.service";
+import { Book } from "../../../../interfaces";
+import usePagination from "../../../hooks/usePagination";
+import { getBooks, getBookById } from "../../../api/book.service";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../../context/AuthContext";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import LoginPopup from "./Login";
-import RegisterPopup from "./Register";
-import { cartService } from "../../api/cart.service";
-import AddToCartSuccessPopup from "../../shared/component/AddtoCartSuccess";
+import LoginPopup from "../Authentication/Login";
+import RegisterPopup from "../Authentication/Register";
+import { cartService } from "../../../api/cart.service";
+import AddToCartSuccessPopup from "../../../shared/component/AddtoCartSuccess";
 
 
 const ProductDetail = () => {

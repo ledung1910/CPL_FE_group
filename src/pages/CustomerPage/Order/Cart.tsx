@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
-import { cartService } from "../../api/cart.service";
-import { getBookById } from "../../api/book.service";
-import { OrderItem } from "../../../interfaces";
+import { cartService } from "../../../api/cart.service";
+import { getBookById } from "../../../api/book.service";
+import { OrderItem } from "../../../../interfaces";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

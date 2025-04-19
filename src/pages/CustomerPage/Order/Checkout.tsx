@@ -1,12 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTicket } from "@fortawesome/free-solid-svg-icons";
-import { Address, Book, Order, OrderItem } from "../../../interfaces";
+import { Address, Book, Order, OrderItem } from "../../../../interfaces";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getBookById } from "../../api/book.service";
+import { getBookById } from "../../../api/book.service";
 import { useState, useEffect } from "react";
-import { useAuth } from "../../context/AuthContext";
-import orderService from "../../api/order.service";
-import { cartService } from "../../api/cart.service";
+import { useAuth } from "../../../context/AuthContext";
+import orderService from "../../../api/order.service";
+import { cartService } from "../../../api/cart.service";
 
 interface CartItemWithDetails {
   book: Book | null;

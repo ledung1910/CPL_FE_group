@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { FaStar, FaFilter } from "react-icons/fa";
-import BookShow from "../../shared/component/Bookshow";
+import BookShow from "../../../shared/component/Bookshow";
 import { useOutletContext, useSearchParams } from "react-router-dom";
-import SidebarHomepage from "../../shared/component/SidebarHomepage";
-import { Category } from "../../../interfaces";
-import { getRealCategories } from "../../api/book.service";
+import SidebarHomepage from "../../../shared/component/Sidebar/SidebarHomepage";
+import { Category } from "../../../../interfaces";
+import { getRealCategories } from "../../../api/book.service";
 
 const topProducts = [
   {

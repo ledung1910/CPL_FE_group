@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import SidebarProfile from "../../shared/component/SideBarProfile";
-import { useAuth } from "../../context/AuthContext";
-import orderService from "../../api/order.service";
-import { Order } from "../../../interfaces";
+import SidebarProfile from "../../../shared/component/Sidebar/SideBarProfile";
+import { useAuth } from "../../../context/AuthContext";
+import orderService from "../../../api/order.service";
+import { Order } from "../../../../interfaces";
 import { useNavigate } from 'react-router-dom';
 
 const statusLabels: Record<Order['status'], string> = {

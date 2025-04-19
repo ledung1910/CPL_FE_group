@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import SidebarProfile from "../../shared/component/SideBarProfile";
-import { useAuth } from "../../context/AuthContext";
-import userService from '../../api/user.service';
+import SidebarProfile from "../../../shared/component/Sidebar/SideBarProfile";
+import { useAuth } from "../../../context/AuthContext";
+import userService from '../../../api/user.service';
 
 const UserProfile = () => {
   const { user, setUser } = useAuth();
