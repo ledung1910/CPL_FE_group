@@ -5,8 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getBookById } from "../../../api/book.service";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../../context/AuthContext";
-import orderService from "../../../api/order.service";
-import { cartService } from "../../../api/cart.service";
+import { createOrder } from "../../../api/order.service";
+import { clearCart } from "../../../api/cart.service";
 
 interface CartItemWithDetails {
   book: Book | null;
@@ -214,9 +214,9 @@ export default function Checkout() {
         shipping_address: shippingAddress,
       };
 
-      const newOrder = await orderService.createOrder(orderPayload);
+      const newOrder = await createOrder(orderPayload);
       if (newOrder && newOrder.id) {
-        cartService.clearCart();
+        clearCart();
         navigate("/", { replace: true });
         setTimeout(() => {
           navigate(`/confirm/${newOrder.id}`);

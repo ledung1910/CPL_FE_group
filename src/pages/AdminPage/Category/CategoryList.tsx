@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaEdit, FaTrash, FaSave, FaPlus, FaSearch } from "react-icons/fa";
 import { Category } from "../../../../interfaces";
-import { getRealCategories, createCategory, updateCategory, deleteCategory } from "../../../api/book.service";
+import { getCategory, createCategory, updateCategory, deleteCategory } from "../../../api/book.service";
 
 const CategoryManagement = () => {
     const [categories, setCategories] = useState<Category[]>([]);
@@ -12,7 +12,7 @@ const CategoryManagement = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const data = await getRealCategories();
+                const data = await getCategory();
                 setCategories(data);
             } catch (error) {
                 console.error("Lỗi khi lấy danh mục:", error);
@@ -26,7 +26,7 @@ const CategoryManagement = () => {
 
         if (editingId !== null) {
             await updateCategory(editingId, { name: newCategory });
-            const updated = await getRealCategories();
+            const updated = await getCategory();
             setCategories(updated);
             setEditingId(null);
         } else {
@@ -36,7 +36,7 @@ const CategoryManagement = () => {
             }, 0);
             const newId = maxId + 1;
             await createCategory({ id: newId, name: newCategory });
-            const updated = await getRealCategories();
+            const updated = await getCategory();
             setCategories(updated);
         }
         setNewCategory("");

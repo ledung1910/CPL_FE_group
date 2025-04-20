@@ -4,7 +4,7 @@ import BookShow from "../../../shared/component/Bookshow";
 import { useOutletContext, useSearchParams } from "react-router-dom";
 import SidebarHomepage from "../../../shared/component/Sidebar/SidebarHomepage";
 import { Category } from "../../../../interfaces";
-import { getRealCategories } from "../../../api/book.service";
+import { getCategory } from "../../../api/book.service";
 
 const topProducts = [
   {
@@ -65,7 +65,7 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const result = await getRealCategories();
+      const result = await getCategory();
       setCategories(result);
     };
     fetchCategories();

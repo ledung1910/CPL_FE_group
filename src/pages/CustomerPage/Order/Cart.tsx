@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaMinus, FaPlus, FaTrash } from "react-icons/fa";
-import { cartService } from "../../../api/cart.service";
+import { getCart, saveCart, clearCart } from "../../../api/cart.service";
 import { getBookById } from "../../../api/book.service";
 import { OrderItem } from "../../../../interfaces";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +20,7 @@ const CartPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedCart = cartService.getCart();
+    const storedCart = getCart();
     setCartItems(storedCart);
 
     const fetchBookDetails = async () => {
@@ -44,13 +44,13 @@ const CartPage = () => {
     const updatedCart = [...cartItems];
     updatedCart[index].quantity = newQuantity;
     setCartItems(updatedCart);
-    cartService.saveCart(updatedCart);
+    saveCart(updatedCart);
   };
 
   const handleDeleteItem = (index: number) => {
     const updatedCart = cartItems.filter((_, i) => i !== index);
     setCartItems(updatedCart);
-    cartService.saveCart(updatedCart);
+    saveCart(updatedCart);
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
@@ -59,7 +59,7 @@ const CartPage = () => {
       toast.warn("Giỏ hàng của bạn đang trống!");
       return;
     }
-    cartService.clearCart();
+    clearCart();
     navigate('/checkout', { state: { cartItems } });
   };
 

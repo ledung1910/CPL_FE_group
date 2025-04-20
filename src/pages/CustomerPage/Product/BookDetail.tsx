@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import LoginPopup from "../Authentication/Login";
 import RegisterPopup from "../Authentication/Register";
-import { cartService } from "../../../api/cart.service";
+import { addToCart } from "../../../api/cart.service";
 import AddToCartSuccessPopup from "../../../shared/component/AddtoCartSuccess";
 
 
@@ -62,7 +62,7 @@ const ProductDetail = () => {
         }
         if (!product) return;
         try {
-            cartService.addToCart({
+            addToCart({
                 id: product.id,
                 list_price: product.current_seller.price,
                 quantity: quantity,

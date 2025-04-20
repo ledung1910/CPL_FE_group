@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaSearch, FaSort, FaEdit, FaSave } from "react-icons/fa";
-import orderService from "../../../api/order.service";
-import userService from "../../../api/user.service";
+import { getOrders, updateOrderStatus } from "../../../api/order.service";
+import { getAllUsers } from "../../../api/user.service";
 import { Order } from "../../../../interfaces";
 
 const OrderManagement = () => {
@@ -21,8 +21,8 @@ const OrderManagement = () => {
     };
     const fetchOrdersAndUsers = async () => {
         try {
-            const ordersData = await orderService.getOrders();
-            const usersData = await userService.getAllUsers();
+            const ordersData = await getOrders();
+            const usersData = await getAllUsers();
             const userMap = usersData.reduce((acc, user) => {
                 acc[user.id] = user.name;
                 return acc;
@@ -70,7 +70,7 @@ const OrderManagement = () => {
     const handleSaveStatus = async () => {
         if (editingOrderId !== null) {
             const currentTimeISO = new Date().toISOString();
-            await orderService.updateOrderStatus(editingOrderId, newStatus, currentTimeISO);
+            await updateOrderStatus(editingOrderId, newStatus, currentTimeISO);
             const updatedOrders = orders.map((order) => {
                 if (order.id === editingOrderId) {
                     return {

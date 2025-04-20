@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Order, Book } from "../../../../interfaces";
-import orderService from "../../../api/order.service";
+import { getOrderById } from "../../../api/order.service";
 import { getBookById } from "../../../api/book.service";
 
 const formatCurrency = (amount: number | undefined): string => {
@@ -63,7 +63,7 @@ const OrderConfirmation = () => {
 
       try {
         console.log(`Workspaceing order with ID: ${orderId}`);
-        const fetchedOrder = await orderService.getOrderById(orderId);
+        const fetchedOrder = await getOrderById(orderId);
         console.log("Fetched order data:", fetchedOrder);
         setOrder(fetchedOrder);
 
@@ -83,7 +83,7 @@ const OrderConfirmation = () => {
           const results = await Promise.all(bookPromises);
           const detailsMap: Record<string, Book> = {};
           results.forEach((book) => {
-            if (book) {detailsMap[book.id] = book;}
+            if (book) { detailsMap[book.id] = book; }
           });
           setBookDetails(detailsMap);
         }

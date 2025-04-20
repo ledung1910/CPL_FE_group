@@ -4,7 +4,7 @@ import { useAuth } from "../../../context/AuthContext";
 import LoginPopup from "../../../pages/CustomerPage/Authentication/Login";
 import RegisterPopup from "../../../pages/CustomerPage/Authentication/Register";
 import logo from "../../../images/logo.png";
-import { cartService } from "../../../api/cart.service";
+import { getCartCount } from "../../../api/cart.service";
 import { useSearch } from "../../../hooks/useSearch";
 import { FaShoppingCart, FaBars } from "react-icons/fa";
 
@@ -109,11 +109,11 @@ const MobileNav = ({
 }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [cartCount, setCartCount] = useState(cartService.getCartCount());
+  const [cartCount, setCartCount] = useState(getCartCount());
 
   useEffect(() => {
     const handleCartUpdate = () => {
-      setCartCount(cartService.getCartCount());
+      setCartCount(getCartCount());
     };
 
     window.addEventListener("cartUpdated", handleCartUpdate);
@@ -258,14 +258,14 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
   const [isLoginOpen, setLoginOpen] = useState(false);
   const [isRegisterOpen, setRegisterOpen] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(cartService.getCartCount());
+  const [cartCount, setCartCount] = useState(getCartCount());
   const { searchTerm, setSearchTerm, handleSearch } = useSearch(onSearch);
   const [isMobileNavOpen, setMobileNavOpen] = useState(false);
 
 
   useEffect(() => {
     const handleCartUpdate = () => {
-      setCartCount(cartService.getCartCount());
+      setCartCount(getCartCount());
     };
 
     window.addEventListener("cartUpdated", handleCartUpdate);

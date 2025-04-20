@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SidebarProfile from "../../../shared/component/Sidebar/SideBarProfile";
 import { useAuth } from "../../../context/AuthContext";
-import userService from '../../../api/user.service';
+import { updateUser } from '../../../api/user.service';
 
 const UserProfile = () => {
   const { user, setUser } = useAuth();
@@ -54,7 +54,7 @@ const UserProfile = () => {
     if (!user) return;
 
     try {
-      const updatedUser = await userService.updateUser(user.id, {
+      const updatedUser = await updateUser(user.id, {
         address: formData.address,
       });
       console.log("Cập nhật thành công:", updatedUser);

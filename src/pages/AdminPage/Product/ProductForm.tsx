@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaUpload } from "react-icons/fa";
 import { Book, BookImage, Category } from "../../../../interfaces";
-import { getRealCategories } from "../../../api/book.service";
+import { getCategory } from "../../../api/book.service";
 import { uploadToCloudinary } from "../../../hooks/useImage";
 
 interface Props {
@@ -42,7 +42,7 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const categories = await getRealCategories();
+        const categories = await getCategory();
         setCategoryOptions(categories);
       } catch (error) {
         console.error("Failed to fetch categories:", error);
@@ -100,6 +100,46 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
     const newImages = [...images];
     newImages.splice(index, 1);
     setImages(newImages);
+  };
+  const handleAddSpecification = () => {
+    if (book.specifications.length === 0) {
+      setBook((prev) => ({
+        ...prev,
+        specifications: [{ name: "Thông tin chung", attributes: [] }],
+      }));
+    }
+  };
+  const handleAttributeChange = (attrIndex: number, name: "name" | "value", value: string) => {
+    setBook((prev) => ({
+      ...prev,
+      specifications: prev.specifications.map((spec) => ({
+        ...spec,
+        attributes: spec.attributes.map((attr, index) =>
+          index === attrIndex ? { ...attr, [name]: value } : attr
+        ),
+      })),
+    }));
+  };
+  const handleAddAttribute = () => {
+    setBook((prev) => ({
+      ...prev,
+      specifications: prev.specifications.map((spec) => ({
+        ...spec,
+        attributes: [...spec.attributes, { name: "", value: "" }],
+      })),
+    }));
+  };
+  const handleRemoveAttribute = (attrIndex: number) => {
+    setBook((prev) => ({
+      ...prev,
+      specifications: prev.specifications.map((spec) => ({
+        ...spec,
+        attributes: spec.attributes.filter((_, index) => index !== attrIndex),
+      })),
+    }));
+  };
+  const handleRemoveSpecificationGroup = () => {
+    setBook((prev) => ({ ...prev, specifications: [] }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -160,7 +200,7 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
                 onChange={(e) =>
                   setBook((prev) => ({
                     ...prev,
-                    original_price: Number(e.target.value)
+                    original_price: Number(e.target.value),
                   }))
                 }
                 className="bg-gray-800 border border-gray-700 p-2 rounded appearance-none"
@@ -369,102 +409,72 @@ const BookForm: React.FC<Props> = ({ onAddBook, initialBook, onCancel }) => {
                 )}
               </div>
             </div>
-
-            <div>
-              <label className="text-sm font-medium block mb-2">Specifications</label>
-              <div className="space-y-6">
+            {book.specifications.length === 0 && (
+              <button
+                type="button"
+                onClick={handleAddSpecification}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+              >
+                + Thêm Specification
+              </button>
+            )}
+            {book.specifications.length > 0 && (
+              <div>
+                <label className="text-sm font-medium block mb-2">Specifications</label>
                 {book.specifications.map((spec, specIndex) => (
                   <div key={specIndex} className="border p-4 rounded space-y-2 bg-gray-900 border-gray-700">
                     <div className="flex items-center justify-between">
                       <input
                         type="text"
                         placeholder="Tên nhóm thông số"
-                        value={spec.name}
-                        onChange={(e) => {
-                          const updated = [...book.specifications];
-                          updated[specIndex].name = e.target.value;
-                          setBook((prev) => ({ ...prev, specifications: updated }));
-                        }}
-                        className="bg-gray-800 border border-gray-700 p-2 rounded w-full"
+                        value="Thông tin chung"
+                        readOnly
+                        className="bg-gray-800 border border-gray-700 p-2 rounded w-full cursor-not-allowed"
                       />
                       <button
                         type="button"
-                        onClick={() => {
-                          const updated = book.specifications.filter((_, i) => i !== specIndex);
-                          setBook((prev) => ({ ...prev, specifications: updated }));
-                        }}
+                        onClick={handleRemoveSpecificationGroup}
                         className="ml-4 text-red-500 text-sm hover:underline"
                       >
                         Xóa nhóm
                       </button>
                     </div>
-
                     {spec.attributes.map((attr, attrIndex) => (
                       <div key={attrIndex} className="flex gap-2 items-center">
                         <input
                           type="text"
                           placeholder="Tên thuộc tính"
                           value={attr.name}
-                          onChange={(e) => {
-                            const updated = [...book.specifications];
-                            updated[specIndex].attributes[attrIndex].name = e.target.value;
-                            setBook((prev) => ({ ...prev, specifications: updated }));
-                          }}
+                          onChange={(e) => handleAttributeChange(attrIndex, "name", e.target.value)}
                           className="bg-gray-800 border border-gray-700 p-2 rounded w-1/2"
                         />
                         <input
                           type="text"
                           placeholder="Giá trị"
                           value={attr.value}
-                          onChange={(e) => {
-                            const updated = [...book.specifications];
-                            updated[specIndex].attributes[attrIndex].value = e.target.value;
-                            setBook((prev) => ({ ...prev, specifications: updated }));
-                          }}
+                          onChange={(e) => handleAttributeChange(attrIndex, "value", e.target.value)}
                           className="bg-gray-800 border border-gray-700 p-2 rounded w-1/2"
                         />
                         <button
                           type="button"
-                          onClick={() => {
-                            const updated = [...book.specifications];
-                            updated[specIndex].attributes = updated[specIndex].attributes.filter((_, i) => i !== attrIndex);
-                            setBook((prev) => ({ ...prev, specifications: updated }));
-                          }}
+                          onClick={() => handleRemoveAttribute(attrIndex)}
                           className="text-red-400 text-sm hover:underline"
                         >
                           Xóa
                         </button>
                       </div>
                     ))}
-
                     <button
                       type="button"
-                      onClick={() => {
-                        const updated = [...book.specifications];
-                        updated[specIndex].attributes.push({ name: "", value: "" });
-                        setBook((prev) => ({ ...prev, specifications: updated }));
-                      }}
+                      onClick={handleAddAttribute}
                       className="text-sm text-blue-400 hover:underline mt-1"
                     >
                       + Thêm thuộc tính
                     </button>
                   </div>
                 ))}
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    setBook((prev) => ({
-                      ...prev,
-                      specifications: [...prev.specifications, { name: "Thông tin chung", attributes: [] }],
-                    }))
-                  }
-                  className="mt-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-1 rounded"
-                >
-                  + Thêm nhóm thông số
-                </button>
               </div>
-            </div>
+            )}
 
             <div className="flex gap-4 p-4">
               <button

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SidebarProfile from "../../../shared/component/Sidebar/SideBarProfile";
 import { useAuth } from "../../../context/AuthContext";
-import orderService from "../../../api/order.service";
+import { getOrdersByUser } from "../../../api/order.service";
 import { Order } from "../../../../interfaces";
 import { useNavigate } from 'react-router-dom';
 
@@ -33,7 +33,7 @@ const UserOrdersPage: React.FC = () => {
             setError(null);
             try {
                 if (user?.id) {
-                    const fetchedOrders = await orderService.getOrdersByUser(user.id);
+                    const fetchedOrders = await getOrdersByUser(user.id);
                     setOrders(fetchedOrders);
                 } else {
                     setError("Không tìm thấy thông tin người dùng.");

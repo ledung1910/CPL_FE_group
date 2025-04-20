@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import SidebarProfile from "../../../shared/component/Sidebar/SideBarProfile";
 import { useParams, useNavigate } from "react-router-dom";
-import orderService from "../../../api/order.service";
+import {getOrderById, updateOrderStatus } from "../../../api/order.service";
 import { getBookById } from "../../../api/book.service";
 import { useAuth } from "../../../context/AuthContext";
 import { Order, Book } from "../../../../interfaces";
@@ -30,7 +30,7 @@ export default function OrderDetail() {
             setError(null);
             try {
                 if (id) {
-                    const fetchedOrder = await orderService.getOrderById(id);
+                    const fetchedOrder = await getOrderById(id);
                     setOrder(fetchedOrder);
                     const bookDetails: Record<string, Book> = {};
                     const promises = fetchedOrder.items.map(async (item) => {
@@ -68,7 +68,7 @@ export default function OrderDetail() {
             try {
                 setLoading(true);
                 const currentTimeISO = new Date().toISOString();
-                const updatedOrderData = await orderService.updateOrderStatus(order.id, 'cancelled', currentTimeISO);
+                const updatedOrderData = await updateOrderStatus(order.id, 'cancelled', currentTimeISO);
                 if (updatedOrderData === undefined) {
                     setOrder({ ...order, status: 'cancelled', updated_at: currentTimeISO });
                 } else if (updatedOrderData) {

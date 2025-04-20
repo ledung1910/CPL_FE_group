@@ -3,7 +3,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartData, CategoryScale
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Bar, Pie, Line } from "react-chartjs-2";
 import { getBooks, getBookById } from "../../api/book.service";
-import orderService from "../../api/order.service";
+import { getOrders } from "../../api/order.service";
 import { Order, Book } from "../../../interfaces";
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels, CategoryScale, LinearScale, BarElement, LineElement, PointElement, TimeScale);
@@ -77,7 +77,7 @@ const Dashboard = () => {
 
   const fetchOrdersAndPrepareFinancialChart = useCallback(async () => {
     try {
-      const allOrders: Order[] = await orderService.getOrders();
+      const allOrders: Order[] = await getOrders();
       let filteredOrders = allOrders.filter(
         (order) => order.status === "delivered"
       );
@@ -149,7 +149,7 @@ const Dashboard = () => {
 
   const fetchOrdersAndPrepareMonthlyChart = useCallback(async () => {
     try {
-      const allOrders: Order[] = await orderService.getOrders();
+      const allOrders: Order[] = await getOrders();
       let filteredOrders = allOrders;
 
       if (monthlySelectedYear !== null) {

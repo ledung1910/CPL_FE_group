@@ -2,8 +2,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import userService from "../api/user.service";
-import { cartService } from "../api/cart.service";
+import {loginService, registerService, getProfile} from "../api/user.service";
+import { clearCart } from "../api/cart.service";
 import { User } from "../../interfaces";
 
 interface AuthContextProps {
@@ -55,7 +55,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const userId = localStorage.getItem("customer_userId");
         if (!userId) return;
 
-        const profile = await userService.getProfile(Number(userId));
+        const profile = await getProfile(Number(userId));
         const role = profile.role ?? "User";
 
         localStorage.setItem("customer_role", role);
@@ -78,7 +78,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string, role: "Admin" | "User") => {
     try {
-      const response = await userService.login({ email, password });
+      const response = await loginService({ email, password });
       const { accessToken, user } = response;
       const userRole = user.role ?? "User";
 
@@ -102,7 +102,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const register = async (name: string, email: string, password: string, phone: string) => {
-    const { accessToken, user } = await userService.register({ name, email, password, phone });
+    const { accessToken, user } = await registerService({ name, email, password, phone });
     const role = user.role ?? "User";
 
     localStorage.setItem("customer_accessToken", accessToken);
@@ -121,7 +121,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       localStorage.removeItem("customer_accessToken");
       localStorage.removeItem("customer_userId");
       localStorage.removeItem("customer_role");
-      cartService.clearCart();
+      clearCart();
     }
     setUser(null);
   };

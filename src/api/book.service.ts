@@ -21,7 +21,7 @@ export const deleteBook = async (id: string): Promise<void> => {
   await apiClient.delete(`/books/${id}`);
 };
 
-export const getRealCategories = async (): Promise<Category[]> => {
+export const getCategory = async (): Promise<Category[]> => {
   return await apiClient.get("/categories") as Category[];
 };
 

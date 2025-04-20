@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { FaSearch, FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
-import userService from "../../../api/user.service";
+import { getAllUsers } from "../../../api/user.service";
 import { User } from "../../../../interfaces";
 
 const UserManagement = () => {
@@ -11,7 +11,7 @@ const UserManagement = () => {
 
   const fetchUsers = async () => {
     try {
-      const data = await userService.getAllUsers();
+      const data = await getAllUsers();
       setUsers(data);
     } catch (err) {
       console.error("Lỗi khi lấy danh sách người dùng:", err);
