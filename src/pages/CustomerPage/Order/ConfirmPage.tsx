@@ -173,7 +173,7 @@ const OrderConfirmation = () => {
             <img
               src="/src/images/tiki_ninja.png"
               alt="Tiki Mascot"
-              className="absolute left-4 top-[60px] w-[140px] h-[140px] object-contain z-10"
+              className="absolute left-4 top-[20px] w-[140px] h-[140px] object-contain z-10"
             />
 
             <div className="relative z-20 flex items-center h-full pl-[120px] sm:pl-[180px]">

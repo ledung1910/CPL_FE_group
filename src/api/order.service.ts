@@ -9,7 +9,21 @@ export const createOrder = async (order: Omit<Order, "id" | "created_at">): Prom
 
 export const createInstantOrder = async (userId: number, bookId: string, quantity: number, price: number, paymentMethod: string = "COD", shippingAddress: Address): Promise<Order> => {
     const orderItem: OrderItem = { book_id: bookId, quantity, price };
-    const payload: Omit<Order, "id" | "created_at"> = { user_id: userId, items: [orderItem], total_amount: quantity * price, status: 'pending', payment_method: paymentMethod, shipping_address: shippingAddress };
+    const subtotalValue = quantity * price;
+    const shippingFeeValue = 0;
+    const totalDiscountValue = 0;
+    const totalAmountValue = subtotalValue + shippingFeeValue - totalDiscountValue;
+    const payload: Omit<Order, "id" | "created_at"> = {
+      user_id: userId,
+      items: [orderItem],
+      total_amount: totalAmountValue,
+      status: 'pending',
+      payment_method: paymentMethod,
+      shipping_address: shippingAddress,
+      shipping_fee: shippingFeeValue,
+      subtotal: subtotalValue,
+      total_discount: totalDiscountValue,
+  };
     return createOrder(payload);
 };
 
