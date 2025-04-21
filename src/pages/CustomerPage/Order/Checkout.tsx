@@ -427,7 +427,7 @@ export default function Checkout() {
         if (cartItemsFromState) {
           clearCart();
         }
-        navigate(`/confirm/${newOrder.id}`, { replace: true, state: { order: newOrder } });
+        navigate(`/confirm/${newOrder.id}`, { replace: true, state: { order: newOrder, shippingMethod: selectedShippingMethod} });
       } else {
         console.error("API did not return a valid order:", newOrder);
         setOrderErrorMessage("Không thể tạo đơn hàng. Vui lòng thử lại hoặc liên hệ hỗ trợ.");
@@ -787,7 +787,7 @@ export default function Checkout() {
 
                 <button
                   onClick={handleToggleVoucherList}
-                  className="text-blue-600 hover:text-blue-700 flex items-center gap-1.5 text-sm w-full justify-start" // Changed to w-full and justify-start
+                  className="text-blue-600 hover:text-blue-700 flex items-center gap-1.5 text-sm w-full justify-start" 
                 >
                   <FontAwesomeIcon icon={faTicket} className="text-blue-500" />
                   Chọn hoặc nhập mã khác

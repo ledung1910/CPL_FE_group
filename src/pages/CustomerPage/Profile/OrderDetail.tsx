@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import SidebarProfile from "../../../shared/component/Sidebar/SideBarProfile";
-import { useParams, useNavigate } from "react-router-dom";
-import {getEstimatedDeliveryDate, getOrderById, updateOrderStatus, } from "../../../api/order.service";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import {
+  getEstimatedDeliveryDate,
+  getOrderById,
+  updateOrderStatus,
+} from "../../../api/order.service";
 import { getBookById } from "../../../api/book.service";
 import { useAuth } from "../../../context/AuthContext";
 import { Order, Book } from "../../../../interfaces";
@@ -26,6 +30,9 @@ export default function OrderDetail() {
   const [bookDetailsById, setBookDetailsById] = useState<Record<string, Book>>(
     {}
   );
+  const location = useLocation();
+  const shippingMethod =
+    location.state?.shippingMethod || order?.shipping_method;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -70,10 +77,7 @@ export default function OrderDetail() {
   let deliveryText = "";
 
   if (order.status === "cancelled" && deliveryDate) {
-    deliveryText = `Đơn hàng đã ngừng tiếp nhận từ ngày ${format(
-      deliveryDate,
-      "dd/MM/yyyy"
-    )}`;
+    deliveryText = `Đơn hàng đã ngừng tiếp nhận từ ngày ${format(deliveryDate,"dd/MM/yyyy")}`;
   } else if (order.status === "delivered" && deliveryDate) {
     deliveryText = `Giao thành công ngày ${format(deliveryDate, "dd/MM/yyyy")}`;
   } else if (deliveryDate) {
@@ -84,28 +88,19 @@ export default function OrderDetail() {
 
   const handleCancelOrder = async () => {
     if (
-      order &&
-      (order.status === "pending" || order.status === "processing")
+      order && (order.status === "pending" || order.status === "processing")
     ) {
       try {
         setLoading(true);
         const currentTimeISO = new Date().toISOString();
         const updatedOrderData = await updateOrderStatus(
-          order.id,
-          "cancelled",
-          currentTimeISO
+          order.id, "cancelled", currentTimeISO
         );
         if (updatedOrderData === undefined) {
-          setOrder({
-            ...order,
-            status: "cancelled",
-            updated_at: currentTimeISO,
+          setOrder({ ...order, status: "cancelled", updated_at: currentTimeISO,
           });
         } else if (updatedOrderData) {
-          setOrder({
-            ...order,
-            status: "cancelled",
-            updated_at: currentTimeISO,
+          setOrder({ ...order, status: "cancelled", updated_at: currentTimeISO,
           });
         } else {
           setError("Lỗi khi hủy đơn hàng.");
@@ -142,18 +137,11 @@ export default function OrderDetail() {
               {user ? (
                 <>
                   <p className="text-sm font-semibold">{user.name}</p>
-                  <p className="text-sm text-gray-600">
-                    Địa chỉ: {user.address?.street}, {user.address?.district},{" "}
-                    {user.address?.city}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    Điện thoại: {user.phone}
-                  </p>
+                  <p className="text-sm text-gray-600"> Địa chỉ: {user.address?.street}, {user.address?.district},{" "} {user.address?.city}</p>
+                  <p className="text-sm text-gray-600"> Điện thoại: {user.phone}</p>
                 </>
               ) : (
-                <p className="text-sm text-gray-600">
-                  Không có thông tin tài khoản.
-                </p>
+                <p className="text-sm text-gray-600"> Không có thông tin tài khoản.</p>
               )}
             </div>
           </div>
@@ -161,10 +149,18 @@ export default function OrderDetail() {
           <div>
             <h3 className="mb-4 text-[14px]">HÌNH THỨC GIAO HÀNG</h3>
             <div className="bg-white p-4 rounded-[4px] h-35 space-y-1">
-              <p className="text-sm text-gray-600">{" "}
-                <a className="text-sm text-red-500 mr-1 font-medium">NOW</a>Giao Siêu Tốc
+              <p className="text-sm text-gray-600">
+                {shippingMethod === "NOW" ? (
+                  <>
+                    <span className="text-sm text-red-500 mr-1 font-medium">NOW</span>Giao Siêu Tốc
+                  </>
+                ) : (
+                  <>
+                    <span className="text-sm text-gray-600 mr-1 font-medium">Giao Tiết Kiệm</span>
+                  </>
+                )}
               </p>
-              {deliveryText && (<p className="text-sm mb-2">{deliveryText}</p>)}
+              {deliveryText && <p className="text-sm mb-2">{deliveryText}</p>}
               <p className="text-sm text-gray-600">Được giao bởi TikiNOW Smart Logistics (giao từ Hà Nội)</p>
               <p className="text-sm text-gray-600">Miễn phí vận chuyển</p>
             </div>
@@ -174,9 +170,7 @@ export default function OrderDetail() {
             <h3 className=" mb-4 text-[14px]">HÌNH THỨC THANH TOÁN</h3>
             <div className="h-35 bg-white p-4 rounded-[4px]">
               <p className="text-sm text-gray-600">
-                {order.payment_method === "cash"
-                  ? "Thanh toán tiền mặt khi nhận hàng"
-                  : order.payment_method}
+                {order.payment_method === "cash" ? "Thanh toán tiền mặt khi nhận hàng" : order.payment_method}
               </p>
             </div>
           </div>
@@ -198,36 +192,20 @@ export default function OrderDetail() {
                 {order.items.map((item) => {
                   const book = bookDetailsById[item.book_id];
                   if (!book) return null;
-                  const discount =
-                    (book.original_price - book.current_seller.price) *
-                    item.quantity;
+                  const discount = (book.original_price - book.current_seller.price) * item.quantity;
                   const subtotal = item.quantity * item.price;
                   return (
-                    <tr
-                      key={item.book_id}
-                      className="bg-white border-b border-gray-200"
-                    >
+                    <tr key={item.book_id} className="bg-white border-b border-gray-200">
                       <td className="p-3 flex items-start min-w-[250px]">
-                        <img
-                          src={
-                            book.images[0]?.large_url ||
-                            "https://via.placeholder.com/80x120?text=No+Image"
-                          }
-                          alt={book.name}
-                          className="w-14 h-20 object-cover mr-5"
+                        <img src={ book.images[0]?.large_url || "https://via.placeholder.com/80x120?text=No+Image"}
+                          alt={book.name} className="w-14 h-20 object-cover mr-5"
                         />
                         <div>
                           <p className="mt-2 font-medium">{book.name}</p>
-                          <p className="mt-3 text-[13px]">
-                            Cung cấp bởi{" "}
-                            <a className="text-blue-500 text-[13px]">
-                              Tiki Trading
-                            </a>
+                          <p className="mt-3 text-[13px]">Cung cấp bởi{" "}
+                            <a className="text-blue-500 text-[13px]">Tiki Trading</a>
                           </p>
-                          <img
-                            src="/src/images/doitra.png"
-                            alt="30NgayDoiTra"
-                            className="mt-3 h-6"
+                          <img src="/src/images/doitra.png" alt="30NgayDoiTra" className="mt-3 h-6"
                           />
                           <button className="mt-3 text-[12px] p-2 w-30 text-blue-400 border rounded hover:text-blue-400">
                             Chat với nhà bán
@@ -262,31 +240,20 @@ export default function OrderDetail() {
                 </span>
               </div>
               <div className="flex justify-between text-sm mb-2">
-                <span className="w-1/2 text-right text-gray-500">
-                  Phí vận chuyển
-                </span>
+                <span className="w-1/2 text-right text-gray-500">Phí vận chuyển</span>
                 <span className="ml-auto">25.000 ₫</span>
               </div>
               <div className="flex justify-between text-sm mb-2">
-                <span className="w-1/2 text-right text-gray-500">
-                  Giảm giá vận chuyển
-                </span>
+                <span className="w-1/2 text-right text-gray-500">Giảm giá vận chuyển</span>
                 <span className="ml-auto">-25.000 ₫</span>
               </div>
               <div className="flex justify-between text-sm mb-4">
-                <span className="w-1/2 text-right text-gray-500">
-                  Tổng cộng
-                </span>
-                <span className="ml-auto text-xl text-red-500">
-                  {order.total_amount.toLocaleString()}₫
-                </span>
+                <span className="w-1/2 text-right text-gray-500">Tổng cộng</span>
+                <span className="ml-auto text-xl text-red-500">{order.total_amount.toLocaleString()}₫</span>
               </div>
 
               {canCancelOrder && (
-                <button
-                  onClick={handleCancelOrder}
-                  className="w-34 bg-yellow-300 text-black py-1.5 mb-4 rounded-sm"
-                >
+                <button onClick={handleCancelOrder} className="w-34 bg-yellow-300 text-black py-1.5 mb-4 rounded-sm">
                   Hủy đơn hàng
                 </button>
               )}
@@ -295,14 +262,10 @@ export default function OrderDetail() {
 
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center m-4">
             <div className="flex items-center gap-2">
-              <span
-                onClick={() => navigate("/orders")}
-                className="text-sm text-blue-600 cursor-pointer hover:text-gray-700"
-              >
+              <span onClick={() => navigate("/orders")} className="text-sm text-blue-600 cursor-pointer hover:text-gray-700">
                 &laquo; Quay lại đơn hàng của tôi
               </span>
-              <button className="bg-yellow-300 text-black font-semibold py-2 px-3 rounded-sm">
-                Theo dõi đơn hàng
+              <button className="bg-yellow-300 text-black font-semibold py-2 px-3 rounded-sm">Theo dõi đơn hàng
               </button>
             </div>
           </div>
