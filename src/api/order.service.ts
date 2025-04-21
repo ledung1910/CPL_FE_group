@@ -1,5 +1,6 @@
 import { Order, OrderItem, Address } from "../../interfaces";
 import { post, get, patch } from "./request";
+import { addDays } from 'date-fns';
 
 export const createOrder = async (order: Omit<Order, "id" | "created_at">): Promise<Order> => {
     const payload = { ...order, created_at: new Date().toISOString() };
@@ -28,3 +29,21 @@ export const updateOrderStatus = async (id: string, status: Order['status'], upd
     return await patch<{ status: Order['status'], updated_at: string }>(`/orders/${id}`, { status, updated_at });
 };
 
+export function getEstimatedDeliveryDate(order: Order): Date | null {
+    const createdDate = new Date(order.created_at)
+    const updatedDate = order.updated_at ? new Date(order.updated_at) : null
+  
+    switch (order.status) {
+      case 'pending':
+      case 'processing':
+        return addDays(createdDate, 3)
+      case 'shipping':
+        return updatedDate ? addDays(updatedDate, 1) : null
+      case 'delivered':
+      case 'cancelled':
+        return updatedDate
+      default:
+        return null
+    }
+  }
+  
