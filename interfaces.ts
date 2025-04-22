@@ -67,17 +67,17 @@ export interface Order {
     id: string;
     user_id: number;
     items: OrderItem[];
-    total_amount: number; // Tổng tiền cuối cùng sau khi áp dụng voucher và phí ship
+    total_amount: number;
     status: 'pending' | 'processing' | 'shipping' | 'delivered' | 'cancelled';
     created_at: string;
     updated_at?: string;
     payment_method: string;
     shipping_address: Address;
-    shipping_method?: ShippingMethod; // Thêm dòng này
-    shipping_fee: number; // Thêm: Phí ship *trước* khi áp dụng voucher
-    voucher?: Voucher | null; // Thêm dòng này, có thể là null nếu không dùng voucher
-    subtotal: number; // Thêm: Tổng tiền hàng *trước* khi áp dụng voucher
-    total_discount: number; // Thêm: Tổng tiền giảm giá (bao gồm giảm giá sản phẩm và voucher)
+    shipping_method?: ShippingMethod;
+    shipping_fee: number;
+    voucher?: Voucher | null;
+    subtotal: number;
+    total_discount: number;
   }
 
 export interface OrderItem {
@@ -90,12 +90,12 @@ export interface Voucher {
     id: string;
     name: string;
     discount_type: 'shipping' | 'total_order' | 'total_order_shipping';
-    discount_value: number; // Giá trị giảm
-    min_items?: number; // Số lượng sản phẩm tối thiểu
-    min_order_value?: number; // Giá trị đơn hàng tối thiểu (chỉ tính tiền sản phẩm)
-    applicable_shipping_method?: ShippingMethod; // Áp dụng cho phương thức vận chuyển nào (nếu là discount_type 'shipping')
-    requires_freeship_extra?: boolean; // Yêu cầu có sản phẩm freeship_extra
-    requires_ship_now?: boolean; // Yêu cầu có sản phẩm ship_now
+    discount_value: number;
+    min_items?: number;
+    min_order_value?: number;
+    applicable_shipping_method?: ShippingMethod;
+    requires_freeship_extra?: boolean;
+    requires_ship_now?: boolean;
   }
 
 export type ShippingMethod = 'NOW' | 'Standard';
