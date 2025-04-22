@@ -1,20 +1,14 @@
 import { Routes, Route } from "react-router-dom";
-
-// Layouts
 import CustomerLayout from "./shared/layouts/CustomerLayout";
 import AdminLayout from "./shared/layouts/AdminLayout";
 import OrderLayout from "./shared/layouts/OrderLayout";
 import ConfirmLayout from "./shared/layouts/ConfirmLayout";
-
-// Admin Pages
 import AdminLogin from "./pages/AdminPage/AdminLogin";
 import AdminPage from "./pages/AdminPage/Dashboard";
 import ProductAdminPage from "./pages/AdminPage/Product/ProductList";
 import UserList from "./pages/AdminPage/User/UserList";
 import CategoryList from "./pages/AdminPage/Category/CategoryList";
 import ManagementPage from "./pages/AdminPage/Bill/BillList";
-
-// Customer Pages
 import HomePage from "./pages/CustomerPage/Product/Homepage";
 import BookDetail from "./pages/CustomerPage/Product/BookDetail";
 import OrderList from "./pages/CustomerPage/Profile/OrderList";
@@ -23,12 +17,8 @@ import UserProfile from "./pages/CustomerPage/Profile/UserProfile";
 import OrderConfirmation from "./pages/CustomerPage/Order/ConfirmPage";
 import Checkout from "./pages/CustomerPage/Order/Checkout";
 import Cart from "./pages/CustomerPage/Order/Cart";
-
-// Components
 import ScrollToTop from "./shared/component/Provider/ScrollToTop";
 import PrivateRoute from "./shared/component/Provider/PrivateRoute";
-
-// CSS & Toast
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

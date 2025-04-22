@@ -236,10 +236,7 @@ export default function Checkout() {
 
     const defaultMethod = currentShippingOptions.find(opt => opt.method === 'NOW') ? 'NOW' : currentShippingOptions.length > 0 ? 'Standard' : null;
     setSelectedShippingMethod(defaultMethod);
-
-    // Lọc các voucher khả dụng
     const filteredVouchers = AVAILABLE_VOUCHERS.filter(voucher => {
-      // Điều kiện chung
       if (voucher.min_items && itemCount < voucher.min_items) return false;
       if (voucher.min_order_value && subtotal < voucher.min_order_value) return false;
       if (voucher.requires_freeship_extra && !hasFreeshipExtraItem) return false;
