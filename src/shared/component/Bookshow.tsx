@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Book } from "../../../interfaces";
 import { getBooks } from "../../api/book.service";
 import { Link } from "react-router-dom";
+import { addDays, format } from 'date-fns';
+import { vi } from 'date-fns/locale';
 
 type BookShowProps = {
   filters: {
@@ -14,6 +16,11 @@ type BookShowProps = {
   keyword: string;
   category: number;
 };
+
+function getDeliveryDate(): string {
+  const deliveryDate = addDays(new Date(), 3);
+  return `Giao ${format(deliveryDate, "EEEE, dd/MM", { locale: vi })}`;
+}
 
 const BookItem: React.FC<{ book: Book }> = ({ book }) => {
   const [imgSrc, setImgSrc] = useState(
@@ -123,7 +130,7 @@ const BookItem: React.FC<{ book: Book }> = ({ book }) => {
               <span>Ship trong 2h</span>
             </>
           ) : (
-            <span>Giao thứ 3, 01/04</span>
+            <span>{getDeliveryDate()}</span>
           )}
         </div>
       </div>
