@@ -5,7 +5,7 @@ const Header = () => {
     <header className="flex items-center justify-between p-4 bg-white top-0 ">
       <div className="ml-6">
           <Link to="/">
-            <img src="/public/images/logo.png" alt="Logo" className="h-[90px] w-[110px]" />
+            <img src="/images/logo.png" alt="Logo" className="h-[90px] w-[110px]" />
           </Link>
         </div>
     </header>

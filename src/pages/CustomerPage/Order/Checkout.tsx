@@ -766,7 +766,7 @@ export default function Checkout() {
                 {selectedVoucher ? (
                   <div className="border border-blue-500 bg-blue-50 rounded-lg p-3 flex items-center justify-between mb-3 text-sm">
                     <div className="flex items-center gap-2">
-                      <img src="/public/images/freeship.png" alt="Free Ship" className="w-12 h-12" />
+                      <img src="/images/freeship.png" alt="Free Ship" className="w-12 h-12" />
                       <span className="text-xs font-medium">
                         {selectedVoucher.name}
                       </span>

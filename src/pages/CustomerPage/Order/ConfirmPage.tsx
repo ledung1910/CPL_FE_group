@@ -166,12 +166,12 @@ const OrderConfirmation = () => {
         <div className="flex-1 bg-white rounded-[8px] overflow-hidden relative min-h-[500px]">
           <div className="h-[120px] sm:h-[150px] bg-gradient-to-r from-[#00b5f1] to-[#005bea] relative flex items-start px-4 pt-6">
             <img
-              src="/public/images/banner.png"
+              src="/images/banner.png"
               alt="Confetti"
               className="absolute inset-0 w-full h-full object-cover z-0"
             />
             <img
-              src="/public/images/tiki_ninja.png"
+              src="/images/tiki_ninja.png"
               alt="Tiki Mascot"
               className="absolute left-4 top-[20px] w-[140px] h-[140px] object-contain z-10"
             />
