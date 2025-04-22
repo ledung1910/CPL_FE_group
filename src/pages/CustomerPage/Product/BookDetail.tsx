@@ -313,7 +313,7 @@ const ProductDetail = () => {
                     <div className="mt-4 border-t border-gray-100 pt-4 cursor-pointer flex items-center justify-between">
                         <div className="flex items-center space-x-2">
                             <img
-                                src="/src/images/iconDauNguoiXanh.png"
+                                src="/public/images/iconDauNguoiXanh.png"
                                 alt="Icon"
                                 className="w-4"
                             />
@@ -447,7 +447,7 @@ const ProductDetail = () => {
                         <div className="space-y-4">
                             <div className="flex items-start gap-3">
                                 <img
-                                    src="/src/images/atms1.png"
+                                    src="/public/images/atms1.png"
                                     alt="Icon"
                                     className="w-5 mt-1 flex-shrink-0"
                                 />
@@ -455,7 +455,7 @@ const ProductDetail = () => {
                             </div>
                             <div className="flex items-start gap-3">
                                 <img
-                                    src="/src/images/atms2.png"
+                                    src="/public/images/atms2.png"
                                     alt="Icon"
                                     className="w-5 mt-1 flex-shrink-0"
                                 />
@@ -463,7 +463,7 @@ const ProductDetail = () => {
                             </div>
                             <div className="flex items-start gap-3">
                                 <img
-                                    src="/src/images/atms3.png"
+                                    src="/public/images/atms3.png"
                                     alt="Icon"
                                     className="w-5 mt-1 flex-shrink-0"
                                 />
@@ -482,13 +482,13 @@ const ProductDetail = () => {
             {/* Phần đặt hàng */}
             <div className="col-span-12 sm:col-span-6 lg:col-span-3 w-full bg-white rounded-lg p-6">
                 <div className="grid grid-cols-[auto_1fr] items-center gap-3 pb-4 border-b border-gray-300">
-                    <img src="/src/images/tikiCircle.png" alt="Tiki" className="h-8" />
+                    <img src="/public/images/tikiCircle.png" alt="Tiki" className="h-8" />
                     <div className="grid grid-rows-2 items-start gap-1">
                         <h3 className="text-lg font-semibold leading-tight">
                             Nhà sách Tiki
                         </h3>
                         <img
-                            src="/src/images/official.png"
+                            src="/public/images/official.png"
                             alt="Official"
                             className="h-5 mt-[-2px]"
                         />

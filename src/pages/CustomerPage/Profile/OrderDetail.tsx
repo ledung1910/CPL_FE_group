@@ -205,7 +205,7 @@ export default function OrderDetail() {
                           <p className="mt-3 text-[13px]">Cung cấp bởi{" "}
                             <a className="text-blue-500 text-[13px]">Tiki Trading</a>
                           </p>
-                          <img src="/src/images/doitra.png" alt="30NgayDoiTra" className="mt-3 h-6"
+                          <img src="/public/images/doitra.png" alt="30NgayDoiTra" className="mt-3 h-6"
                           />
                           <button className="mt-3 text-[12px] p-2 w-30 text-blue-400 border rounded hover:text-blue-400">
                             Chat với nhà bán

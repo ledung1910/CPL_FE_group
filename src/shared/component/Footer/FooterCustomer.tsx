@@ -46,49 +46,49 @@ const Footer = () => {
           </ul>
           <h4 className="text-lg font-bold mt-4">Chứng nhận bởi</h4>
           <div className="flex space-x-2 mt-2">
-            <img src="/src/images/dauvantay.png" alt="Chứng nhận" className="h-10" />
-            <img src="/src/images/dadangky.png" alt="Đã Đăng Ký" className="h-10" />
-            <img src="/src/images/khoa.png" alt="Khoá" className="h-10" />
+            <img src="/public/images/dauvantay.png" alt="Chứng nhận" className="h-10" />
+            <img src="/public/images/dadangky.png" alt="Đã Đăng Ký" className="h-10" />
+            <img src="/public/images/khoa.png" alt="Khoá" className="h-10" />
           </div>
         </div>
 
         <div className="w-full md:w-1/5 px-1 mb-6 md:mb-0">
           <h4 className="text-lg font-bold mb-2 whitespace-nowrap">Phương thức thanh toán</h4>
           <div className="flex flex-wrap gap-4">
-            <img src="/src/images/tiki.png" alt="Tiki" className="w-1/8" />
-            <img src="/src/images/visa.png" alt="Visa" className="w-1/8" />
-            <img src="/src/images/mastercard.png" alt="Mastercard" className="w-1/8" />
-            <img src="/src/images/jcb.png" alt="JCB" className="w-1/8" />
-            <img src="/src/images/atm.png" alt="ATM" className="w-1/8" />
+            <img src="/public/images/tiki.png" alt="Tiki" className="w-1/8" />
+            <img src="/public/images/visa.png" alt="Visa" className="w-1/8" />
+            <img src="/public/images/mastercard.png" alt="Mastercard" className="w-1/8" />
+            <img src="/public/images/jcb.png" alt="JCB" className="w-1/8" />
+            <img src="/public/images/atm.png" alt="ATM" className="w-1/8" />
 
-            <img src="/src/images/momo.png" alt="Momo" className="w-1/8" />
-            <img src="/src/images/zalopay.png" alt="ZaloPay" className="w-1/8" />
-            <img src="/src/images/viettelmoney.png" alt="Viettel Money" className="w-1/8" />
-            <img src="/src/images/vnpay.png" alt="VNPay" className="w-1/8" />
-            <img src="/src/images/cash.png" alt="Cash" className="w-1/8" />
+            <img src="/public/images/momo.png" alt="Momo" className="w-1/8" />
+            <img src="/public/images/zalopay.png" alt="ZaloPay" className="w-1/8" />
+            <img src="/public/images/viettelmoney.png" alt="Viettel Money" className="w-1/8" />
+            <img src="/public/images/vnpay.png" alt="VNPay" className="w-1/8" />
+            <img src="/public/images/cash.png" alt="Cash" className="w-1/8" />
 
-            <img src="/src/images/tragop.png" alt="Trả góp" className="w-1/8" />
+            <img src="/public/images/tragop.png" alt="Trả góp" className="w-1/8" />
           </div>
           <h4 className="text-lg font-bold mt-4">Dịch vụ giao hàng</h4>
-          <img src="/src/images/tikinow.png" alt="TikiNow" className="mt-2 w-1/2" />
+          <img src="/public/images/tikinow.png" alt="TikiNow" className="mt-2 w-1/2" />
         </div>
 
 
         <div className="w-full md:w-1/5 px-1 mb-6 md:mb-0">
           <h4 className="text-xl font-bold mb-2">Kết nối với chúng tôi</h4>
           <div className="flex space-x-4 text-2xl">
-            <img src="/src/images/fb.png" alt="Facebook" className="cursor-pointer w-1/6" />
-            <img src="/src/images/yt.png" alt="Youtube" className="cursor-pointer w-1/6" />
-            <img src="/src/images/zalo.png" alt="Zalo" className="cursor-pointer w-1/6" />
+            <img src="/public/images/fb.png" alt="Facebook" className="cursor-pointer w-1/6" />
+            <img src="/public/images/yt.png" alt="Youtube" className="cursor-pointer w-1/6" />
+            <img src="/public/images/zalo.png" alt="Zalo" className="cursor-pointer w-1/6" />
           </div>
 
           <div className="space-y-4 col-span-2">
             <h4 className="text-lg font-bold mb-2">Tải ứng dụng trên điện thoại</h4>
             <div className="flex space-x-4">
-              <img src="/src/images/qrcode.png" alt="QRCode" className="cursor-pointer w-1/2" />
+              <img src="/public/images/qrcode.png" alt="QRCode" className="cursor-pointer w-1/2" />
               <div className="flex flex-col space-y-2 w-1/2">
-                <img src="/src/images/apple.png" alt="Apple" className="cursor-pointer w-full h-full" />
-                <img src="/src/images/chplay.png" alt="CHPlay" className="cursor-pointer w-full h-full" />
+                <img src="/public/images/apple.png" alt="Apple" className="cursor-pointer w-full h-full" />
+                <img src="/public/images/chplay.png" alt="CHPlay" className="cursor-pointer w-full h-full" />
               </div>
             </div>
           </div>

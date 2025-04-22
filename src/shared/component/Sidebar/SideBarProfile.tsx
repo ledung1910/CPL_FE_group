@@ -41,7 +41,7 @@ const SidebarProfile: React.FC<SidebarProfileProps> = ({ orderId }) => {
 
             <div className="flex items-center">
                 <img
-                    src="/src/images/avatar.png"
+                    src="/public/images/avatar.png"
                     alt="Ảnh đại diện"
                     className="w-12 h-12 bg-gray-300 rounded-full mr-3"
                 />
@@ -54,19 +54,19 @@ const SidebarProfile: React.FC<SidebarProfileProps> = ({ orderId }) => {
             <div className="space-y-2">
                 <SidebarLink
                     to="/user_profile"
-                    icon="/src/images/user.png"
+                    icon="/public/images/user.png"
                     label="Thông tin tài khoản"
                     active={isActive("/user_profile")}
                 />
                 <SidebarLink
                     to=""
-                    icon="/src/images/noti.png"
+                    icon="/public/images/noti.png"
                     label="Thông báo của tôi"
                     active={isActive("/notifications")}
                 />
                 <SidebarLink
                     to="/orders"
-                    icon="/src/images/order.png"
+                    icon="/public/images/order.png"
                     label="Quản lý đơn hàng"
                     active={isActive("/orders")}
                 />

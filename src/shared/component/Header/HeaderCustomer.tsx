@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import LoginPopup from "../../../pages/CustomerPage/Authentication/Login";
 import RegisterPopup from "../../../pages/CustomerPage/Authentication/Register";
-import logo from "../../../images/logo.png";
 import { getCartCount } from "../../../api/cart.service";
 import { useSearch } from "../../../hooks/useSearch";
 import { FaShoppingCart, FaBars } from "react-icons/fa";
@@ -126,7 +125,7 @@ const MobileNav = ({
         }`}
     >
       <div className="p-4 border-b flex justify-between items-center">
-        <img src={logo} alt="Logo" className="h-10 w-auto" />
+        <img src="/public/images/logo.png" alt="Logo" className="h-10 w-auto" />
         <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -406,7 +405,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch }) => {
         <div className="flex items-center justify-between p-4 bg-white sticky top-0 z-50">
           <div className="ml-6">
             <button onClick={() => (window.location.href = "/")}>
-              <img src={logo} alt="Logo" className="h-[90px] w-[110px]" />
+              <img src="/public/images/logo.png" alt="Logo" className="h-[90px] w-[110px]" />
             </button>
           </div>
 

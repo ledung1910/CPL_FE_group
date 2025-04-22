@@ -1,12 +1,11 @@
 import { Link } from "react-router-dom";
-import logo from "../../../images/logo.png";
 
 const Header = () => {
   return (
     <header className="hidden sm:flex items-center justify-between p-4 bg-white top-0">
       <div className="ml-6">
         <Link to="/">
-          <img src={logo} alt="Logo" className="h-[90px] w-[110px]" />
+          <img src="/public/images/logo.png" alt="Logo" className="h-[90px] w-[110px]" />
         </Link>
       </div>
 
