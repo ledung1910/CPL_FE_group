@@ -12,5 +12,5 @@ export const post = async <T>(url: string, data?: unknown, config?: AxiosRequest
 };
 export const patch = async <T>(url: string, data?: unknown, config?: AxiosRequestConfig): Promise<T> => {
     const response = await apiClient.patch(url, data, config);
-    return response.data as T;
+    return response as T;
 };
